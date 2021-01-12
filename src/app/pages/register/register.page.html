@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input placeholder="john.doe@domain.com" type="email" [(ngModel)]="email"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input placeholder="password12345" type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+
+      <br>
+      <ion-button expand="block" color="dark" (click)="login()">
+        <span *ngIf="!loading">Create</span>
+        <span *ngIf="loading">
+          <ion-spinner color="secondary" name="bubbles"></ion-spinner>
+        </span>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

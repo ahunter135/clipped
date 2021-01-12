@@ -8,14 +8,40 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import firebase from 'firebase';
+import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { Crop } from '@ionic-native/crop/ngx';
+import { Base64 } from '@ionic-native/base64/ngx';
+import { UpgradeComponent } from './modals/upgrade/upgrade.component';
+
+var firebaseConfig = {
+  apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
+  authDomain: "clipped-3c152.firebaseapp.com",
+  databaseURL: "https://clipped-3c152.firebaseio.com",
+  projectId: "clipped-3c152",
+  storageBucket: "clipped-3c152.appspot.com",
+  messagingSenderId: "607609406851",
+  appId: "1:607609406851:web:7a607f6fdc9d24bbd1a2b6",
+  measurementId: "G-4DM3T7LSVX"
+};
+firebase.initializeApp(firebaseConfig);
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  declarations: [AppComponent, UpgradeComponent],
+  entryComponents: [UpgradeComponent],
+  imports: [BrowserModule, IonicModule.forRoot({
+    mode: 'ios'
+  }), AppRoutingModule],
   providers: [
     StatusBar,
     SplashScreen,
+    InAppPurchase,
+    Camera,
+    File,
+    Crop,
+    Base64,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

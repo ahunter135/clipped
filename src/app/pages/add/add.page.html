@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add Client</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button (click)="goBack()"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Add Client</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input placeholder="John Doe" type="text" [(ngModel)]="client.name" autocapitalize="on" autocomplete="name"
+          autocorrection="on"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Date of Last Visit</ion-label>
+        <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="{{max}}" value="{{today}}"
+          [(ngModel)]="client.last_visit"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Summary of Visit</ion-label>
+        <ion-textarea placeholder="Cut, style, and shave" [(ngModel)]="client.summary" autoGrow="true" maxlength="750"
+          autocapitalize="on">
+        </ion-textarea>
+      </ion-item>
+      <!--<ion-button expand="block" color="dark" (click)="addPhoto()">Add Photo</ion-button>-->
+
+    </ion-list>
+  </ion-card>
+
+</ion-content>
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-button expand="block" color="success" (click)="submit()">
+      <span *ngIf="!loading">Submit</span>
+      <span *ngIf="loading">
+        <ion-spinner color="secondary" name="bubbles"></ion-spinner>
+      </span>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

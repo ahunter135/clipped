@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" color="dark">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Client Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showMore($event)" color="dark">
+        <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title>Client Details</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    <ion-list>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img src="{{client.image}}">
+        </ion-avatar>
+        <ion-button (click)="editProfileImg()" color="light">Edit Profile Image</ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Name</ion-label>
+        <ion-input placeholder="John Doe" type="text" [(ngModel)]="client.name" autocapitalize="on" autocomplete="name"
+          autocorrection="on"></ion-input>
+      </ion-item>
+      <ion-button expand="block" color="dark" (click)="showVisits(null)">Add Visit</ion-button>
+      <ion-button expand="block" color="success" (click)="save()">
+        <span *ngIf="!loading">Save Edits</span>
+        <span *ngIf="loading">
+          <ion-spinner color="secondary" name="bubbles"></ion-spinner>
+        </span>
+      </ion-button>
+    </ion-list>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col sizeLg="4" sizeMd="4" sizeXs="6" *ngFor="let visit of client.visits" style="padding: 1px">
+            <img *ngIf="visit.image" class="img-wrapper" src="{{visit.image}}" (click)="showVisits(visit)">
+            <img *ngIf="!visit.image" (click)="showVisits(visit)" class="img-wrapper"
+              src="https://via.placeholder.com/1024x1024.jpg?text={{visit.date}}">
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,27 @@
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input placeholder="john.doe@domain.com" type="email" [(ngModel)]="email"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input placeholder="password12345" type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+      <br>
+      <div style="text-align: center;">
+        <a [routerLink]="['/register']">Create an Account</a>
+      </div>
+      <br>
+      <ion-button expand="block" color="dark" (click)="login()">
+        <span *ngIf="!loading">Login</span>
+        <span *ngIf="loading">
+          <ion-spinner color="secondary" name="bubbles"></ion-spinner>
+        </span>
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

@@ -1,0 +1,100 @@
+import { Injectable } from '@angular/core';
+import { Plugins } from '@capacitor/core';
+import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
+import { ModalController } from '@ionic/angular';
+import { GlobalService } from './global.service';
+
+const { Storage } = Plugins;
+@Injectable({
+  providedIn: 'root'
+})
+export class StorageService {
+
+  data = null;
+  cameFrom = "";
+  security = "";
+  clients = [];
+  productIds = [];
+  products: any;
+  proMode = false;
+  constructor(private iap: InAppPurchase, public globalService: GlobalService, private modalCtrl: ModalController) {
+    //Storage.clear();
+  }
+
+  async setItem(obj) {
+    await Storage.set(obj);
+  }
+
+  async getItem(key) {
+    const ret = await Storage.get({ key: key });
+    const obj = JSON.parse(ret.value);
+
+    return obj
+  }
+
+  async removeItem(key) {
+    await Storage.remove({ key: key });
+  }
+
+  async getKeys() {
+    const { keys } = await Storage.keys();
+
+    return keys
+  }
+
+  async clearStorage() {
+    await Storage.clear();
+  }
+
+  async setData(data) {
+    this.data = data;
+  }
+
+  async getData() {
+    return this.data;
+  }
+
+  async upgradeToPro(product) {
+    this.iap.subscribe(product).then((data) => {
+      this.setItem({key: 'pro', value: true});
+      this.globalService.publishData({key: 'pro', value: true});
+      this.proMode = true;
+      this.modalCtrl.dismiss();
+      return data;
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  async setupIAP() {
+    let productId = "com.clipped.promode";
+    this.iap.getProducts([productId, 'com.clipped.upgradesemi', 'com.clipped.upgradeannual']).then(async (products) => {
+      console.log(products);
+      this.products = products;
+      let isUnlocked = await this.getItem('pro');
+      if (isUnlocked) {
+        // TODO check if receipt is good enough
+        this.iap.restorePurchases().then((receipt) => {
+          console.log(receipt);
+          if (receipt.length > 0) {
+            if (receipt[0].state != 0) {
+              this.setItem({key: "pro", value: false})
+              this.globalService.publishData({key: 'pro', value: false});
+              this.proMode = false;
+            } else {
+              this.setItem({key: 'pro', value: true});
+              this.proMode = true;
+              this.globalService.publishData({key: 'pro', value: true});
+            }
+          }
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  
+}

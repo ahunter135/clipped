@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "607609406851",
+    "firebase_url": "https://clipped-3c152.firebaseio.com",
+    "project_id": "clipped-3c152",
+    "storage_bucket": "clipped-3c152.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607609406851:android:da0ec759bc74a2ded1a2b6",
+        "android_client_info": {
+          "package_name": "com.clipped.clipped"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607609406851-5qhr9cq463g5299dkl3jaj5e43o2se2v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuEOgKmk4Xr1YYqwriKqdtDqd7QJTnd8k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607609406851-5qhr9cq463g5299dkl3jaj5e43o2se2v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

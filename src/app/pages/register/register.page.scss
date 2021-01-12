@@ -1,0 +1,11 @@
+ion-card {
+    top: 30%;
+}
+
+ion-item {
+    --highlight-color-focused: #FFFFFF;
+    --color-focused: #FFFFFF;
+    &.item-has-focus ion-label {
+        color: #FFFFFF !important;
+    }
+}

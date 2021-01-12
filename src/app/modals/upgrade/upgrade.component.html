@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" color="dark">
+      <ion-button (click)="modalCtrl.dismiss()" color="dark">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Time to Upgrade</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Upgrade to Pro</ion-card-title>
+      <ion-card-subtitle>Get access to new perks!</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      When upgrading to the pro version of clipped, you get access to perks that will expand your app entirely!<br>
+      Perks like: <br>
+      <ul>
+        <li>The ability to have more than 10 clients!</li>
+        <li>Add profile images to all your clients!</li>
+        <li>Take a photo of the client when they visit to help summarize their visit!</li>
+        <li>More to come!</li>
+      </ul>
+    </ion-card-content>
+    <ion-button expand="block" color="light" (click)="upgrade('com.clipped.promode')">$9.99 / Month </ion-button>
+    <ion-button expand="block" color="medium" (click)="upgrade('com.clipped.upgradesemi')">$49.99 / 6 Months (1 Month
+      Free)
+    </ion-button>
+    <ion-button expand="block" color="success" (click)="upgrade('com.clipped.upgradeannual')">$99.99 / Year (2 Months
+      Free)
+    </ion-button>
+  </ion-card>
+</ion-content>>
