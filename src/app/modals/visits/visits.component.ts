@@ -31,6 +31,7 @@ export class VisitsComponent implements OnInit {
   loading = false;
   subscription; 
   popover;
+  loadingValue = 0;
   constructor(public navParams: NavParams, private storage: StorageService,
     private dbService: DbService, private modalCtrl: ModalController,
     private cameraService: CameraService, private globalService: GlobalService, private popoverCtrl: PopoverController) { 
@@ -45,8 +46,9 @@ export class VisitsComponent implements OnInit {
       if (data.key === 'images') {
         console.log(data.value[data.value.length - 1]);
         this.added_image = data.value[data.value.length - 1];
-        this.visit.image = this.added_image;
         this.loading = false;
+      } else if (data.key === 'uploadStatus') {
+        this.loadingValue = data.value;
       }
     })
   }

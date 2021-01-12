@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import firebase from 'firebase';
 import * as moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
+import { GlobalService } from './global.service';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -12,7 +13,8 @@ export class DbService {
   uid;
   email;
   db;
-  constructor(private storage: StorageService, private router: Router) {}
+  loader;
+  constructor(private storage: StorageService, private router: Router, private globalService: GlobalService) {}
 
   async setupDb() {
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
@@ -38,7 +40,7 @@ export class DbService {
   }
 
   async addClient(client) {
-    let image = await this.getAvatar(client);
+    let image = "https://ui-avatars.com/api/?background=f3f3f3&name="+client.name;//await this.getAvatar(client);
     client.uuid = uuidv4();
     //let ref = this.uploadImage(image, client.uuid);
     let clientRef = this.db.collection('users').doc(this.uid).collection('clients');
@@ -55,6 +57,7 @@ export class DbService {
       uuid: client.uuid,
       pro: false
     }).catch((err) => {
+      console.log("NOPE " + err);
       this.handleError(err)
     });   ;
   }
@@ -145,7 +148,7 @@ export class DbService {
       uploadTask.on(
         "state_changed",
         (_snapshot: any) => {
-          
+          this.globalService.publishData({key: 'uploadStatus', value: _snapshot.bytesTransferred / _snapshot.totalBytes});
         },
         _error => {
           reject(_error);

@@ -18,7 +18,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class AddPage implements OnInit {
 
   client = <any>{}
-  today = moment().format("MM-DD-YYYY");
+  today = moment().format("YYYY-MM-DD");
   max = moment().format("YYYY-MM-DD");
   actionSheet;
   loading = false;
@@ -35,8 +35,10 @@ export class AddPage implements OnInit {
   }
 
   async submit() {
+    console.log("HERE");
     if (this.loading) return;
     else this.loading = true;
+    console.log("HERE");
     await this.dbService.addClient(this.client);
     this.loading = false;
     this.goBack();

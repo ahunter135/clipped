@@ -27,6 +27,7 @@ export class DetailsPage implements OnInit {
   actionSheet;
   loading = false;
   subscription;
+  loadingValue = 0;
   constructor(private storage: StorageService, private camera: Camera, 
     private dbService: DbService, private popoverCtrl: PopoverController, public globalService: GlobalService, 
     private file: File, private crop: Crop, private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, 
@@ -50,6 +51,8 @@ export class DetailsPage implements OnInit {
           this.clientImages.shift();
           this.loading = false;
         }
+      } else if (data.key === 'uploadStatus') {
+        this.loadingValue = data.value;
       }
     })
   }
