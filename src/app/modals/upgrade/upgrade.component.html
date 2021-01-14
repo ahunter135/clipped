@@ -15,21 +15,59 @@
       <ion-card-subtitle>Get access to new perks!</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      When upgrading to the pro version of clipped, you get access to perks that will expand your app entirely!<br>
-      Perks like: <br>
+      When upgrading to the pro version of clipped, you get access to perks that
+      will expand your app entirely!<br />
+      Perks like: <br />
       <ul>
         <li>The ability to have more than 10 clients!</li>
         <li>Add profile images to all your clients!</li>
-        <li>Take a photo of the client when they visit to help summarize their visit!</li>
+        <li>
+          Take a photo of the client when they visit to help summarize their
+          visit!
+        </li>
         <li>More to come!</li>
       </ul>
+
+      Click one of these buttons below to start the subscription process! You
+      can either pay per month, every 6 months, or every 12 months!
+      <br />
+      <a
+        href="https://www.termsofusegenerator.net/live.php?token=H8G3oNkfGEFwJTilBw4a220FHIpHyYSZ"
+        >Terms of Use</a
+      >
+      <br />
+      <a
+        href="https://www.termsfeed.com/live/f10676ac-dea0-4400-a008-7d3f449289c3"
+        >Privacy Policy</a
+      >
     </ion-card-content>
-    <ion-button expand="block" color="light" (click)="upgrade('com.clipped.promode')">$9.99 / Month </ion-button>
-    <ion-button expand="block" color="medium" (click)="upgrade('com.clipped.upgradesemi')">$49.99 / 6 Months (1 Month
-      Free)
+    <ion-button
+      expand="block"
+      color="light"
+      (click)="
+        upgrade(getPlatform() ? 'com.clipped.monthly' : 'com.clipped.promode')
+      "
+      >$9.99 / Month
     </ion-button>
-    <ion-button expand="block" color="success" (click)="upgrade('com.clipped.upgradeannual')">$99.99 / Year (2 Months
-      Free)
+    <ion-button
+      expand="block"
+      color="medium"
+      (click)="
+        upgrade(
+          getPlatform() ? 'com.clipped.semiannual' : 'com.clipped.upgradesemi'
+        )
+      "
+      >$49.99 / 6 Months ($8.33 / Month)
+    </ion-button>
+    <ion-button
+      expand="block"
+      color="success"
+      (click)="
+        upgrade(
+          getPlatform() ? 'com.clipped.annually' : 'com.clipped.upgradeannual'
+        )
+      "
+      >$89.99 / 12 Months ($7.49 / Month)
     </ion-button>
   </ion-card>
-</ion-content>>
+</ion-content>

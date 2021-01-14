@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
-import { ModalController } from '@ionic/angular';
+import { isPlatform, ModalController } from '@ionic/angular';
 import { GlobalService } from './global.service';
 
 const { Storage } = Plugins;
@@ -68,7 +68,13 @@ export class StorageService {
 
   async setupIAP() {
     let productId = "com.clipped.promode";
-    this.iap.getProducts([productId, 'com.clipped.upgradesemi', 'com.clipped.upgradeannual']).then(async (products) => {
+    let products = [];
+    if (isPlatform('android')) {
+      products = [productId, 'com.clipped.upgradesemi', 'com.clipped.upgradeannual'];
+    } else if (isPlatform('ios')) {
+      products = ["com.clipped.annually", "com.clipped.monthly", "com.clipped.semiannual"];
+    }
+    this.iap.getProducts(products).then(async (products) => {
       console.log(products);
       this.products = products;
       let isUnlocked = await this.getItem('pro');

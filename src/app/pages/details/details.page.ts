@@ -42,8 +42,6 @@ export class DetailsPage implements OnInit {
       }else if (data.key === 'images') {
         if (data.flag) {
           this.clientImages = await this.dbService.getClientImages(this.client);
-          this.clientImages.shift();
-          console.log(this.clientImages);
           this.client.image = this.clientImages[this.clientImages.length -1];
           this.loading = false;
         } else {
