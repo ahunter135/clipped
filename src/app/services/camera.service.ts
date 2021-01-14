@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ActionSheetController, ModalController } from '@ionic/angular';
+import { rejects } from 'assert';
 import { CropImageComponent } from '../modals/crop-image/crop-image.component';
 import { DbService } from './db.service';
 import { GlobalService } from './global.service';
@@ -32,6 +33,7 @@ export class CameraService {
   async showActionSheet(flag, client) {
     this.actionSheet = await this.actionSheetCtrl.create({
       header: "Photo Source",
+      backdropDismiss: false,
       buttons: [{
         text: 'Library',
         handler: async () => {
@@ -50,6 +52,15 @@ export class CameraService {
             await <any>this.doCamera(1, flag, client);
             resolve();
           });
+        }
+      }, {
+        text: 'Cancel',
+        handler: async () => {
+          return new Promise(async (resolve, reject) => {
+            this.actionSheet.dismiss();
+            this.globalService.publishData({key: 'images', value: null, flag: flag});
+            resolve();
+          })
         }
       }]
     });
@@ -89,6 +100,7 @@ export class CameraService {
         cropModal.present();
       }, (err) => {
         // Handle error
+        this.globalService.publishData({key: 'images', value: null, flag: flag});
         reject(err);
       });
     })

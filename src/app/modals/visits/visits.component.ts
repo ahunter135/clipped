@@ -44,6 +44,10 @@ export class VisitsComponent implements OnInit {
     this.subscription = this.globalService.getObservable().subscribe(async (data) => {
       console.log("VISIT SUBSCRIBE");
       if (data.key === 'images') {
+        if (!data.value) {
+          this.loading = false;
+          return;
+        }
         console.log(data.value[data.value.length - 1]);
         this.added_image = data.value[data.value.length - 1];
         this.loading = false;

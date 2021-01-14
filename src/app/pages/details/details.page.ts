@@ -36,15 +36,22 @@ export class DetailsPage implements OnInit {
   async ngOnInit() {
     this.client = this.storage.data;
     this.subscription = this.globalService.getObservable().subscribe(async (data) => {
-      console.log("DETAILS SUBSCRIBE");
       if (data.key === 'pro') {
         this.proMode = data.value;
       }else if (data.key === 'images') {
         if (data.flag) {
+          if (!data.value) {
+            this.loading = false;
+            return;
+          }
           this.clientImages = await this.dbService.getClientImages(this.client);
           this.client.image = this.clientImages[this.clientImages.length -1];
           this.loading = false;
         } else {
+          if (!data.value) {
+            this.loading = false;
+            return;
+          }
           this.clientImages = await this.dbService.getClientImages(this.client);
           this.clientImages.shift();
           this.loading = false;
