@@ -82,14 +82,9 @@ export class DetailsPage implements OnInit {
  }
 
   async editProfileImg() {
-    //if they don't have pro mode, prompt them to buy it here
-    if (this.proMode) {
       if (this.loading) return;
       else this.loading = true;
       this.cameraService.startCameraProcess(this.client, true);
-    } else {
-      alert("Please buy pro mode");
-    }
   }
 
   async addPhoto() {

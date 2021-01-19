@@ -14,7 +14,7 @@ export class Tab2Page {
   clients = [];
   proMode = this.storage.proMode;
   temp = this.storage.clients;
-  constructor(public storage: StorageService, private router: Router, public globalService: GlobalService, private dbService: DbService) {}
+  constructor(public storage: StorageService, private router: Router, public globalService: GlobalService, public dbService: DbService) {}
 
   ngOnInit() {
     this.globalService.getObservable().subscribe(async (data) => {

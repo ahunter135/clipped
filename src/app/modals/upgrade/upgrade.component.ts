@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, isPlatform } from '@ionic/angular';
+import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { StorageService } from 'src/app/services/storage.service';
 })
 export class UpgradeComponent implements OnInit {
 
-  constructor(public modalCtrl: ModalController, private storage: StorageService) { }
+  constructor(public modalCtrl: ModalController, private storage: StorageService, public dbService: DbService) { }
 
   ngOnInit() {}
   

@@ -14,11 +14,15 @@ export class DbService {
   email;
   db;
   loader;
+  proLimit = 0;
   constructor(private storage: StorageService, private router: Router, private globalService: GlobalService) {}
 
   async setupDb() {
     firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     this.db = firebase.firestore();
+    this.db.collection('rules').doc('proLimit').get().then((limit) => {
+      this.proLimit = limit.data().limit;
+    })
   }
 
   async getClients() {
@@ -55,7 +59,7 @@ export class DbService {
       ],
       image: image,
       uuid: client.uuid,
-      pro: false
+      phone_number: client.phone_number
     }).catch((err) => {
       console.log("NOPE " + err);
       this.handleError(err)
@@ -69,7 +73,7 @@ export class DbService {
       visits: client.visits,
       image: client.image,
       uuid: client.uuid,
-      pro: false
+      phone_number: client.phone_number
     }).catch((err) => {
       this.handleError(err)
     });   ;

@@ -15,7 +15,8 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private storage: StorageService
   ) {
     this.initializeApp();
   }
@@ -30,6 +31,18 @@ export class AppComponent {
       });
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+
+      if (await this.storage.getItem("darkMode")) {
+        toggleDarkTheme(true);
+      } else {
+        toggleDarkTheme(false);
+      }
+
+      // Add or remove the "dark" class based on if the media query matches
+      function toggleDarkTheme(shouldAdd) {
+        document.body.classList.toggle('dark', shouldAdd);
+      }
     });
   }
 }

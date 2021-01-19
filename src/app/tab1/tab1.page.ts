@@ -16,7 +16,7 @@ export class Tab1Page {
 
   numClients = 0;
   proMode = false;
-  constructor(public storage: StorageService, private router: Router, private dbService: DbService, public globalService: GlobalService,
+  constructor(public storage: StorageService, private router: Router, public dbService: DbService, public globalService: GlobalService,
     public modalCtrl: ModalController) {}
 
   ngOnInit() {}

@@ -15,6 +15,8 @@ import { File } from '@ionic-native/file/ngx';
 import { Crop } from '@ionic-native/crop/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { UpgradeComponent } from './modals/upgrade/upgrade.component';
+import { Instagram } from '@ionic-native/instagram/ngx';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -42,6 +44,8 @@ firebase.initializeApp(firebaseConfig);
     File,
     Crop,
     Base64,
+    Instagram,
+    FileTransfer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

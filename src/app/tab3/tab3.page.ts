@@ -11,8 +11,13 @@ import { StorageService } from '../services/storage.service';
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
+  darkMode;
+  constructor(public storage: StorageService, private router: Router, public dbService: DbService, private modalCtrl: ModalController) {
+  }
 
-  constructor(public storage: StorageService, private router: Router, public dbService: DbService, private modalCtrl: ModalController) {}
+  async ionViewDidEnter() {
+    this.darkMode = await this.storage.getItem("darkMode") ? await this.storage.getItem("darkMode") : false;
+  }
 
   logout() {
     this.storage.clearStorage();
@@ -32,5 +37,10 @@ export class Tab3Page {
 
     return await modal.present();
     //let proRecipt = await this.storage.upgradeToPro();
+  }
+
+  async toggleDarkMode() {
+      this.storage.setItem({key: 'darkMode', value: this.darkMode});
+      document.body.classList.toggle('dark', this.darkMode);
   }
 }

@@ -48,8 +48,8 @@ export class VisitsComponent implements OnInit {
           this.loading = false;
           return;
         }
-        console.log(data.value[data.value.length - 1]);
         this.added_image = data.value[data.value.length - 1];
+        this.visit.image = this.added_image;
         this.loading = false;
       } else if (data.key === 'uploadStatus') {
         this.loadingValue = data.value;
