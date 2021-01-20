@@ -35,22 +35,24 @@ export class TextTemplateComponent implements OnInit {
         await this.dbService.saveTemplate(this.templates);
       }
     }
+    let number = this.client.phone_number;
+    number = number.replace('-', '');
     if (this.platform.is('android')) {
       this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(result => {
         if (result.hasPermission) {
-          this.sms.send(this.client.phone_number, this.text.message).then(() => {
+          this.sms.send(number, this.text.message).then(() => {
           });
         } else {
           this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.SEND_SMS, this.androidPermissions.PERMISSION.BROADCAST_SMS]).then(result => {
             if (result.hasPermission) {
-              this.sms.send(this.client.phone_number, this.text.message).then(() => {
+              this.sms.send(number, this.text.message).then(() => {
               });
             }
           })
         }
       })
     } else {
-      this.sms.send(this.client.phone_number, this.text.message);
+      this.sms.send(number, this.text.message);
     }
   }
 
