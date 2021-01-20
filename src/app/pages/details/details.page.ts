@@ -108,11 +108,12 @@ export class DetailsPage implements OnInit {
       componentProps: {
         client: this.client,
         popover: this.popover,
-        text: "Delete Client"
+        text: "Delete Client",
+        inDetails: true
       }
     })
     this.popover.onDidDismiss().then((res) => {
-      if (res) {
+      if (res.data) {
         if (res.data.delete) {
           this.navCtrl.pop();
         }

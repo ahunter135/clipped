@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams } from '@ionic/angular';
+import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { Instagram } from '@ionic-native/instagram/ngx';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
+import { CallNumber } from '@ionic-native/call-number/ngx';
+import { TextTemplateComponent } from 'src/app/modals/text-template/text-template.component';
 
 @Component({
   selector: 'app-popover',
@@ -19,12 +21,17 @@ export class PopoverComponent implements OnInit {
   text;
   visit;
   showInsta = false;
+  inDetails = false;
+  isPro = false;
   constructor(private dbService: DbService, private storage: StorageService, public navParams: NavParams, private insta: Instagram,
-    private fileTransfer: FileTransfer, private file: File, private base64: Base64) {
+    private fileTransfer: FileTransfer, private file: File, private base64: Base64, private callNumber: CallNumber,
+    private alertController: AlertController, private modalCtrl: ModalController) {
     this.client = this.navParams.data.client;
     this.dismissPopover = this.navParams.data.popover;
     this.text = this.navParams.data.text;
     this.visit = this.navParams.data.visit ? this.navParams.data.visit : null;
+    this.inDetails = this.navParams.data.inDetails ? this.navParams.data.inDetails : false
+    this.isPro = this.storage.proMode;
     if (this.visit) {
       if (this.visit.image) {
         this.showInsta = true;
@@ -34,6 +41,27 @@ export class PopoverComponent implements OnInit {
 
   ngOnInit() {
     
+  }
+
+  async sendSMS() {
+    let modal = await this.modalCtrl.create({
+      component: TextTemplateComponent,
+      componentProps: {
+        client: this.client
+      }
+    })
+    modal.onDidDismiss().then(() => {
+      this.dismissPopover.dismiss();
+    });
+
+    await modal.present();
+  }
+
+  async call() {
+    let res = await this.presentAlertConfirm("Are you sure you would like to call this client?");
+    if (res)
+      this.callNumber.callNumber(this.client.phone_number, true)
+      this.dismissPopover.dismiss();
   }
 
   share() {
@@ -50,7 +78,12 @@ export class PopoverComponent implements OnInit {
     
   }
 
-  delete() {
+  async delete() {
+    let res = await this.presentAlertConfirm("Are you sure you would like to delete this client?");
+    if (!res) {
+      this.dismissPopover.dismiss();
+      return;
+    };
     if (this.text === "Delete Client") {
       for (let i = 0; i < this.storage.clients.length; i++) {
         if (this.storage.clients[i].uuid == this.client.uuid) {
@@ -69,6 +102,33 @@ export class PopoverComponent implements OnInit {
     }
     
     this.dismissPopover.dismiss({delete: true});
+  }
+
+  async presentAlertConfirm(message) {
+    return new Promise(async (resolve, reject) => {
+      const alert = await this.alertController.create({
+        header: 'Confirm!',
+        message: message,
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              resolve(false);
+            }
+          }, {
+            text: 'Yes',
+            handler: () => {
+              resolve(true);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    });  
+    
   }
 
 }

@@ -11,6 +11,7 @@ import { PopoverComponent } from './popover/popover.component';
 import { VisitsComponent } from 'src/app/modals/visits/visits.component';
 import { CropImageComponent } from 'src/app/modals/crop-image/crop-image.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { TextTemplateComponent } from 'src/app/modals/text-template/text-template.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     DetailsPageRoutingModule,
     ImageCropperModule
   ],
-  declarations: [PopoverComponent, VisitsComponent, CropImageComponent],
-  entryComponents: [VisitsComponent, CropImageComponent]
+  declarations: [PopoverComponent, VisitsComponent, CropImageComponent, TextTemplateComponent],
+  entryComponents: [VisitsComponent, CropImageComponent, TextTemplateComponent]
 })
 export class DetailsPageModule {}

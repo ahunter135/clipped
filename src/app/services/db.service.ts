@@ -148,6 +148,26 @@ export class DbService {
     });   
     
   }
+
+  async getAllTemplates() {
+    return new Promise( (resolve, reject) => {
+      this.db.collection('users').doc(this.uid).collection('templates').get().then(function(docs) {
+        docs.forEach(function(doc) {
+          let template = doc.data();
+          if (template.templates)
+          resolve(template.templates);
+        });
+        
+      });
+    });
+  }
+
+  async saveTemplate(templates) {
+    this.db.collection('users').doc(this.uid).collection('templates').doc(this.uid).set({
+      templates
+    })
+  }
+
   private deleteFile(pathToFile, fileName) {
     const ref = firebase.storage().ref(pathToFile);
     const childRef = ref.child(fileName);
