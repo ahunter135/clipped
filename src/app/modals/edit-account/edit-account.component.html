@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" color="dark">
+      <ion-button (click)="modalCtrl.dismiss()" color="dark">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Edit Account</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Account Details</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-label position="stacked">Type of Account</ion-label>
+      <ion-segment [(ngModel)]="account">
+        <ion-segment-button value="0">
+          <ion-label>Salon/Barber</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="1">
+          <ion-label>Pets</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-content>
+    <ion-button expand="block" color="success" (click)="save()">Save Changes
+    </ion-button>
+
+  </ion-card>
+</ion-content>

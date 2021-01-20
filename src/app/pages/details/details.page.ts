@@ -27,6 +27,7 @@ export class DetailsPage implements OnInit {
   actionSheet;
   loading = false;
   subscription;
+  accountType;
   loadingValue = 0;
   constructor(private storage: StorageService, private camera: Camera, 
     private dbService: DbService, private popoverCtrl: PopoverController, public globalService: GlobalService, 
@@ -35,6 +36,9 @@ export class DetailsPage implements OnInit {
 
   async ngOnInit() {
     this.client = this.storage.data;
+    let account = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
+    this.accountType = account;
+    console.log(this.accountType);
     this.subscription = this.globalService.getObservable().subscribe(async (data) => {
       if (data.key === 'pro') {
         this.proMode = data.value;
@@ -44,16 +48,17 @@ export class DetailsPage implements OnInit {
             this.loading = false;
             return;
           }
-          this.clientImages = await this.dbService.getClientImages(this.client);
-          this.client.image = this.clientImages[this.clientImages.length -1];
+          this.clientImages = await this.dbService.getClientProfileImages(this.client);
+          this.client.image = this.clientImages[this.clientImages.length - 1];
           this.loading = false;
+          this.save();
         } else {
           if (!data.value) {
             this.loading = false;
             return;
           }
           this.clientImages = await this.dbService.getClientImages(this.client);
-          this.clientImages.shift();
+          //this.clientImages.shift();
           this.loading = false;
         }
       } else if (data.key === 'uploadStatus') {
@@ -88,14 +93,9 @@ export class DetailsPage implements OnInit {
   }
 
   async addPhoto() {
-    //if they don't have pro mode, prompt them to buy it here
-    if (this.proMode) {
-      if (this.loading) return;
-      else this.loading = true;
-      this.cameraService.startCameraProcess(this.client, false);
-    } else {
-      alert("Please buy pro mode");
-    }
+    if (this.loading) return;
+    else this.loading = true;
+    this.cameraService.startCameraProcess(this.client, false);
   }
 
 
@@ -139,11 +139,8 @@ export class DetailsPage implements OnInit {
   }
 
   async save() {
-    if (this.loading) return;
-    else this.loading = true;
     let res = await this.dbService.editClient(this.client);
     this.loading = false;
-    this.navCtrl.pop();
   }
 
   dismissPopover() {

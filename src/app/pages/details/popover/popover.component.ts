@@ -18,12 +18,18 @@ export class PopoverComponent implements OnInit {
   dismissPopover;
   text;
   visit;
+  showInsta = false;
   constructor(private dbService: DbService, private storage: StorageService, public navParams: NavParams, private insta: Instagram,
     private fileTransfer: FileTransfer, private file: File, private base64: Base64) {
     this.client = this.navParams.data.client;
     this.dismissPopover = this.navParams.data.popover;
     this.text = this.navParams.data.text;
     this.visit = this.navParams.data.visit ? this.navParams.data.visit : null;
+    if (this.visit) {
+      if (this.visit.image) {
+        this.showInsta = true;
+      }
+    } 
   }
 
   ngOnInit() {

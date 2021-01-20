@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import firebase from 'firebase';
+import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
@@ -12,7 +13,8 @@ export class RegisterPage implements OnInit {
   email;
   password;
   loading = false;
-  constructor(private storage: StorageService, private router: Router) { }
+  account;
+  constructor(private storage: StorageService, private router: Router, private dbService: DbService) { }
 
   ngOnInit() {
   }
@@ -25,6 +27,9 @@ export class RegisterPage implements OnInit {
       let loginResponse = { key: "loggedIn", value: JSON.stringify(response.user) };
       await this.storage.setItem(loginResponse);
       this.loading = false;
+      this.dbService.uid = response.user.uid;
+      await this.dbService.setupDb();
+      await this.dbService.saveAccountType(this.account, true);
       this.router.navigate(['/tabs/tab1'], {
         replaceUrl: true
       });

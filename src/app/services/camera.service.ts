@@ -87,7 +87,7 @@ export class CameraService {
         cropModal.onDidDismiss().then(async data => {
           let img = data.data;
           if (!this.dontUpload) {
-            await this.dbService.uploadImage(img, client.uuid);
+            await this.dbService.uploadImage(img, client.uuid, flag);
             let images = <any>await this.dbService.getClientImages(client);
             this.globalService.publishData({key: 'images', value: images, flag: flag});
             resolve();

@@ -15,6 +15,7 @@ export class DbService {
   db;
   loader;
   proLimit = 0;
+  accountType;
   constructor(private storage: StorageService, private router: Router, private globalService: GlobalService) {}
 
   async setupDb() {
@@ -23,6 +24,45 @@ export class DbService {
     this.db.collection('rules').doc('proLimit').get().then((limit) => {
       this.proLimit = limit.data().limit;
     })
+  }
+
+  async getAccountType() {
+    return new Promise((resolve, reject) => {
+      this.db.collection('users').doc(this.uid).get().then(details => {
+        try {
+          this.accountType = details.data().type;
+          if (details.data()) resolve(details.data().type);
+          else resolve();
+        } catch (error) {
+          resolve();
+        }        
+      }).catch((err) => {
+        this.handleError(err)
+      });   
+    });
+  }
+
+  async saveAccountType(account, isNew) {
+    console.log(account);
+    console.log(this.uid);
+    return new Promise((resolve, reject) => {
+      if (isNew) {
+        this.db.collection('users').doc(this.uid).set({
+          type: account
+        }).then(details => {
+          this.accountType = account;
+          resolve();
+        });  
+      } else {
+        this.db.collection('users').doc(this.uid).update({
+          type: account
+        }).then(details => {
+          this.accountType = account;
+          resolve();
+        });  
+      }
+      
+    });
   }
 
   async getClients() {
@@ -53,13 +93,15 @@ export class DbService {
       visits: [
         {
           date: moment(client.last_visit).format("MMM Do YYYY"),
-          summary: client.summary,
+          summary: client.summary ? client.summary : null,
           uuid: uuidv4()
         }
       ],
       image: image,
       uuid: client.uuid,
-      phone_number: client.phone_number
+      phone_number: client.phone_number ? client.phone_number : null,
+      breed: client.breed ? client.breed : null,
+      temperament: client.temperament ? client.temperament : null
     }).catch((err) => {
       console.log("NOPE " + err);
       this.handleError(err)
@@ -73,7 +115,9 @@ export class DbService {
       visits: client.visits,
       image: client.image,
       uuid: client.uuid,
-      phone_number: client.phone_number
+      phone_number: client.phone_number ? client.phone_number : null,
+      breed: client.breed ? client.breed : null,
+      temperament: client.temperament ? client.temperament : null
     }).catch((err) => {
       this.handleError(err)
     });   ;
@@ -143,10 +187,27 @@ export class DbService {
     })
   }
 
-  async uploadImage(imageUri, uuid) {
+  async getClientProfileImages(client) {
+    return new Promise( async (resolve, reject) => {
+      let storageRef = firebase.storage().ref();
+      let imagesRef = await storageRef.child(this.uid).child(client.uuid).child("profile_photos").listAll();
+      let imageUrls = [];
+      for (let i = 0; i < imagesRef.items.length; i++) {
+        imageUrls.push(await imagesRef.items[i].getDownloadURL())
+      }
+      resolve(imageUrls);
+    })
+  }
+
+  async uploadImage(imageUri, uuid, flag) {
     return new Promise((resolve, reject) => {
       let storageRef = firebase.storage().ref();
-      let imageRef = storageRef.child(this.uid).child(uuid).child(moment().format());
+      let imageRef;
+      if (flag) {
+        imageRef = storageRef.child(this.uid).child(uuid).child("profile_photos").child(moment().format());
+      } else {
+        imageRef = storageRef.child(this.uid).child(uuid).child(moment().format());
+      }
       let uploadTask = imageRef.putString(imageUri, "data_url");
 
       uploadTask.on(
@@ -170,6 +231,7 @@ export class DbService {
   }
 
   async handleError(err) {
+    console.log(err);
     this.storage.clearStorage();
     this.router.navigate(['/login'], {
       replaceUrl: true

@@ -20,7 +20,7 @@
       </ion-card-title>
     </ion-card-header>
     <ion-list>
-      <ion-item>
+      <ion-item (click)="editAccount()" button detail>
         <ion-avatar slot="start">
           <img src="https://ui-avatars.com/api/?background=f3f3f3&name={{dbService.email}}">
         </ion-avatar>

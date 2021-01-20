@@ -17,6 +17,16 @@
         <ion-label position="floating">Password</ion-label>
         <ion-input placeholder="password12345" type="password" [(ngModel)]="password"></ion-input>
       </ion-item>
+      <br>
+
+      <ion-segment [(ngModel)]="account">
+        <ion-segment-button value="0">
+          <ion-label>Salon/Barber</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="1">
+          <ion-label>Pets</ion-label>
+        </ion-segment-button>
+      </ion-segment>
 
       <br>
       <ion-button expand="block" color="dark" (click)="login()">

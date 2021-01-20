@@ -3,9 +3,9 @@ ion-card {
 }
 
 ion-item {
-    --highlight-color-focused: #FFFFFF;
-    --color-focused: #FFFFFF;
+    --highlight-color-focused: --ion-color-primary;
+    --color-focused: --ion-color-primary;
     &.item-has-focus ion-label {
-        color: #FFFFFF !important;
+        color: --ion-color-primary !important;
     }
 }

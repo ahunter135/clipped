@@ -22,12 +22,16 @@ export class AddPage implements OnInit {
   max = moment().format("YYYY-MM-DD");
   actionSheet;
   loading = false;
+  accountType;
   constructor(private router: Router, private dbService: DbService, public storage: StorageService, 
     private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, private camera: Camera, private file: File,
     private crop: Crop, private base64: Base64, private sanitizer: DomSanitizer) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.client.last_visit = this.today;
+    let account = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
+    this.accountType = account;
+    console.log(this.accountType);
   }
 
   goBack() {
@@ -35,10 +39,8 @@ export class AddPage implements OnInit {
   }
 
   async submit() {
-    console.log("HERE");
     if (this.loading) return;
     else this.loading = true;
-    console.log("HERE");
     await this.dbService.addClient(this.client);
     this.loading = false;
     this.goBack();

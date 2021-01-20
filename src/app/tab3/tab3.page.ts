@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { EditAccountComponent } from '../modals/edit-account/edit-account.component';
 import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
 import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
@@ -26,8 +27,12 @@ export class Tab3Page {
     });
   }
 
-  editUserAccount() {
-    
+  async editAccount() {
+    let accountModal = await this.modalCtrl.create({
+      component: EditAccountComponent
+    });
+
+    return await accountModal.present();
   }
 
   async upgrade() {

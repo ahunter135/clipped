@@ -24,18 +24,34 @@
       <ion-item>
         <ion-label position="floating">Name</ion-label>
         <ion-input placeholder="John Doe" type="text" [(ngModel)]="client.name" autocapitalize="on" autocomplete="name"
-          autocorrection="on"></ion-input>
+          autocorrection="on" (ionChange)="save()"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Contact #</ion-label>
         <ion-input placeholder="123-456-7890" type="tel" [(ngModel)]="client.phone_number" autocapitalize="on"
-          autocomplete="name" autocorrection="on"></ion-input>
+          autocomplete="name" autocorrection="on" (ionChange)="save()"></ion-input>
       </ion-item>
+      <div *ngIf="accountType == 1">
+        <ion-item>
+          <ion-label position="floating">Breed</ion-label>
+          <ion-input placeholder="Shih Tzu" type="text" [(ngModel)]="client.breed" autocapitalize="on"
+            autocomplete="name" autocorrection="on" (ionChange)="save()"></ion-input>
+        </ion-item>
+        <br>
+        <ion-segment [(ngModel)]="client.temperament" (ionChange)="save()">
+          <ion-segment-button value="0">
+            <ion-label>Great</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="1">
+            <ion-label>Moderate</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="2">
+            <ion-label>Aggressive</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+        <br>
+      </div>
       <ion-button expand="block" color="dark" (click)="showVisits(null)">Add Visit</ion-button>
-      <ion-button *ngIf="!loading" expand="block" color="success" (click)="save()">
-        <span>Save Edits</span>
-      </ion-button>
-      <ion-progress-bar style="padding-top: 5px" *ngIf="loading" value="{{loadingValue}}"></ion-progress-bar>
     </ion-list>
   </ion-card>
   <ion-card>

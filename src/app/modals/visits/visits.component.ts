@@ -42,7 +42,6 @@ export class VisitsComponent implements OnInit {
     this.isEditing = this.navParams.data.editing;
     this.last_visit = this.today;
     this.subscription = this.globalService.getObservable().subscribe(async (data) => {
-      console.log("VISIT SUBSCRIBE");
       if (data.key === 'images') {
         if (!data.value) {
           this.loading = false;
@@ -65,14 +64,9 @@ export class VisitsComponent implements OnInit {
 
 
   async addPhoto() {
-    //if they don't have pro mode, prompt them to buy it here
-    if (this.proMode) {
       if (this.loading) return;
       else this.loading = true;
       this.cameraService.startCameraProcess(this.client, false);
-    } else {
-      alert("Please buy pro mode");
-    }
   }
 
 
@@ -97,6 +91,7 @@ export class VisitsComponent implements OnInit {
         }
       }
       await this.dbService.editClientVisit(this.client);
+      await this.dbService.getClients();
       this.modalCtrl.dismiss();
     }
   }

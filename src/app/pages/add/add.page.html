@@ -26,6 +26,15 @@
         <ion-input placeholder="123-456-7890" type="tel" [(ngModel)]="client.phone_number" autocapitalize="on"
           autocomplete="name" autocorrection="on"></ion-input>
       </ion-item>
+
+      <div *ngIf="accountType == 1">
+        <ion-item>
+          <ion-label position="floating">Breed</ion-label>
+          <ion-input placeholder="Shih Tzu" type="text" [(ngModel)]="client.breed" autocapitalize="on"
+            autocomplete="name" autocorrection="on"></ion-input>
+        </ion-item>
+
+      </div>
       <ion-item>
         <ion-label position="floating">Summary of Visit</ion-label>
         <ion-textarea placeholder="Cut, style, and shave" [(ngModel)]="client.summary" autoGrow="true" maxlength="750"
@@ -35,10 +44,28 @@
       <!--<ion-button expand="block" color="dark" (click)="addPhoto()">Add Photo</ion-button>-->
     </ion-list>
   </ion-card>
+  <ion-card *ngIf="accountType == 1">
+    <ion-card-header>
+      <ion-card-subtitle>Temperament</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-segment [(ngModel)]="client.temperament">
+        <ion-segment-button value="0">
+          <ion-label>Great</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="1">
+          <ion-label>Moderate</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="2">
+          <ion-label>Aggressive</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
 <ion-footer class="ion-no-border">
   <ion-toolbar>
-    <ion-button expand="block" color="success" (click)="submit()">
+    <ion-button expand="block" color="dark" (click)="submit()">
       <span *ngIf="!loading">Submit</span>
       <span *ngIf="loading">
         <ion-spinner color="secondary" name="bubbles"></ion-spinner>
