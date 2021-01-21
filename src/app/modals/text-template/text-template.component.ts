@@ -35,23 +35,7 @@ export class TextTemplateComponent implements OnInit {
         await this.dbService.saveTemplate(this.templates);
       }
     }
-    if (this.platform.is('android')) {
-      this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(result => {
-        if (result.hasPermission) {
-          this.sms.send(this.client.phone_number, this.text.message).then(() => {
-          });
-        } else {
-          this.androidPermissions.requestPermissions([this.androidPermissions.PERMISSION.SEND_SMS, this.androidPermissions.PERMISSION.BROADCAST_SMS]).then(result => {
-            if (result.hasPermission) {
-              this.sms.send(this.client.phone_number, this.text.message).then(() => {
-              });
-            }
-          })
-        }
-      })
-    } else {
-      this.sms.send(this.client.phone_number, this.text.message);
-    }
+      this.sms.send(this.client.phone_number, this.text.message, {android: { intent: 'INTENT' }});
   }
 
   async setMessageText() {

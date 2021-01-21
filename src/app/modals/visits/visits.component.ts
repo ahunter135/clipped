@@ -37,6 +37,8 @@ export class VisitsComponent implements OnInit {
     private cameraService: CameraService, private globalService: GlobalService, private popoverCtrl: PopoverController) { 
     if (this.navParams.data.visit != null) {
       this.visit = this.navParams.data.visit;
+    } else {
+      this.visit = <any>{};
     }
     this.client = this.navParams.data.client;
     this.isEditing = this.navParams.data.editing;
@@ -48,7 +50,11 @@ export class VisitsComponent implements OnInit {
           return;
         }
         this.added_image = data.value[data.value.length - 1];
-        this.visit.image = this.added_image;
+        if (this.visit == null) {
+          this.visit = {
+            image: this.added_image
+          }
+        }
         this.loading = false;
       } else if (data.key === 'uploadStatus') {
         this.loadingValue = data.value;

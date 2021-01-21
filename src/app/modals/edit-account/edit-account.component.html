@@ -8,12 +8,15 @@
     <ion-title>Edit Account</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content *ngIf="state == 'home'">
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>Account Details</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
+      <ion-item button detail (click)="editTextTemplates()" lines="none">
+        Edit Text Templates
+      </ion-item>
       <ion-label position="stacked">Type of Account</ion-label>
       <ion-segment [(ngModel)]="account">
         <ion-segment-button value="0">
@@ -26,6 +29,8 @@
     </ion-card-content>
     <ion-button expand="block" color="dark" (click)="save()">Save Changes
     </ion-button>
-
   </ion-card>
+</ion-content>
+<ion-content *ngIf="state == 'edit-templates'">
+
 </ion-content>

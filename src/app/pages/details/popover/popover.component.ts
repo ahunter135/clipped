@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { Instagram } from '@ionic-native/instagram/ngx';
+//import { Instagram } from '@ionic-native/instagram/ngx';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
@@ -23,7 +23,7 @@ export class PopoverComponent implements OnInit {
   showInsta = false;
   inDetails = false;
   isPro = false;
-  constructor(private dbService: DbService, private storage: StorageService, public navParams: NavParams, private insta: Instagram,
+  constructor(private dbService: DbService, private storage: StorageService, public navParams: NavParams,
     private fileTransfer: FileTransfer, private file: File, private base64: Base64, private callNumber: CallNumber,
     private alertController: AlertController, private modalCtrl: ModalController) {
     this.client = this.navParams.data.client;
@@ -71,9 +71,9 @@ export class PopoverComponent implements OnInit {
       let file = await this.base64.encodeFile(entry.toURL());
       console.log(file);
 
-      this.insta.share('data:image/png;uhduhf3hfif33', 'Shared from the Clipped App')
-      .then(() => console.log('Shared!'))
-      .catch((error: any) => console.error(error));
+      //this.insta.share('data:image/png;uhduhf3hfif33', 'Shared from the Clipped App')
+      //.then(() => console.log('Shared!'))
+      //.catch((error: any) => console.error(error));
     });
     
   }

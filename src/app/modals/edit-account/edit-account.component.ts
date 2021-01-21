@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 
 @Component({
@@ -10,7 +10,8 @@ import { DbService } from 'src/app/services/db.service';
 export class EditAccountComponent implements OnInit {
 
   account = <any>{};
-  constructor(private dbService: DbService, public modalCtrl: ModalController) { }
+  state = "home";
+  constructor(private dbService: DbService, public modalCtrl: ModalController, private navCtrl: NavController) { }
 
   async ngOnInit() {
     let type = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
@@ -20,6 +21,10 @@ export class EditAccountComponent implements OnInit {
         type: 0
       }
     }
+  }
+
+  async editTextTemplates() {
+    this.state = "edit-templates";
   }
 
   async save() {

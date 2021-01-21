@@ -4,6 +4,8 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { StorageService } from './services/storage.service';
+//import { FCM } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -15,6 +17,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private storage: StorageService
+    //private fcm: FCM
   ) {
     this.initializeApp();
   }
@@ -29,8 +32,8 @@ export class AppComponent {
       });*/
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-
-      
+      //let token = await this.fcm.getToken();
+      //console.log(token);
       if (await this.storage.getItem("darkMode")) {
         toggleDarkTheme(true);
       } else {

@@ -15,11 +15,12 @@ import { File } from '@ionic-native/file/ngx';
 import { Crop } from '@ionic-native/crop/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { UpgradeComponent } from './modals/upgrade/upgrade.component';
-import { Instagram } from '@ionic-native/instagram/ngx';
+//import { Instagram } from '@ionic-native/instagram/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { SMS } from '@ionic-native/sms/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+//import { FCM } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -47,11 +48,12 @@ firebase.initializeApp(firebaseConfig);
     File,
     Crop,
     Base64,
-    Instagram,
+    //Instagram,
     FileTransfer,
     SMS,
     CallNumber,
     AndroidPermissions,
+    //FCM,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
