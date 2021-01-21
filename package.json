@@ -112,7 +112,8 @@
       "cordova-plugin-file-transfer": {},
       "mx.ferreyra.callnumber": {},
       "cordova-sms-plugin": {},
-      "cordova-plugin-android-permissions": {}
+      "cordova-plugin-android-permissions": {},
+      "call-number": {}
     },
     "platforms": [
       "ios",

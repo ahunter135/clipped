@@ -35,7 +35,9 @@ export class TextTemplateComponent implements OnInit {
         await this.dbService.saveTemplate(this.templates);
       }
     }
-      this.sms.send(this.client.phone_number, this.text.message, {android: { intent: 'INTENT' }});
+    let number = this.client.phone_number;
+    number = number.replace('-', '');
+      this.sms.send(number, this.text.message, {android: { intent: 'INTENT' }});
   }
 
   async setMessageText() {
