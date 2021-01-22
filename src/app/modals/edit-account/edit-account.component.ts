@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 
 @Component({
@@ -11,7 +11,9 @@ export class EditAccountComponent implements OnInit {
 
   account = <any>{};
   state = "home";
-  constructor(private dbService: DbService, public modalCtrl: ModalController, private navCtrl: NavController) { }
+  templates = [];
+  constructor(private dbService: DbService, public modalCtrl: ModalController, private navCtrl: NavController,
+    private alertController: AlertController) { }
 
   async ngOnInit() {
     let type = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
@@ -21,6 +23,7 @@ export class EditAccountComponent implements OnInit {
         type: 0
       }
     }
+    this.templates = <any>await this.dbService.getAllTemplates();
   }
 
   async editTextTemplates() {
@@ -32,6 +35,38 @@ export class EditAccountComponent implements OnInit {
     await this.modalCtrl.dismiss();
   }
 
+  async remove(index) {
+    let res = await this.presentAlertConfirm("Are you sure you would like to delete this template");
+    if (res) {
+      this.templates.splice(index, 1);
+      this.dbService.saveTemplate(this.templates);
+    }
+  }
 
-
+  async presentAlertConfirm(message) {
+    return new Promise(async (resolve, reject) => {
+      const alert = await this.alertController.create({
+        header: 'Confirm!',
+        message: message,
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              resolve(false);
+            }
+          }, {
+            text: 'Yes',
+            handler: () => {
+              resolve(true);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    });  
+    
+  }
 }

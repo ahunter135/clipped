@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
-import firebase from 'firebase';
 import { GlobalService } from '../services/global.service';
 import { ModalController } from '@ionic/angular';
 import { UpgradeComponent } from '../modals/upgrade/upgrade.component';

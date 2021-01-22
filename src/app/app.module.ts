@@ -8,7 +8,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import firebase from 'firebase';
 import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -18,9 +17,9 @@ import { UpgradeComponent } from './modals/upgrade/upgrade.component';
 //import { Instagram } from '@ionic-native/instagram/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { SMS } from '@ionic-native/sms/ngx';
-import { CallNumber } from '@ionic-native/call-number/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-//import { FCM } from 'plugins/cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import firebase from 'firebase';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -51,9 +50,8 @@ firebase.initializeApp(firebaseConfig);
     //Instagram,
     FileTransfer,
     SMS,
-    CallNumber,
+    InAppBrowser,
     AndroidPermissions,
-    //FCM,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

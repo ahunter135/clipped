@@ -6,7 +6,7 @@ import { StorageService } from 'src/app/services/storage.service';
 import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
-import { CallNumber } from '@ionic-native/call-number/ngx';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { TextTemplateComponent } from 'src/app/modals/text-template/text-template.component';
 
 @Component({
@@ -24,7 +24,7 @@ export class PopoverComponent implements OnInit {
   inDetails = false;
   isPro = false;
   constructor(private dbService: DbService, private storage: StorageService, public navParams: NavParams,
-    private fileTransfer: FileTransfer, private file: File, private base64: Base64, private callNumber: CallNumber,
+    private fileTransfer: FileTransfer, private file: File, private base64: Base64, private iab: InAppBrowser,
     private alertController: AlertController, private modalCtrl: ModalController) {
     this.client = this.navParams.data.client;
     this.dismissPopover = this.navParams.data.popover;
@@ -60,7 +60,7 @@ export class PopoverComponent implements OnInit {
   async call() {
     let res = await this.presentAlertConfirm("Are you sure you would like to call this client?");
     if (res)
-      this.callNumber.callNumber(this.client.phone_number, true)
+      this.iab.create('tel:'+ this.client.phone_number , '_system');
       this.dismissPopover.dismiss();
   }
 
