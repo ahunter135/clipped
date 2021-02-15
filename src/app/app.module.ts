@@ -21,6 +21,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import firebase from 'firebase';
 import { AdMob } from '@admob-plus/ionic/ngx';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -53,6 +54,7 @@ firebase.initializeApp(firebaseConfig);
     SMS,
     InAppBrowser,
     AdMob,
+    OneSignal,
     AndroidPermissions,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

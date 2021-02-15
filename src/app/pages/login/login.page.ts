@@ -23,7 +23,6 @@ export class LoginPage implements OnInit {
     try {
       firebase.auth().signInWithEmailAndPassword(this.email, this.password)
     .then(async response => {
-      console.log(response);
       let loginResponse = { key: "loggedIn", value: JSON.stringify(response.user) };
       await this.storage.setItem(loginResponse);
       this.loading = false;

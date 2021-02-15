@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
 import { GlobalService } from '../services/global.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
 import { AdMob } from '@admob-plus/ionic/ngx';
 
@@ -19,7 +19,7 @@ export class Tab1Page {
   adsShowing = false;
   banner;
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, public globalService: GlobalService,
-    public modalCtrl: ModalController, private admob: AdMob) {}
+    public modalCtrl: ModalController, private admob: AdMob, private platform: Platform) {}
 
   ngOnInit() {}
 
@@ -38,7 +38,7 @@ export class Tab1Page {
       this.globalService.getObservable().subscribe(async (data) => {
         if (data.key === 'pro') {
           this.proMode = data.value;
-          if (this.adsShowing == false && !this.proMode) {
+          if (!this.adsShowing && !this.proMode) {
             //showads
             this.setupAds(true);
           } else if (this.proMode) {
@@ -68,11 +68,15 @@ export class Tab1Page {
       await this.admob.start();
 
       this.banner = new this.admob.BannerAd({
-        adUnitId: 'ca-app-pub-xxx/yyy',
+        adUnitId: this.platform.is('ios') ? 'ca-app-pub-8417638044172769/3111976784' : 'ca-app-pub-8417638044172769/9819843609',
       });
-      await this.banner.show();
+      if (!this.adsShowing) {
+        this.adsShowing = true;
+        await this.banner.show();
+      }
     } else {
-      this.banner.hide();
+      await this.banner.hide();
+      this.adsShowing = false;
     }
   }
 }

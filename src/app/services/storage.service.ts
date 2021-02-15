@@ -78,6 +78,7 @@ export class StorageService {
       console.log(products);
       this.products = products;
       let isUnlocked = await this.getItem('pro');
+      console.log(isUnlocked);
       if (isUnlocked) {
         // TODO check if receipt is good enough
         this.iap.restorePurchases().then((receipt) => {
@@ -92,10 +93,15 @@ export class StorageService {
               this.proMode = true;
               this.globalService.publishData({key: 'pro', value: true});
             }
+          } else {
+            this.setItem({key: "pro", value: false})
+            this.globalService.publishData({key: 'pro', value: false});
           }
         }).catch((err) => {
           console.log(err);
         });
+      } else {
+        this.globalService.publishData({key: 'pro', value: false});
       }
     }).catch((err) => {
       console.log(err);

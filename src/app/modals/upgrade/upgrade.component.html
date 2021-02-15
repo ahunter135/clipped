@@ -19,50 +19,61 @@
       will expand your app entirely!<br />
       Perks like: <br />
       <ul>
-        <li>The ability to have more than {{dbService.proLimit}} clients!</li>
-        <li>
-          Text clients of upcoming appointments with text templates!
-        </li>
-        <li>
-          Call clients straight from their profile!
-        </li>
+        <li>Removes Banner Ad</li>
+        <li>The ability to have more than {{ dbService.proLimit }} clients!</li>
+        <li>Text clients of upcoming appointments with text templates!</li>
+        <li>Call clients straight from their profile!</li>
         <li>Dark Mode</li>
         <li>
           Coming to Pro Mode Soon:
           <ul>
-            <li>
-              Share images straight to Instagram
-            </li>
-            <li>
-              Calendar to track upcoming appointments
-            </li>
+            <li>Share images straight to Instagram</li>
+            <li>Calendar to track upcoming appointments</li>
           </ul>
-
         </li>
       </ul>
 
       Click one of these buttons below to start the subscription process! You
-      can either pay per month, every 6 months, or every 12 months after a 3 day free trial!
+      can either pay per month, every 6 months, or every 12 months after a 3 day
+      free trial!
       <br />
-      <a href="https://www.termsofusegenerator.net/live.php?token=H8G3oNkfGEFwJTilBw4a220FHIpHyYSZ">Terms of Use</a>
+      <a
+        href="https://www.termsofusegenerator.net/live.php?token=H8G3oNkfGEFwJTilBw4a220FHIpHyYSZ"
+        >Terms of Use</a
+      >
       <br />
-      <a href="https://www.termsfeed.com/live/f10676ac-dea0-4400-a008-7d3f449289c3">Privacy Policy</a>
+      <a
+        href="https://www.termsfeed.com/live/f10676ac-dea0-4400-a008-7d3f449289c3"
+        >Privacy Policy</a
+      >
     </ion-card-content>
-    <ion-button expand="block" color="light" (click)="
+    <ion-button
+      expand="block"
+      color="light"
+      (click)="
         upgrade(getPlatform() ? 'com.clipped.monthly' : 'com.clipped.promode')
-      ">$9.99 / Month
+      "
+      >$9.99 / Month
     </ion-button>
-    <ion-button expand="block" color="medium" (click)="
+    <ion-button
+      expand="block"
+      color="medium"
+      (click)="
         upgrade(
           getPlatform() ? 'com.clipped.semiannual' : 'com.clipped.upgradesemi'
         )
-      ">$49.99 / 6 Months ($8.33 / Month)
+      "
+      >$49.99 / 6 Months ($8.33 / Month)
     </ion-button>
-    <ion-button expand="block" color="success" (click)="
+    <ion-button
+      expand="block"
+      color="success"
+      (click)="
         upgrade(
           getPlatform() ? 'com.clipped.annually' : 'com.clipped.upgradeannual'
         )
-      ">$89.99 / 12 Months ($7.49 / Month)
+      "
+      >$89.99 / 12 Months ($7.49 / Month)
     </ion-button>
   </ion-card>
 </ion-content>
