@@ -20,6 +20,7 @@ import { SMS } from '@ionic-native/sms/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import firebase from 'firebase';
+import { AdMob } from '@admob-plus/ionic/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -51,6 +52,7 @@ firebase.initializeApp(firebaseConfig);
     FileTransfer,
     SMS,
     InAppBrowser,
+    AdMob,
     AndroidPermissions,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

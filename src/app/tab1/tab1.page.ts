@@ -5,6 +5,7 @@ import { StorageService } from '../services/storage.service';
 import { GlobalService } from '../services/global.service';
 import { ModalController } from '@ionic/angular';
 import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
+import { AdMob } from '@admob-plus/ionic/ngx';
 
 @Component({
   selector: 'app-tab1',
@@ -15,8 +16,10 @@ export class Tab1Page {
 
   numClients = 0;
   proMode = false;
+  adsShowing = false;
+  banner;
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, public globalService: GlobalService,
-    public modalCtrl: ModalController) {}
+    public modalCtrl: ModalController, private admob: AdMob) {}
 
   ngOnInit() {}
 
@@ -33,9 +36,15 @@ export class Tab1Page {
         }); 
       }
       this.globalService.getObservable().subscribe(async (data) => {
-        console.log("TAB 1 SUBSCRIBE");
         if (data.key === 'pro') {
           this.proMode = data.value;
+          if (this.adsShowing == false && !this.proMode) {
+            //showads
+            this.setupAds(true);
+          } else if (this.proMode) {
+            //hideads
+            this.setupAds(false);
+          }
         }
       })
       this.dbService.uid = loggedIn.uid;
@@ -54,5 +63,16 @@ export class Tab1Page {
     return await modal.present();
   }
 
-  
+  async setupAds(flag) {
+    if (flag) {
+      await this.admob.start();
+
+      this.banner = new this.admob.BannerAd({
+        adUnitId: 'ca-app-pub-xxx/yyy',
+      });
+      await this.banner.show();
+    } else {
+      this.banner.hide();
+    }
+  }
 }
