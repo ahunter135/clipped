@@ -8,6 +8,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { TextTemplateComponent } from 'src/app/modals/text-template/text-template.component';
+import { AddAppointmentComponent } from 'src/app/modals/add-appointment/add-appointment.component';
 
 @Component({
   selector: 'app-popover',
@@ -76,6 +77,20 @@ export class PopoverComponent implements OnInit {
       //.catch((error: any) => console.error(error));
     });
     
+  }
+
+  async add() {
+    let modal = await this.modalCtrl.create({
+      component: AddAppointmentComponent,
+      componentProps: {
+        client: this.client
+      }
+    })
+    modal.onDidDismiss().then(() => {
+      this.dismissPopover.dismiss();
+    });
+
+    await modal.present();
   }
 
   async delete() {

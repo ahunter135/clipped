@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { StorageService } from './services/storage.service';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { LaunchReview } from '@ionic-native/launch-review/ngx';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private storage: StorageService,
-    private oneSignal: OneSignal
+    private oneSignal: OneSignal,
+    private launchReview: LaunchReview
   ) {
     this.initializeApp();
   }
@@ -27,19 +29,30 @@ export class AppComponent {
      
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-
+      
+      this.oneSignal.promptForPushNotificationsWithUserResponse();
+      
       this.oneSignal.startInit('2f131849-a4b9-475f-908c-cc7f8770c435', '607609406851');
 
       this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+
+      this.oneSignal.handleInAppMessageClicked().subscribe((data) => {
+        if (data.click_name == 'review') {
+          this.launchReview.launch();
+        }
+      })
 
       this.oneSignal.handleNotificationReceived().subscribe(() => {
       // do something when notification is received
       });
 
-      this.oneSignal.handleNotificationOpened().subscribe(() => {
+      this.oneSignal.handleNotificationOpened().subscribe(async (data) => {
         // do something when a notification is opened
+          if (data.notification.payload.additionalData.review) {
+            this.launchReview.launch();
+          }
       });
-      
+
       this.oneSignal.endInit();
       //let token = await this.fcm.getToken();
       //console.log(token);

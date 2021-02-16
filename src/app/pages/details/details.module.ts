@@ -12,6 +12,7 @@ import { VisitsComponent } from 'src/app/modals/visits/visits.component';
 import { CropImageComponent } from 'src/app/modals/crop-image/crop-image.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { TextTemplateComponent } from 'src/app/modals/text-template/text-template.component';
+import { AddAppointmentComponent } from 'src/app/modals/add-appointment/add-appointment.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,7 @@ import { TextTemplateComponent } from 'src/app/modals/text-template/text-templat
     DetailsPageRoutingModule,
     ImageCropperModule
   ],
-  declarations: [PopoverComponent, VisitsComponent, CropImageComponent, TextTemplateComponent],
-  entryComponents: [VisitsComponent, CropImageComponent, TextTemplateComponent]
+  declarations: [PopoverComponent, VisitsComponent, CropImageComponent, TextTemplateComponent, AddAppointmentComponent],
+  entryComponents: [VisitsComponent, CropImageComponent, TextTemplateComponent, AddAppointmentComponent]
 })
 export class DetailsPageModule {}

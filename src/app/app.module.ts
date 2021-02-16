@@ -22,6 +22,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import firebase from 'firebase';
 import { AdMob } from '@admob-plus/ionic/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { LaunchReview } from '@ionic-native/launch-review/ngx';
+import { ClientByIDPipe } from './pipes/client-by-id.pipe';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -51,6 +53,7 @@ firebase.initializeApp(firebaseConfig);
     Base64,
     //Instagram,
     FileTransfer,
+    LaunchReview,
     SMS,
     InAppBrowser,
     AdMob,

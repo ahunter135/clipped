@@ -105,7 +105,7 @@ export class DbService {
     }).catch((err) => {
       console.log("NOPE " + err);
       this.handleError(err)
-    });   ;
+    });
   }
 
   async editClient(client) {
@@ -244,6 +244,22 @@ export class DbService {
         }
       );
     });
+  }
+
+  async addClientAppointment(obj) {
+    this.db.collection('users').doc(this.uid).collection('appointments').doc(this.uid).get().then((apps) => {
+      let appointments = apps.data().appointments != undefined ? apps.data().appointments : [];
+      appointments.push(obj);
+      this.db.collection('users').doc(this.uid).collection('appointments').doc(this.uid).update({
+        appointments: appointments
+      })
+    });    
+  }
+
+  async getAllAppointments() {
+    return this.db.collection('users').doc(this.uid).collection('appointments').doc(this.uid).get().then((apps) => {
+      return apps.data().appointments != undefined ? apps.data().appointments : [];
+    })
   }
 
   async editClientVisit(client) {

@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Appointments
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list *ngFor="let app of appointments">
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>{{app.date | date:'mediumDate'}}</ion-label>
+      </ion-item-divider>
+
+      <ion-item *ngFor="let data of app.apps">
+        <ion-thumbnail slot="start">
+          <img [src]="data.client | clientByID:'img'">
+        </ion-thumbnail>
+        <ion-label>
+          <h3>{{data.client | clientByID}}</h3>
+          <p>{{data.summary}}</p>
+        </ion-label>
+        <ion-chip color="secondary">
+          <ion-label color="dark">{{data.date | date:'shortTime'}}</ion-label>
+        </ion-chip>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
+
+</ion-content>

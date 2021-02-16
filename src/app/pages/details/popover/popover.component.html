@@ -8,6 +8,9 @@
   <ion-item (click)="call()" *ngIf="inDetails && isPro && client.phone_number">
     Call Client
   </ion-item>
+  <ion-item (click)="add()">
+    Add Appointment
+  </ion-item>
   <ion-item color="danger" (click)="delete()">
     <ion-label>{{text}}</ion-label>
   </ion-item>
