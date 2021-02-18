@@ -15,6 +15,7 @@ export class DbService {
   db;
   loader;
   proLimit = 0;
+  userLimit;
   accountType;
   constructor(private storage: StorageService, private router: Router, private globalService: GlobalService) {}
 
@@ -31,6 +32,7 @@ export class DbService {
       this.db.collection('users').doc(this.uid).get().then(details => {
         try {
           this.accountType = details.data().type;
+          this.userLimit = details.data().limit;
           if (details.data()) resolve(details.data().type);
           else resolve();
         } catch (error) {
@@ -43,19 +45,19 @@ export class DbService {
   }
 
   async saveAccountType(account, isNew) {
-    console.log(account);
-    console.log(this.uid);
     return new Promise((resolve, reject) => {
       if (isNew) {
         this.db.collection('users').doc(this.uid).set({
-          type: account
+          type: account,
+          limit: this.userLimit ? this.userLimit : this.proLimit
         }).then(details => {
           this.accountType = account;
           resolve();
         });  
       } else {
         this.db.collection('users').doc(this.uid).update({
-          type: account
+          type: account,
+          limit: this.userLimit ? this.userLimit : this.proLimit
         }).then(details => {
           this.accountType = account;
           resolve();
@@ -83,6 +85,30 @@ export class DbService {
     
   }
 
+  async upgradeClientLimit() {
+    return new Promise((resolve, reject) => {
+      if (!this.userLimit) {
+        this.db.collection('users').doc(this.uid).set({
+          limit: this.proLimit + 1,
+          type: this.accountType ? this.accountType : 0
+        }).then(details => {
+          this.userLimit = this.proLimit + 1;
+          resolve();
+        });  
+      } else {
+        let limit = this.userLimit + 1;
+        this.db.collection('users').doc(this.uid).update({
+          limit: limit,
+          type: this.accountType
+        }).then(details => {
+          this.userLimit = limit;
+          resolve();
+        });  
+      }
+      
+    });
+  }
+
   async addClient(client) {
     let image = "https://ui-avatars.com/api/?background=f3f3f3&name="+client.name;//await this.getAvatar(client);
     client.uuid = uuidv4();
@@ -103,7 +129,6 @@ export class DbService {
       breed: client.breed ? client.breed : null,
       temperament: client.temperament ? client.temperament : null
     }).catch((err) => {
-      console.log("NOPE " + err);
       this.handleError(err)
     });
   }

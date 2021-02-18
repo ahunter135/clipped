@@ -52,6 +52,7 @@ export class Tab1Page {
       await this.storage.setupIAP();
       await this.dbService.setupDb();
       await this.dbService.getClients();
+      await this.dbService.getAccountType();
       this.numClients = this.storage.clients.length;
     }
   }
