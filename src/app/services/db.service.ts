@@ -14,7 +14,7 @@ export class DbService {
   email;
   db;
   loader;
-  proLimit = 0;
+  proLimit = 10;
   userLimit;
   accountType;
   constructor(private storage: StorageService, private router: Router, private globalService: GlobalService) {}
