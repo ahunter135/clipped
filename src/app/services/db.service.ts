@@ -89,14 +89,14 @@ export class DbService {
     return new Promise((resolve, reject) => {
       if (!this.userLimit) {
         this.db.collection('users').doc(this.uid).set({
-          limit: this.proLimit + 1,
+          limit: this.proLimit + 5,
           type: this.accountType ? this.accountType : 0
         }).then(details => {
-          this.userLimit = this.proLimit + 1;
+          this.userLimit = this.proLimit + 5;
           resolve();
         });  
       } else {
-        let limit = this.userLimit + 1;
+        let limit = this.userLimit + 5;
         this.db.collection('users').doc(this.uid).update({
           limit: limit,
           type: this.accountType

@@ -5,6 +5,7 @@ import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
 import * as moment from 'moment';
 import { ClientByIDPipe } from '../pipes/client-by-id.pipe';
+import { ViewAppointmentComponent } from '../modals/view-appointment/view-appointment.component';
 
 @Component({
   selector: 'app-tab4',
@@ -14,7 +15,7 @@ import { ClientByIDPipe } from '../pipes/client-by-id.pipe';
 export class Tab4Page {
   darkMode;
   appointments;
-  constructor(public storage: StorageService, public dbService: DbService) {
+  constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController) {
   }
 
   async ngOnInit() {
@@ -26,7 +27,8 @@ export class Tab4Page {
     let dates = [];
     for (let i = 0; i < appointments.length; i++) {
       let day = moment(appointments[i].date);
-      if (day.isAfter(moment()))
+      day.format("MM/DD/YYYY hh:mm a");
+      if (day.isAfter(moment().format("MM/DD/YYYY hh:mm a")))
         dates.push(day.format("MM/DD/YYYY"));
     }
 
@@ -36,13 +38,33 @@ export class Tab4Page {
     for (let i = 0; i < uniqueDates.length; i++) {
       apps.push({date: uniqueDates[i], apps: []})
       for (let j = 0; j < appointments.length; j++) {
-        if (moment(appointments[j].date).format("MM/DD/YYYY") == uniqueDates[i]) {
+        let day = moment(appointments[j].date).format("MM/DD/YYYY");
+        if (day == uniqueDates[i]) {
+          let day = moment(appointments[j].date);
+          let now = moment();
+          if (day.isSameOrAfter(now)) 
           apps[i].apps.push(appointments[j]);
         }
       }
     }
 
-    this.appointments = apps;
+    
+    this.appointments = apps.sort(this.custom_sort);
+  }
+
+
+  custom_sort(a, b) {
+    return new Date(a.date).getTime() - new Date(b.date).getTime();
+}
+
+  async openAppointment(item) {
+    let modal = await this.modalCtrl.create({
+      component: ViewAppointmentComponent,
+      componentProps: {
+        app: item
+      }
+    })
+    return await modal.present();
   }
 
   async doRefresh(ev) {

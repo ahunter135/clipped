@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-title>Client Visit</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="submit()" color="dark"> Save </ion-button>
+      <ion-button (click)="submit()" color="dark" *ngIf="isEditing"> Save </ion-button>
       <ion-button (click)="showMore($event)" color="dark" *ngIf="!isEditing">
         <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
       </ion-button>

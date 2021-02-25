@@ -61,7 +61,7 @@ export class Tab3Page {
       // They watched ad, give them prize
       await this.dbService.upgradeClientLimit();
     });
-    let res = await this.presentAlertConfirm("I know nobody likes Ads. But if you watch this one, we'll increase your client limit by 1! Isn't that great?!");
+    let res = await this.presentAlertConfirm("I know nobody likes Ads. But if you watch this one, we'll increase your client limit by 5! Isn't that great?!");
     if (res) {
       //show ad
       await this.rewarded.show();

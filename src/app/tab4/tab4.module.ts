@@ -7,6 +7,7 @@ import { Tab4Page } from './tab4.page';
 
 import { Tab4PageRoutingModule } from './tab4-routing.module';
 import { ClientByIDPipe } from '../pipes/client-by-id.pipe';
+import { ViewAppointmentComponent } from '../modals/view-appointment/view-appointment.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,7 @@ import { ClientByIDPipe } from '../pipes/client-by-id.pipe';
     FormsModule,
     Tab4PageRoutingModule
   ],
-  declarations: [Tab4Page, ClientByIDPipe],
-  entryComponents: []
+  declarations: [Tab4Page, ClientByIDPipe, ViewAppointmentComponent],
+  entryComponents: [ViewAppointmentComponent]
 })
 export class Tab4PageModule {}

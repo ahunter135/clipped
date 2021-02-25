@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" color="dark">
+      <ion-button (click)="modalCtrl.dismiss()" color="dark">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Appointment Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{app.client | clientByID}}</ion-card-subtitle>
+      <ion-card-title>{{app.date | date:'MMM d, y, h:mm a'}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{app.summary}}
+    </ion-card-content>
+  </ion-card>
+</ion-content>

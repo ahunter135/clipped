@@ -16,7 +16,7 @@
         <ion-label>{{app.date | date:'mediumDate'}}</ion-label>
       </ion-item-divider>
 
-      <ion-item *ngFor="let data of app.apps">
+      <ion-item *ngFor="let data of app.apps" button (click)="openAppointment(data)">
         <ion-thumbnail slot="start">
           <img [src]="data.client | clientByID:'img'">
         </ion-thumbnail>
