@@ -15,12 +15,14 @@ export class AddAppointmentComponent implements OnInit {
   summary;
   app_date;
   client;
+  stylist;
+  stylists = [];
   constructor(public modalCtrl: ModalController, private navParams: NavParams, private db: DbService) {
     this.client = this.navParams.data.client;
-    console.log(this.max);
+    
   }
 
-  ngOnInit() {}
+  async ngOnInit() {this.stylists = <any>await this.db.getStylists();}
 
   submit() {
     if (!this.app_date || !this.summary) {
@@ -29,7 +31,8 @@ export class AddAppointmentComponent implements OnInit {
     let obj = {
       date: this.app_date,
       summary: this.summary,
-      client: this.client.id
+      client: this.client.id,
+      stylist: this.stylist
     }
     this.db.addClientAppointment(obj);
     this.modalCtrl.dismiss();

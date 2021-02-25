@@ -9,7 +9,9 @@ import { ModalController, NavParams } from '@ionic/angular';
 export class ViewAppointmentComponent implements OnInit {
   app = {
     summary: '',
-    date: ''
+    date: '',
+    client: '',
+    stylist: ''
   };
   constructor(public modalCtrl: ModalController, public navParams: NavParams) {
     this.app = this.navParams.data.app;

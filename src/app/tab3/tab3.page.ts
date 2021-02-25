@@ -40,11 +40,14 @@ export class Tab3Page {
   }
 
   async editAccount() {
-    let accountModal = await this.modalCtrl.create({
+   /* let accountModal = await this.modalCtrl.create({
       component: EditAccountComponent
     });
 
-    return await accountModal.present();
+    return await accountModal.present();*/
+    this.router.navigate(['edit-account'], {
+      replaceUrl: true
+    });
   }
 
   async upgrade() {

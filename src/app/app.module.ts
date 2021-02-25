@@ -24,6 +24,8 @@ import { AdMob } from '@admob-plus/ionic/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { LaunchReview } from '@ionic-native/launch-review/ngx';
 import { ClientByIDPipe } from './pipes/client-by-id.pipe';
+import { EditAccountComponent } from './modals/edit-account/edit-account.component';
+import { AddStylistComponent } from './modals/add-stylist/add-stylist.component';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -38,8 +40,8 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 @NgModule({
-  declarations: [AppComponent, UpgradeComponent],
-  entryComponents: [UpgradeComponent],
+  declarations: [AppComponent, UpgradeComponent, AddStylistComponent],
+  entryComponents: [UpgradeComponent, AddStylistComponent],
   imports: [BrowserModule, IonicModule.forRoot({
     mode: 'ios'
   }), AppRoutingModule],

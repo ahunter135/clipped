@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
+import { AddStylistComponent } from '../add-stylist/add-stylist.component';
+import { TextTemplateComponent } from '../text-template/text-template.component';
 
 @Component({
   selector: 'app-edit-account',
@@ -12,6 +14,7 @@ export class EditAccountComponent implements OnInit {
   account = <any>{};
   state = "home";
   templates = [];
+  stylists = [];
   constructor(private dbService: DbService, public modalCtrl: ModalController, private navCtrl: NavController,
     private alertController: AlertController) { }
 
@@ -24,10 +27,29 @@ export class EditAccountComponent implements OnInit {
       }
     }
     this.templates = <any>await this.dbService.getAllTemplates();
+    //this.stylists = <any>await this.dbService.getAllStylists();
+  }
+
+  async goBack() {
+    this.navCtrl.navigateBack("tabs/tab3", {
+      replaceUrl: true
+    });
   }
 
   async editTextTemplates() {
     this.state = "edit-templates";
+  }
+
+  async editStylists() {
+    let modal = await this.modalCtrl.create({
+      component: AddStylistComponent
+    });
+
+    return await modal.present();
+  }
+
+  async addStylist() {
+    
   }
 
   async save() {

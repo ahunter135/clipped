@@ -7,6 +7,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-toolbar>
+    <ion-item>
+      <ion-label>Filter By Stylist</ion-label>
+      <ion-select placeholder="Select One" (ionChange)="filterByStylist()" [(ngModel)]="filterBy">
+        <ion-select-option *ngFor="let item of stylists" value="{{item}}">{{item}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-toolbar>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

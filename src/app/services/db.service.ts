@@ -17,6 +17,7 @@ export class DbService {
   proLimit = 10;
   userLimit;
   accountType;
+  bypassPro = false;
   constructor(private storage: StorageService, private router: Router, private globalService: GlobalService) {}
 
   async setupDb() {
@@ -33,6 +34,8 @@ export class DbService {
         try {
           this.accountType = details.data().type;
           this.userLimit = details.data().limit;
+          this.bypassPro = details.data().bypasspro ? details.data().bypasspro : false;
+          console.log(this.bypassPro);
           if (details.data()) resolve(details.data().type);
           else resolve();
         } catch (error) {
@@ -174,6 +177,38 @@ export class DbService {
     
   }
 
+  async addStylist(name) {
+   let stylists = <any>await this.getStylists();
+   console.log(stylists);
+   stylists.push(name);
+
+    this.db.collection('users').doc(this.uid).collection('stylists').doc(this.uid).set({
+      stylists
+   })
+  }
+
+  async getStylists() {
+    return new Promise( (resolve, reject) => {
+      this.db.collection('users').doc(this.uid).collection('stylists').get().then(function(docs) {
+        if (docs.size == 0) {
+          resolve([]);
+        } else {
+          docs.forEach(function(doc) {
+            let temp = doc.data();
+            if (temp.stylists)
+            resolve(temp.stylists);
+          });
+        }
+      });
+  });
+}
+
+async saveStylists(stylists) {
+  this.db.collection('users').doc(this.uid).collection('stylists').doc(this.uid).set({
+    stylists
+ })
+}
+
   async getAllTemplates() {
     return new Promise( (resolve, reject) => {
       this.db.collection('users').doc(this.uid).collection('templates').get().then(function(docs) {
@@ -182,7 +217,6 @@ export class DbService {
           if (template.templates)
           resolve(template.templates);
         });
-        
       });
     });
   }

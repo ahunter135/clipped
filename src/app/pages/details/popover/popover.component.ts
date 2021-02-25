@@ -32,7 +32,7 @@ export class PopoverComponent implements OnInit {
     this.text = this.navParams.data.text;
     this.visit = this.navParams.data.visit ? this.navParams.data.visit : null;
     this.inDetails = this.navParams.data.inDetails ? this.navParams.data.inDetails : false
-    this.isPro = this.storage.proMode;
+    this.isPro = this.storage.proMode || this.dbService.bypassPro;
     if (this.visit) {
       if (this.visit.image) {
         this.showInsta = true;

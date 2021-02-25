@@ -15,12 +15,20 @@ import { ViewAppointmentComponent } from '../modals/view-appointment/view-appoin
 export class Tab4Page {
   darkMode;
   appointments;
+  tempAppointments;
+  stylists = [];
+  filterBy;
   constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController) {
   }
 
   async ngOnInit() {
+    
+  }
+
+  async ionViewWillEnter() {
     let apps = await this.dbService.getAllAppointments();
     this.filterAppointments(apps);
+    this.stylists = <any>await this.dbService.getStylists();
   }
 
   filterAppointments(appointments) {
@@ -50,6 +58,23 @@ export class Tab4Page {
 
     
     this.appointments = apps.sort(this.custom_sort);
+    this.tempAppointments = this.appointments;
+  }
+
+  filterByStylist() {
+    console.log(this.filterBy);
+    let temp = [];
+    console.log(this.appointments);
+    this.appointments = [];
+    for (let i = 0; i < this.tempAppointments.length; i++) {
+      for (let j = 0; j < this.tempAppointments[i].apps.length; j++) {
+        if (this.tempAppointments[i].apps[j].stylist) {
+          if (this.tempAppointments[i].apps[j].stylist == this.filterBy) {
+            this.appointments.push(this.tempAppointments[i]);
+          }
+        } else this.appointments.push(this.tempAppointments[i]);
+      }
+    }
   }
 
 

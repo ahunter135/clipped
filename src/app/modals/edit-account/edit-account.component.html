@@ -1,7 +1,7 @@
-<ion-header>
+<ion-header *ngIf="state == 'home'">
   <ion-toolbar>
     <ion-buttons slot="start" color="dark">
-      <ion-button (click)="modalCtrl.dismiss()" color="dark">
+      <ion-button (click)="goBack()" color="dark">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -17,6 +17,10 @@
       <ion-item button detail (click)="editTextTemplates()" lines="none">
         Edit Text Templates
       </ion-item>
+      <ion-item button detail (click)="editStylists()" lines="none">
+        Edit Stylists
+      </ion-item>
+      <br>
       <ion-label position="stacked">Type of Account</ion-label>
       <ion-segment [(ngModel)]="account">
         <ion-segment-button value="0">
@@ -31,6 +35,21 @@
     </ion-button>
   </ion-card>
 </ion-content>
+<ion-header *ngIf="state == 'edit-templates'">
+  <ion-toolbar>
+    <ion-buttons slot="start" color="dark">
+      <ion-button (click)="state = 'home'" color="dark">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Edit Templates</ion-title>
+    <!--<ion-buttons slot="end" color="dark">
+      <ion-button (click)="addTemplate()" color="dark">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>-->
+  </ion-toolbar>
+</ion-header>
 <ion-content *ngIf="state == 'edit-templates'">
   <ion-list>
     <ion-item *ngFor="let template of templates; let indexOfTemplate = index">

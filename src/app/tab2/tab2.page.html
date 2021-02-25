@@ -31,7 +31,7 @@
           {{client.visits[client.visits.length - 1].summary}}</p>
       </ion-label>
     </ion-item>
-    <ion-item lines="none" *ngIf="!proMode">
+    <ion-item lines="none" *ngIf="!proMode && !dbService.bypassPro">
       <p style="opacity: 0.6; font-size: 14px;">
         You have an account limit of {{(dbService.userLimit ? dbService.userLimit : dbService.proLimit)}} clients. To
         unlock unlimited clients, please consider
