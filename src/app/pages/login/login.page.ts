@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
 import firebase from 'firebase';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { DbService } from 'src/app/services/db.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginPage implements OnInit {
   email;
   password;
   loading = false;
-  constructor(private router: Router, private storage: StorageService,private googlePlus: GooglePlus) { }
+  constructor(private router: Router, private storage: StorageService,private googlePlus: GooglePlus, private dbService: DbService) { }
 
   ngOnInit() {
   }
@@ -35,6 +36,9 @@ export class LoginPage implements OnInit {
             .credential(accessToken);
 
       firebase.auth().signInWithCredential(credential).then(async response => {
+        this.dbService.uid = response.user.uid;
+        await this.dbService.setupDb();
+        await this.dbService.saveAccountType(0, true);
         this.handleResponse(response);
       })    
     .catch(error => {
@@ -64,8 +68,7 @@ export class LoginPage implements OnInit {
   }
 
   async handleResponse(response) {
-
-    let loginResponse = { key: "loggedIn", value: response.user };
+    let loginResponse = { key: "loggedIn", value: JSON.stringify(response.user) };
     await this.storage.setItem(loginResponse);
     this.loading = false;
     this.router.navigate(['/tabs/tab1'], {
