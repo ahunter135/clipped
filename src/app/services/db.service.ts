@@ -326,7 +326,6 @@ async saveStylists(stylists) {
   }
 
   async handleError(err) {
-    console.log(err);
     this.storage.clearStorage();
     this.router.navigate(['/login'], {
       replaceUrl: true

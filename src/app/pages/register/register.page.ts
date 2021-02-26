@@ -20,6 +20,7 @@ export class RegisterPage implements OnInit {
   }
 
   login() {
+    if (!this.account) alert("Please select an account type");
     if (this.loading) return;
     else this.loading = true;
     firebase.auth().createUserWithEmailAndPassword(this.email, this.password)

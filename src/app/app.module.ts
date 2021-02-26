@@ -26,6 +26,7 @@ import { LaunchReview } from '@ionic-native/launch-review/ngx';
 import { ClientByIDPipe } from './pipes/client-by-id.pipe';
 import { EditAccountComponent } from './modals/edit-account/edit-account.component';
 import { AddStylistComponent } from './modals/add-stylist/add-stylist.component';
+import { GooglePlus } from '@ionic-native/google-plus/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -60,6 +61,7 @@ firebase.initializeApp(firebaseConfig);
     InAppBrowser,
     AdMob,
     OneSignal,
+    GooglePlus,
     AndroidPermissions,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
