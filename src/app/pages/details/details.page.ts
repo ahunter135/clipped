@@ -10,6 +10,7 @@ import { Crop } from '@ionic-native/crop/ngx';
 import * as moment from 'moment';
 import { VisitsComponent } from 'src/app/modals/visits/visits.component';
 import { CameraService } from 'src/app/services/camera.service';
+import csc from 'country-state-city'
 
 @Component({
   selector: 'app-details',
@@ -18,7 +19,9 @@ import { CameraService } from 'src/app/services/camera.service';
 })
 export class DetailsPage implements OnInit {
 
-  client = <any>{};
+  client = <any>{
+    location: <any>{}
+  };
   clientImages = <any>[];
   popover;
   max = moment().format("YYYY-MM-DD");
@@ -29,6 +32,8 @@ export class DetailsPage implements OnInit {
   subscription;
   accountType;
   loadingValue = 0;
+  countries = csc.getAllCountries();
+  states;
   constructor(private storage: StorageService, private camera: Camera, 
     private dbService: DbService, private popoverCtrl: PopoverController, public globalService: GlobalService, 
     private file: File, private crop: Crop, private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, 
@@ -36,6 +41,8 @@ export class DetailsPage implements OnInit {
 
   async ngOnInit() {
     this.client = this.storage.data;
+    if (!this.client.location) this.client.location = <any>{};
+
     let account = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
     this.accountType = account;
     console.log(this.accountType);
@@ -73,6 +80,10 @@ export class DetailsPage implements OnInit {
 
   ionViewWillEnter() {
     this.client.visits.sort(this.sortByProperty("date"));
+  }
+
+  getStates() {
+    this.states = csc.getStatesOfCountry(this.client.location.country);
   }
 
   sortByProperty(property){  

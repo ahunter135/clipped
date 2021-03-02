@@ -23,10 +23,10 @@ import firebase from 'firebase';
 import { AdMob } from '@admob-plus/ionic/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { LaunchReview } from '@ionic-native/launch-review/ngx';
-import { ClientByIDPipe } from './pipes/client-by-id.pipe';
-import { EditAccountComponent } from './modals/edit-account/edit-account.component';
 import { AddStylistComponent } from './modals/add-stylist/add-stylist.component';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { ClientByIDPipe } from './pipes/client-by-id.pipe';
+import { GoogleMaps } from '@ionic-native/google-maps/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -62,7 +62,9 @@ firebase.initializeApp(firebaseConfig);
     AdMob,
     OneSignal,
     GooglePlus,
+    GoogleMaps,
     AndroidPermissions,
+    ClientByIDPipe,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

@@ -130,7 +130,14 @@ export class DbService {
       uuid: client.uuid,
       phone_number: client.phone_number ? client.phone_number : null,
       breed: client.breed ? client.breed : null,
-      temperament: client.temperament ? client.temperament : null
+      temperament: client.temperament ? client.temperament : null,
+      location: {
+        address: client.address ? client.address : null,
+        city: client.city ? client.city : null,
+        state: client.state ? client.state : null,
+        country: client.country ? client.country : null,
+        zip: client.zip ? client.zip : null
+      }
     }).catch((err) => {
       this.handleError(err)
     });
@@ -145,7 +152,8 @@ export class DbService {
       uuid: client.uuid,
       phone_number: client.phone_number ? client.phone_number : null,
       breed: client.breed ? client.breed : null,
-      temperament: client.temperament ? client.temperament : null
+      temperament: client.temperament ? client.temperament : null,
+      location: client.location
     }).catch((err) => {
       this.handleError(err)
     });   ;

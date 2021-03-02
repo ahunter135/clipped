@@ -32,7 +32,7 @@ export class AddAppointmentComponent implements OnInit {
       date: this.app_date,
       summary: this.summary,
       client: this.client.id,
-      stylist: this.stylist
+      stylist: this.stylist ? this.stylist : null
     }
     this.db.addClientAppointment(obj);
     this.modalCtrl.dismiss();

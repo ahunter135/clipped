@@ -8,35 +8,74 @@
 
 <ion-content [fullscreen]="true">
   <ion-toolbar>
+    <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="view" style="width: 100%;" value="sunny">
+      <ion-segment-button value="list">
+        <ion-label>List</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="map">
+        <ion-label>Map</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <!--<ion-toolbar>
     <ion-item>
       <ion-label>Filter By Stylist</ion-label>
       <ion-select placeholder="Select One" (ionChange)="filterByStylist()" [(ngModel)]="filterBy">
         <ion-select-option *ngFor="let item of stylists" value="{{item}}">{{item}}</ion-select-option>
       </ion-select>
     </ion-item>
-  </ion-toolbar>
+  </ion-toolbar>-->
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-list *ngFor="let app of appointments">
-    <ion-item-group>
-      <ion-item-divider>
-        <ion-label>{{app.date | date:'mediumDate'}}</ion-label>
-      </ion-item-divider>
+  <span *ngIf="view == 'list'">
+    <ion-list *ngFor="let app of appointments">
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>{{app.date | date:'mediumDate'}}</ion-label>
+        </ion-item-divider>
 
-      <ion-item *ngFor="let data of app.apps" button (click)="openAppointment(data)">
+        <ion-item *ngFor="let data of app.apps" button (click)="openAppointment(data)">
+          <ion-thumbnail slot="start">
+            <img [src]="data.client | clientByID:'img'">
+          </ion-thumbnail>
+          <ion-label>
+            <h3>{{data.client | clientByID}}</h3>
+            <p>{{data.summary}}</p>
+          </ion-label>
+          <ion-chip color="secondary">
+            <ion-label color="dark">{{data.date | date:'shortTime'}}</ion-label>
+          </ion-chip>
+        </ion-item>
+      </ion-item-group>
+    </ion-list>
+  </span>
+  <span *ngIf="view == 'map'">
+    <div #map id="map"></div>
+  </span>
+</ion-content>
+<lib-ionic-pullup (onExpand)="footerExpanded()" (onCollapse)="footerCollapsed()" [(state)]="footerState"
+  [toolbarTopMargin]="275" [minBottomVisible]="50" *ngIf="view == 'map'">
+
+  <ion-toolbar color="light" (click)="toggleFooter()" #ionDragFooter>
+    <ion-title>
+      <ion-icon name="menu"></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+  <ion-content>
+    <ion-list>
+      <ion-item *ngFor="let app of appointmentsShownOnMap">
         <ion-thumbnail slot="start">
-          <img [src]="data.client | clientByID:'img'">
+          <img [src]="app.client_id | clientByID:'img'">
         </ion-thumbnail>
         <ion-label>
-          <h3>{{data.client | clientByID}}</h3>
-          <p>{{data.summary}}</p>
+          <h3>{{app.client_id | clientByID}}; {{app.location.address}}</h3>
+          <p>{{app.app.date | date: 'mediumDate'}}</p>
         </ion-label>
         <ion-chip color="secondary">
-          <ion-label color="dark">{{data.date | date:'shortTime'}}</ion-label>
+          <ion-label color="dark">{{app.app.date | date:'shortTime'}}</ion-label>
         </ion-chip>
       </ion-item>
-    </ion-item-group>
-  </ion-list>
-
-</ion-content>
+    </ion-list>
+  </ion-content>
+</lib-ionic-pullup>

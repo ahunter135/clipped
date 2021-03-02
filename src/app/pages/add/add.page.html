@@ -12,60 +12,60 @@
     <ion-list>
       <ion-item>
         <ion-label position="floating">Name</ion-label>
-        <ion-input
-          placeholder="John Doe"
-          type="text"
-          [(ngModel)]="client.name"
-          autocapitalize="on"
-          autocomplete="name"
-          autocorrection="on"
-        ></ion-input>
+        <ion-input placeholder="John Doe" type="text" [(ngModel)]="client.name" autocapitalize="on" autocomplete="name"
+          autocorrection="on"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Date of Last Visit</ion-label>
-        <ion-datetime
-          displayFormat="MM/DD/YYYY"
-          min="1994-03-14"
-          max="{{max}}"
-          value="{{today}}"
-          [(ngModel)]="client.last_visit"
-        ></ion-datetime>
+        <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="{{max}}" value="{{today}}"
+          [(ngModel)]="client.last_visit"></ion-datetime>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Contact #</ion-label>
-        <ion-input
-          placeholder="123-456-7890"
-          type="tel"
-          [(ngModel)]="client.phone_number"
-          autocapitalize="on"
-          autocomplete="name"
-          autocorrection="on"
-        ></ion-input>
+        <ion-input placeholder="123-456-7890" type="tel" [(ngModel)]="client.phone_number" autocapitalize="on"
+          autocomplete="name" autocorrection="on"></ion-input>
       </ion-item>
-
+      <ion-item>
+        <ion-label position="floating">Address</ion-label>
+        <ion-input placeholder="123 South Street" type="text" [(ngModel)]="client.address" autocapitalize="on"
+          autocomplete="name" autocorrection="on"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">City</ion-label>
+        <ion-input placeholder="Lebanon" type="text" [(ngModel)]="client.city" autocapitalize="on" autocomplete="name"
+          autocorrection="on"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Country</ion-label>
+        <ion-select [(ngModel)]="client.country" (ionChange)="getStates()" okText="Okay" cancelText="Dismiss">
+          <ion-select-option *ngFor="let country of countries" [value]="country.isoCode">{{country.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="client.country">
+        <ion-label position="floating">State</ion-label>
+        <ion-select [(ngModel)]="client.state" okText="Okay" cancelText="Dismiss">
+          <ion-select-option *ngFor="let state of states" [value]="state.isoCode">{{state.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Zip</ion-label>
+        <ion-input placeholder="37087" type="number" [(ngModel)]="client.zip" autocapitalize="on" autocomplete="name"
+          autocorrection="on"></ion-input>
+      </ion-item>
       <div *ngIf="accountType == 1">
         <ion-item>
           <ion-label position="floating">Breed</ion-label>
-          <ion-input
-            placeholder="Shih Tzu"
-            type="text"
-            [(ngModel)]="client.breed"
-            autocapitalize="on"
-            autocomplete="name"
-            autocorrection="on"
-          ></ion-input>
+          <ion-input placeholder="Shih Tzu" type="text" [(ngModel)]="client.breed" autocapitalize="on"
+            autocomplete="name" autocorrection="on"></ion-input>
         </ion-item>
       </div>
       <ion-item>
         <ion-label position="floating">Summary of Visit</ion-label>
-        <ion-textarea
-          placeholder="Cut, style, and shave"
-          [(ngModel)]="client.summary"
-          autoGrow="true"
-          maxlength="750"
-          autocapitalize="on"
-        >
+        <ion-textarea placeholder="Cut, style, and shave" [(ngModel)]="client.summary" autoGrow="true" maxlength="750"
+          autocapitalize="on">
         </ion-textarea>
       </ion-item>
       <!--<ion-button expand="block" color="dark" (click)="addPhoto()">Add Photo</ion-button>-->

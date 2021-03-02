@@ -32,6 +32,37 @@
         <ion-input placeholder="123-456-7890" type="tel" [(ngModel)]="client.phone_number" autocapitalize="on"
           autocomplete="name" autocorrection="on" (ionChange)="save()"></ion-input>
       </ion-item>
+      <ion-item>
+        <ion-label position="floating">Address</ion-label>
+        <ion-input placeholder="123 South Street" type="text" [(ngModel)]="client.location.address" autocapitalize="on"
+          autocomplete="name" autocorrection="on" (ionChange)="save()" debounce="500"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">City</ion-label>
+        <ion-input placeholder="Lebanon" type="text" [(ngModel)]="client.location.city" autocapitalize="on"
+          autocomplete="name" autocorrection="on" (ionChange)="save()" debounce="500"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Country</ion-label>
+        <ion-select [(ngModel)]="client.location.country" (ionChange)="getStates()" okText="Okay" cancelText="Dismiss"
+          (ionChange)="save()" debounce="500">
+          <ion-select-option *ngFor="let country of countries" [value]="country.isoCode">{{country.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="client.location.country">
+        <ion-label position="floating">State</ion-label>
+        <ion-select [(ngModel)]="client.location.state" okText="Okay" cancelText="Dismiss" (ionChange)="save()"
+          debounce="500">
+          <ion-select-option *ngFor="let state of states" [value]="state.isoCode">{{state.name}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Zip</ion-label>
+        <ion-input placeholder="37087" type="number" [(ngModel)]="client.location.zip" autocapitalize="on"
+          autocomplete="name" autocorrection="on" (ionChange)="save()" debounce="500"></ion-input>
+      </ion-item>
       <div *ngIf="accountType == 1">
         <ion-item>
           <ion-label position="floating">Breed</ion-label>

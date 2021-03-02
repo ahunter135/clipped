@@ -9,6 +9,7 @@ import { File } from '@ionic-native/file/ngx';
 import { Crop } from '@ionic-native/crop/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
+import csc from 'country-state-city'
 
 @Component({
   selector: 'app-add',
@@ -23,6 +24,8 @@ export class AddPage implements OnInit {
   actionSheet;
   loading = false;
   accountType;
+  countries = csc.getAllCountries();
+  states;
   constructor(private router: Router, private dbService: DbService, public storage: StorageService, 
     private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, private camera: Camera, private file: File,
     private crop: Crop, private base64: Base64, private sanitizer: DomSanitizer) { }
@@ -32,10 +35,15 @@ export class AddPage implements OnInit {
     let account = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
     this.accountType = account;
     console.log(this.accountType);
+    console.log(this.countries);
   }
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  getStates() {
+    this.states = csc.getStatesOfCountry(this.client.country);
   }
 
   async submit() {
