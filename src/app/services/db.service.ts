@@ -117,15 +117,12 @@ export class DbService {
     client.uuid = uuidv4();
     //let ref = this.uploadImage(image, client.uuid);
     let clientRef = this.db.collection('users').doc(this.uid).collection('clients');
+    for (let i = 0; i < client.pets.length; i++) {
+      client.pets[i] = Object.assign({}, client.pets[0]);
+    }
     return await clientRef.doc(uuidv4()).set({
-      name: client.name,
-      visits: [
-        {
-          date: moment(client.last_visit).format("MMM Do YYYY"),
-          summary: client.summary ? client.summary : null,
-          uuid: uuidv4()
-        }
-      ],
+      name: client.name ? client.name : null,
+      visits: client.visits,
       image: image,
       uuid: client.uuid,
       phone_number: client.phone_number ? client.phone_number : null,
@@ -144,14 +141,16 @@ export class DbService {
 
   async editClient(client) {
     let clientRef = this.db.collection('users').doc(this.uid).collection('clients');
+    for (let i = 0; i < client.pets.length; i++) {
+      client.pets[i] = Object.assign({}, client.pets[0]);
+    }
     return await clientRef.doc(client.id).update({
       name: client.name,
       visits: client.visits,
       image: client.image,
       uuid: client.uuid,
       phone_number: client.phone_number ? client.phone_number : null,
-      breed: client.breed ? client.breed : null,
-      temperament: client.temperament ? client.temperament : null,
+      pets: client.pets ? client.pets : [],
       location: client.location
     }).catch((err) => {
       this.handleError(err)

@@ -9,47 +9,28 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-card *ngFor="let pet of pets">
+  <ion-card *ngFor="let pet of pets; let index = index">
     <ion-card-header>
       <ion-card-subtitle>Pet Details</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <ion-item>
         <ion-label>Name</ion-label>
-        <ion-input
-          placeholder="Ralph"
-          type="text"
-          [(ngModel)]="pet.name"
-          autocapitalize="on"
-          autocomplete="name"
-          autocorrection="on"
-        ></ion-input>
+        <ion-input placeholder="Ralph" type="text" [(ngModel)]="pet.name" autocapitalize="on" autocomplete="name"
+          autocorrection="on"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Breed</ion-label>
-        <ion-input
-          placeholder="Shih Tzu"
-          type="text"
-          [(ngModel)]="pet.breed"
-          autocapitalize="on"
-          autocomplete="name"
-          autocorrection="on"
-        ></ion-input>
+        <ion-input placeholder="Shih Tzu" type="text" [(ngModel)]="pet.breed" autocapitalize="on" autocomplete="name"
+          autocorrection="on"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Weight</ion-label>
-        <ion-input
-          placeholder="Ralph"
-          type="number"
-          [(ngModel)]="pet.weight"
-        ></ion-input>
+        <ion-input placeholder="Ralph" type="number" [(ngModel)]="pet.weight"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Fully Vaccinated?</ion-label>
-        <ion-checkbox
-          slot="end"
-          [(ngModel)]="pet.isFullyVaccinated"
-        ></ion-checkbox>
+        <ion-checkbox slot="end" [(ngModel)]="pet.isFullyVaccinated"></ion-checkbox>
       </ion-item>
       <br />
       <ion-segment [(ngModel)]="pet.temperament">
@@ -63,20 +44,16 @@
           <ion-label>Aggressive</ion-label>
         </ion-segment-button>
       </ion-segment>
+      <br>
+      <ion-button expand="block" color="dark" (click)="remove(index)">Remove</ion-button>
     </ion-card-content>
   </ion-card>
-  <ion-icon
-    name="add-circle"
-    style="
+  <ion-icon name="add-circle" style="
       display: block;
       margin-left: auto;
       margin-right: auto;
       padding-top: 5px;
-    "
-    size="large"
-    color="medium"
-    (click)="addPet()"
-  ></ion-icon>
+    " size="large" color="medium" (click)="addPet()"></ion-icon>
 </ion-content>
 <ion-footer class="ion-no-border">
   <ion-toolbar>

@@ -50,6 +50,8 @@ export class AddPage implements OnInit {
   async submit() {
     if (this.loading) return;
     else this.loading = true;
+    console.log(this.client);
+    this.client.visits = [];
     await this.dbService.addClient(this.client);
     this.loading = false;
     this.goBack();
@@ -61,7 +63,10 @@ export class AddPage implements OnInit {
 
   async addPets() {
     let modal = await this.modalCtrl.create({
-      component: PetsComponent
+      component: PetsComponent,
+      componentProps: {
+        pets: []
+      }
     });
     modal.onDidDismiss().then((data) => {
       if (data.data) {

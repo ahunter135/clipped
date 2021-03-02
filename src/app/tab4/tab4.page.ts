@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
 import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
 import * as moment from 'moment';
@@ -7,6 +7,8 @@ import { ViewAppointmentComponent } from '../modals/view-appointment/view-appoin
 import { IonPullUpFooterState } from 'ionic-pullup';
 import { ClientByIDPipe } from '../pipes/client-by-id.pipe';
 import { GoogleMaps, GoogleMapsEvent, LatLng, MarkerOptions, Marker, GoogleMapsMapTypeId, Geocoder, GoogleMapsAnimation, HtmlInfoWindow, GoogleMapOptions, GoogleMap } from "@ionic-native/google-maps";
+import { DatePipe } from '@angular/common';
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
 
 @Component({
   selector: 'app-tab4',
@@ -25,7 +27,8 @@ export class Tab4Page {
   appointmentsShownOnMap = [];
   markers = [];
   footerState: IonPullUpFooterState;
-  constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe) {
+  constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe,
+    private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator) {
   }
 
   async ngOnInit() {
@@ -33,8 +36,14 @@ export class Tab4Page {
 
   async ionViewWillEnter() {
     let apps = await this.dbService.getAllAppointments();
-    this.filterAppointments(apps);
+    await this.filterAppointments(apps);
     this.stylists = <any>await this.dbService.getStylists();
+    if (!this.map)
+      this.addMap();
+  }
+
+  ionViewDidEnter() {
+    
   }
 
   filterAppointments(appointments) {
@@ -44,6 +53,7 @@ export class Tab4Page {
       day.format("MM/DD/YYYY hh:mm a");
       if (day.isAfter(moment().format("MM/DD/YYYY hh:mm a")))
         dates.push(day.format("MM/DD/YYYY"));
+      
     }
 
     let uniqueDates = Array.from(new Set(dates));
@@ -84,7 +94,10 @@ export class Tab4Page {
 
   custom_sort(a, b) {
     return new Date(a.date).getTime() - new Date(b.date).getTime();
-}
+  }
+  custom_sort_map(a,b) {
+    return new Date(a.app.date).getTime() - new Date(b.app.date).getTime();
+  }
 
   async openAppointment(item) {
     let modal = await this.modalCtrl.create({
@@ -115,7 +128,7 @@ export class Tab4Page {
       mapType: GoogleMapsMapTypeId.ROADMAP
     }
 
-    this.map = GoogleMaps.create('map', mapOptions);
+    this.map = GoogleMaps.create(this.mapElement.nativeElement, mapOptions);
 
     this.map.one(GoogleMapsEvent.MAP_READY).then(async () => {
       this.addMarkers(clients);
@@ -133,16 +146,18 @@ export class Tab4Page {
       }
     })
     
-    this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).toPromise().then(() => {
+    this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
       this.appointmentsShownOnMap = [];
       //Bouunds are set, see if any markers are here.
       for (let i = 0; i < this.markers.length; i++) {
         let region = this.map.getVisibleRegion();
         if (region.contains(this.markers[i].getPosition())) {
-          let client = this.markers[i].client;
+          let client = this.markers[i].get('client');
           this.appointmentsShownOnMap.push(client)
         }
       }
+      
+      this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
     })
   }
 
@@ -156,7 +171,6 @@ export class Tab4Page {
   async addMarker(client){
     let address = client.location.address + " " + client.location.zip;
     let results = await Geocoder.geocode( { 'address': address});
-    console.log(results);
     let lat = results[0].position.lat;
     let lng = results[0].position.lng;
 
@@ -165,20 +179,43 @@ export class Tab4Page {
     this.map.addMarker({
       position: latLng,
       animation: GoogleMapsAnimation.DROP,
-      icon: 'red'
+      icon: 'red',
+      title: this.clientByID.transform(client.client_id).toString(),
+      snippet: client.location.address + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
     }).then((marker:Marker) => {
+      marker.set('client', client);
+      marker.set('pet', client.app.pet ? JSON.stringify(client.app.pet) : null);
       this.markers.push(marker);
-      // Add button to this view
-      let clientName = this.clientByID.transform(client.client_id);
-      let content = "<p>"+clientName+"</p>";          
-      let infoWindow = new HtmlInfoWindow();
-      infoWindow.setContent(content);
 
-      marker.on(GoogleMapsEvent.MARKER_CLICK).toPromise().then(() => {
-        infoWindow.open(marker);
+      marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+        marker.showInfoWindow();
       })
     })
-}
+  }
+
+  async openSheet(client) {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Appointment Options',
+      cssClass: 'my-custom-class',
+      buttons: [{
+        text: 'Navigate To',
+        icon: 'navigate',
+        handler: () => {
+          //Open navigation
+          let location = client.location.address + " " + client.location.city + ", " + client.location.state + " " + client.location.zip; 
+          this.launchNav.navigate(location);
+        }
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
 
   getClientArrayFromAppointment() {
     let client_array = [];
@@ -200,13 +237,6 @@ export class Tab4Page {
     }
 
     return client_array;
-  }
-
-  segmentChanged(ev) {
-    this.view = ev.detail.value;
-    setTimeout(() => {
-      if (this.view == 'map') this.addMap();
-    }, 2000);
   }
 
   footerExpanded() {

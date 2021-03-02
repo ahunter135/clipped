@@ -73,6 +73,7 @@ export class Tab1Page {
       });
       if (!this.adsShowing) {
         this.adsShowing = true;
+        if (!this.proMode)
         await this.banner.show();
       }
     } else {

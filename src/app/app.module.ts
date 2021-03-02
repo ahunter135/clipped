@@ -31,6 +31,8 @@ import { GoogleMaps } from '@ionic-native/google-maps/ngx';
 import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
 import { PetsComponent } from './modals/pets/pets.component';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -70,6 +72,8 @@ firebase.initializeApp(firebaseConfig);
     GoogleMaps,
     AndroidPermissions,
     ClientByIDPipe,
+    DatePipe,
+    LaunchNavigator,
     SignInWithApple,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

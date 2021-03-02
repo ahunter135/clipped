@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import { VisitsComponent } from 'src/app/modals/visits/visits.component';
 import { CameraService } from 'src/app/services/camera.service';
 import csc from 'country-state-city'
+import { PetsComponent } from 'src/app/modals/pets/pets.component';
 
 @Component({
   selector: 'app-details',
@@ -41,8 +42,9 @@ export class DetailsPage implements OnInit {
 
   async ngOnInit() {
     this.client = this.storage.data;
+    console.log(this.client);
     if (!this.client.location) this.client.location = <any>{};
-
+    if (this.client.location.country) this.getStates();
     let account = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
     this.accountType = account;
     console.log(this.accountType);
@@ -84,6 +86,23 @@ export class DetailsPage implements OnInit {
 
   getStates() {
     this.states = csc.getStatesOfCountry(this.client.location.country);
+  }
+
+  async viewPets() {
+    let modal = await this.modalCtrl.create({
+      component: PetsComponent,
+      componentProps: {
+        pets: this.client.pets
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        this.client.pets = data.data;
+        this.save();
+      }
+    });
+
+    return await modal.present();
   }
 
   sortByProperty(property){  

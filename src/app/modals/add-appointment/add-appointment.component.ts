@@ -12,11 +12,11 @@ export class AddAppointmentComponent implements OnInit {
   max = moment().add(2, 'y').format("YYYY-MM-DD");
   today = moment().format("YYYY-MM-DD");
   min = moment().format("YYYY-MM-DD")
-  summary;
   app_date;
   client;
   stylist;
   stylists = [];
+  pet;
   constructor(public modalCtrl: ModalController, private navParams: NavParams, private db: DbService) {
     this.client = this.navParams.data.client;
     
@@ -25,12 +25,12 @@ export class AddAppointmentComponent implements OnInit {
   async ngOnInit() {this.stylists = <any>await this.db.getStylists();}
 
   submit() {
-    if (!this.app_date || !this.summary) {
+    if (!this.app_date || !this.pet) {
       return;
     }
     let obj = {
       date: this.app_date,
-      summary: this.summary,
+      pet: this.pet,
       client: this.client.id,
       stylist: this.stylist ? this.stylist : null
     }

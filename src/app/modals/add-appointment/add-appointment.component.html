@@ -28,10 +28,10 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Summary of Appointment <span style="color: red">*</span></ion-label>
-        <ion-textarea rows="8" style="height: 120px" [(ngModel)]="summary" autoGrow="true" maxlength="750"
-          autocapitalize="on" mode="ios">
-        </ion-textarea>
+        <ion-label>Pet</ion-label>
+        <ion-select placeholder="Select One" [(ngModel)]="pet">
+          <ion-select-option *ngFor="let item of client.pets" value="{{item.name}}">{{item.name}}</ion-select-option>
+        </ion-select>
       </ion-item>
       <ion-button expand="block" color="dark" (click)="submit()">
         <span>Submit</span>
