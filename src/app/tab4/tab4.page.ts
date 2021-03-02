@@ -162,19 +162,21 @@ export class Tab4Page {
 
     let latLng = new LatLng(lat, lng);
     
-    let marker = new Marker(this.map, {});
-    marker.setPosition(latLng);
+    this.map.addMarker({
+      position: latLng,
+      animation: GoogleMapsAnimation.DROP,
+      icon: 'red'
+    }).then((marker:Marker) => {
+      this.markers.push(marker);
+      // Add button to this view
+      let clientName = this.clientByID.transform(client.client_id);
+      let content = "<p>"+clientName+"</p>";          
+      let infoWindow = new HtmlInfoWindow();
+      infoWindow.setContent(content);
 
-    this.markers.push(marker);
-
-    // Add button to this view
-    let clientName = this.clientByID.transform(client.client_id);
-    let content = "<p>"+clientName+"</p>";          
-    let infoWindow = new HtmlInfoWindow();
-    infoWindow.setContent(content);
-
-    marker.on(GoogleMapsEvent.MARKER_CLICK).toPromise().then(() => {
-      infoWindow.open(marker);
+      marker.on(GoogleMapsEvent.MARKER_CLICK).toPromise().then(() => {
+        infoWindow.open(marker);
+      })
     })
 }
 
