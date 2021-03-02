@@ -13,14 +13,12 @@ export class RegisterPage implements OnInit {
   email;
   password;
   loading = false;
-  account;
   constructor(private storage: StorageService, private router: Router, private dbService: DbService) { }
 
   ngOnInit() {
   }
 
   login() {
-    if (!this.account) alert("Please select an account type");
     if (this.loading) return;
     else this.loading = true;
     firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
@@ -30,7 +28,7 @@ export class RegisterPage implements OnInit {
       this.loading = false;
       this.dbService.uid = response.user.uid;
       await this.dbService.setupDb();
-      await this.dbService.saveAccountType(this.account, true);
+      //await this.dbService.saveAccountType(this.account, true);
       this.router.navigate(['/tabs/tab1'], {
         replaceUrl: true
       });

@@ -129,8 +129,7 @@ export class DbService {
       image: image,
       uuid: client.uuid,
       phone_number: client.phone_number ? client.phone_number : null,
-      breed: client.breed ? client.breed : null,
-      temperament: client.temperament ? client.temperament : null,
+      pets: client.pets ? client.pets : [],
       location: {
         address: client.address ? client.address : null,
         city: client.city ? client.city : null,

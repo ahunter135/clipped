@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionSheetController, NavController } from '@ionic/angular';
+import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
 import * as moment from 'moment';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -10,6 +10,7 @@ import { Crop } from '@ionic-native/crop/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
 import csc from 'country-state-city'
+import { PetsComponent } from 'src/app/modals/pets/pets.component';
 
 @Component({
   selector: 'app-add',
@@ -28,7 +29,7 @@ export class AddPage implements OnInit {
   states;
   constructor(private router: Router, private dbService: DbService, public storage: StorageService, 
     private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, private camera: Camera, private file: File,
-    private crop: Crop, private base64: Base64, private sanitizer: DomSanitizer) { }
+    private crop: Crop, private base64: Base64, private sanitizer: DomSanitizer, private modalCtrl: ModalController) { }
 
   async ngOnInit() {
     this.client.last_visit = this.today;
@@ -56,6 +57,18 @@ export class AddPage implements OnInit {
 
   async addPhoto() {
     await this.doActionSheetCamera();
+  }
+
+  async addPets() {
+    let modal = await this.modalCtrl.create({
+      component: PetsComponent
+    });
+    modal.onDidDismiss().then((data) => {
+      if (data.data) {
+        this.client.pets = data.data;
+      }
+    });
+    return await modal.present();
   }
 
   async doActionSheetCamera() {
@@ -92,7 +105,7 @@ export class AddPage implements OnInit {
       this.camera.getPicture(options).then(async (imageData) => {
         imageData = await this.crop.crop(imageData, {quality: 100, targetWidth: 1024, targetHeight: 1024});
         let img = this.sanitizer.bypassSecurityTrustResourceUrl(await this.base64.encodeFile(imageData));
-        resolve();
+        resolve(true);
       }, (err) => {
         // Handle error
       });

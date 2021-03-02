@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" color="dark">
+      <ion-button (click)="modalCtrl.dismiss()" color="dark">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Pets</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card *ngFor="let pet of pets">
+    <ion-card-header>
+      <ion-card-subtitle>Pet Details</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label>Name</ion-label>
+        <ion-input
+          placeholder="Ralph"
+          type="text"
+          [(ngModel)]="pet.name"
+          autocapitalize="on"
+          autocomplete="name"
+          autocorrection="on"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Breed</ion-label>
+        <ion-input
+          placeholder="Shih Tzu"
+          type="text"
+          [(ngModel)]="pet.breed"
+          autocapitalize="on"
+          autocomplete="name"
+          autocorrection="on"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Weight</ion-label>
+        <ion-input
+          placeholder="Ralph"
+          type="number"
+          [(ngModel)]="pet.weight"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Fully Vaccinated?</ion-label>
+        <ion-checkbox
+          slot="end"
+          [(ngModel)]="pet.isFullyVaccinated"
+        ></ion-checkbox>
+      </ion-item>
+      <br />
+      <ion-segment [(ngModel)]="pet.temperament">
+        <ion-segment-button value="0">
+          <ion-label>Gentle</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="1">
+          <ion-label>Mild</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="2">
+          <ion-label>Aggressive</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-content>
+  </ion-card>
+  <ion-icon
+    name="add-circle"
+    style="
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: 5px;
+    "
+    size="large"
+    color="medium"
+    (click)="addPet()"
+  ></ion-icon>
+</ion-content>
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-button expand="block" color="dark" (click)="submit()">
+      <span>Save</span>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

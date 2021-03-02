@@ -29,6 +29,8 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ClientByIDPipe } from './pipes/client-by-id.pipe';
 import { GoogleMaps } from '@ionic-native/google-maps/ngx';
 import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
+import { PetsComponent } from './modals/pets/pets.component';
+import { FormsModule } from '@angular/forms';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -43,11 +45,11 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 @NgModule({
-  declarations: [AppComponent, UpgradeComponent, AddStylistComponent],
-  entryComponents: [UpgradeComponent, AddStylistComponent],
+  declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent],
+  entryComponents: [UpgradeComponent, AddStylistComponent, PetsComponent],
   imports: [BrowserModule, IonicModule.forRoot({
     mode: 'ios'
-  }), AppRoutingModule],
+  }), AppRoutingModule, FormsModule],
   providers: [
     StatusBar,
     SplashScreen,

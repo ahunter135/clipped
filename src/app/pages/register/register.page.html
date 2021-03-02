@@ -3,7 +3,7 @@
     <h1>Create Account</h1>
     <input type="email" placeholder="Email" [(ngModel)]="email" />
     <input type="password" placeholder="Password" [(ngModel)]="password" />
-    <br>
+    <!--<br>
     <ion-segment [(ngModel)]="account" style="width: 120% !important">
       <ion-segment-button value="0">
         <ion-label>Salon/Barber</ion-label>
@@ -11,11 +11,16 @@
       <ion-segment-button value="1">
         <ion-label>Pets</ion-label>
       </ion-segment-button>
-    </ion-segment>
+    </ion-segment>-->
     <a [routerLink]="['/login']">Go Back</a>
-    <button (click)="login()"><span *ngIf="!loading">Create</span>
+    <button (click)="login()">
+      <span *ngIf="!loading">Create</span>
       <span *ngIf="loading">
-        <ion-spinner color="secondary" name="bubbles" color="light"></ion-spinner>
+        <ion-spinner
+          color="secondary"
+          name="bubbles"
+          color="light"
+        ></ion-spinner>
       </span>
     </button>
   </span>
@@ -50,5 +55,4 @@
       </ion-button>
     </ion-card-content>
   </ion-card>-->
-
 </ion-content>

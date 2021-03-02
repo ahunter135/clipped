@@ -20,7 +20,7 @@
       <ion-item button detail (click)="editStylists()" lines="none">
         Edit Stylists
       </ion-item>
-      <br>
+      <!--<br>
       <ion-label position="stacked">Type of Account</ion-label>
       <ion-segment [(ngModel)]="account">
         <ion-segment-button value="0">
@@ -29,9 +29,10 @@
         <ion-segment-button value="1">
           <ion-label>Pets</ion-label>
         </ion-segment-button>
-      </ion-segment>
+      </ion-segment>-->
     </ion-card-content>
-    <ion-button expand="block" color="dark" (click)="save()">Save Changes
+    <ion-button expand="block" color="dark" (click)="save()"
+      >Save Changes
     </ion-button>
   </ion-card>
 </ion-content>
@@ -53,8 +54,13 @@
 <ion-content *ngIf="state == 'edit-templates'">
   <ion-list>
     <ion-item *ngFor="let template of templates; let indexOfTemplate = index">
-      <ion-icon name="remove-circle" slot="start" color="danger" (click)="remove(indexOfTemplate)"></ion-icon>
-      {{template}}
+      <ion-icon
+        name="remove-circle"
+        slot="start"
+        color="danger"
+        (click)="remove(indexOfTemplate)"
+      ></ion-icon>
+      {{ template }}
     </ion-item>
   </ion-list>
 </ion-content>
