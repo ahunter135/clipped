@@ -5,6 +5,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,7 @@ import { AddStylistComponent } from './modals/add-stylist/add-stylist.component'
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { ClientByIDPipe } from './pipes/client-by-id.pipe';
 import { GoogleMaps } from '@ionic-native/google-maps/ngx';
+import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -61,10 +63,12 @@ firebase.initializeApp(firebaseConfig);
     InAppBrowser,
     AdMob,
     OneSignal,
+    Keyboard,
     GooglePlus,
     GoogleMaps,
     AndroidPermissions,
     ClientByIDPipe,
+    SignInWithApple,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

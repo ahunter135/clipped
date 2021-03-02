@@ -2,16 +2,30 @@
   <span class="form">
     <h1>Sign in</h1>
     <div class="social-container">
-      <ion-icon name="logo-google" class="social" (click)="loginWithGoogle()"></ion-icon>
+      <ion-icon
+        name="logo-google"
+        class="social"
+        (click)="loginWithGoogle()"
+        style="font-size: 26px; padding: 5px"
+      ></ion-icon>
+      <ion-icon
+        name="logo-apple"
+        class="social"
+        (click)="loginWithApple()"
+        style="font-size: 26px; padding: 5px"
+        *ngIf="platform.is('ios')"
+      ></ion-icon>
     </div>
     <span>or use your account</span>
     <input type="email" placeholder="Email" [(ngModel)]="email" />
     <input type="password" placeholder="Password" [(ngModel)]="password" />
     <a [routerLink]="['/register']">Create an Account</a>
-    <button (click)="login()"><span *ngIf="!loading">Sign In</span>
+    <button (click)="login()">
+      <span *ngIf="!loading">Sign In</span>
       <span *ngIf="loading">
         <ion-spinner color="light" name="bubbles"></ion-spinner>
-      </span></button>
+      </span>
+    </button>
   </span>
   <!--<ion-card>
     <ion-card-content>
@@ -37,5 +51,4 @@
       </ion-button>
     </ion-card-content>
   </ion-card>-->
-
 </ion-content>
