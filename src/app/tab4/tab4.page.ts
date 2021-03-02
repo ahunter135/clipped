@@ -117,7 +117,21 @@ export class Tab4Page {
 
     this.map = GoogleMaps.create('map', mapOptions);
 
-    this.addMarkers(clients);
+    this.map.one(GoogleMapsEvent.MAP_READY).then(async () => {
+      this.addMarkers(clients);
+      if (clients.length > 0) {
+        let address = clients[0].location.address + " " + clients[0].location.zip;
+        let results = await Geocoder.geocode( { 'address': address});
+  
+        let lat = results[0].position.lat;
+        let lng = results[0].position.lng;
+        let latLng = new LatLng(lat, lng);
+        this.map.animateCamera({
+          target: latLng,
+          zoom: 10
+        })
+      }
+    })
     
     this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).toPromise().then(() => {
       this.appointmentsShownOnMap = [];
@@ -130,20 +144,6 @@ export class Tab4Page {
         }
       }
     })
-    
-    if (clients.length > 0) {
-      let address = clients[0].location.address + " " + clients[0].location.zip;
-      let results = await Geocoder.geocode( { 'address': address});
-
-      let lat = results[0].position.lat;
-      let lng = results[0].position.lng;
-      let latLng = new LatLng(lat, lng);
-      this.map.animateCamera({
-        target: latLng,
-        zoom: 10
-      })
-    }
-    
   }
 
   addMarkers(clients) {
