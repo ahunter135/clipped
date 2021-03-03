@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
-import { isPlatform, ModalController } from '@ionic/angular';
+import { isPlatform, ModalController, Platform } from '@ionic/angular';
 import { GlobalService } from './global.service';
 
 const { Storage } = Plugins;
@@ -18,7 +18,7 @@ export class StorageService {
   productIds = [];
   products: any;
   proMode = false;
-  constructor(private iap: InAppPurchase, public globalService: GlobalService, private modalCtrl: ModalController) {
+  constructor(private iap: InAppPurchase, public globalService: GlobalService, private modalCtrl: ModalController, private platform: Platform) {
     //Storage.clear();
   }
 
@@ -78,32 +78,45 @@ export class StorageService {
     this.iap.getProducts(products).then(async (products) => {
       console.log(products);
       this.products = products;
-      let isUnlocked = await this.getItem('pro');
-      console.log(isUnlocked);
-      if (isUnlocked) {
         // TODO check if receipt is good enough
         this.iap.restorePurchases().then((receipt) => {
           console.log(receipt);
-          if (receipt.length > 0) {
-            if (receipt[0].state != 0) {
+          if (this.platform.is('ios')) {
+            if (receipt.length > 0) {
+              if (receipt[0].state != 3) {
+                this.setItem({key: "pro", value: false})
+                this.globalService.publishData({key: 'pro', value: false});
+                this.proMode = false;
+              } else {
+                this.setItem({key: 'pro', value: true});
+                this.proMode = true;
+                this.globalService.publishData({key: 'pro', value: true});
+              }
+            } else {
               this.setItem({key: "pro", value: false})
               this.globalService.publishData({key: 'pro', value: false});
-              this.proMode = false;
-            } else {
-              this.setItem({key: 'pro', value: true});
-              this.proMode = true;
-              this.globalService.publishData({key: 'pro', value: true});
             }
           } else {
-            this.setItem({key: "pro", value: false})
-            this.globalService.publishData({key: 'pro', value: false});
+            if (receipt.length > 0) {
+              let purchaseState = JSON.parse(receipt[0].receipt).purchaseState;
+              if (purchaseState != 0) {
+                this.setItem({key: "pro", value: false})
+                this.globalService.publishData({key: 'pro', value: false});
+                this.proMode = false;
+              } else {
+                this.setItem({key: 'pro', value: true});
+                this.proMode = true;
+                this.globalService.publishData({key: 'pro', value: true});
+              }
+            } else {
+              this.setItem({key: "pro", value: false})
+              this.globalService.publishData({key: 'pro', value: false});
+            }
           }
+          
         }).catch((err) => {
           console.log(err);
         });
-      } else {
-        this.globalService.publishData({key: 'pro', value: false});
-      }
     }).catch((err) => {
       console.log(err);
     });
