@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ActionSheetController, AlertController, ModalController } from '@ionic/angular';
 import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
 import * as moment from 'moment';
@@ -27,26 +27,55 @@ export class Tab4Page {
   appointmentsShownOnMap = [];
   markers = [];
   footerState: IonPullUpFooterState;
+  isPro = this.storage.proMode;
   constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe,
-    private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator) {
+    private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator, private alertController: AlertController) {
   }
 
   async ngOnInit() {
   }
 
   async ionViewWillEnter() {
-    let apps = await this.dbService.getAllAppointments();
-    await this.filterAppointments(apps);
+    await this.dbService.getAllAppointments();
+    await this.filterAppointments(this.storage.appointments);
     this.stylists = <any>await this.dbService.getStylists();
     if (!this.map)
       this.addMap();
+    else {
+      let clients = await this.getClientArrayFromAppointment();
+      await this.addMarkers(clients);
+      if (clients.length > 0) {
+        let address = clients[0].location.address + " " + clients[0].location.zip;
+        let results = await Geocoder.geocode( { 'address': address});
+  
+        let lat = results[0].position.lat;
+        let lng = results[0].position.lng;
+        let latLng = new LatLng(lat, lng);
+        this.map.animateCamera({
+          target: latLng,
+          zoom: 10
+        })
+
+        this.appointmentsShownOnMap = [];
+        //Bouunds are set, see if any markers are here.
+        for (let i = 0; i < this.markers.length; i++) {
+          let region = this.map.getVisibleRegion();
+          if (region.contains(this.markers[i].getPosition())) {
+            let client = this.markers[i].get('client');
+            this.appointmentsShownOnMap.push(client)
+          }
+        }
+        
+        this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
+      }
+    }
   }
 
   ionViewDidEnter() {
-    
   }
 
   filterAppointments(appointments) {
+    console.log(appointments);
     let dates = [];
     for (let i = 0; i < appointments.length; i++) {
       let day = moment(appointments[i].date);
@@ -199,8 +228,12 @@ export class Tab4Page {
       cssClass: 'my-custom-class',
       buttons: [{
         text: 'Navigate To',
-        icon: 'navigate',
+        icon: this.isPro ? 'navigate' : 'star',
         handler: () => {
+          if (!this.isPro) {
+            this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
+            return;
+          }
           //Open navigation
           let location = client.location.address + " " + client.location.city + ", " + client.location.state + " " + client.location.zip; 
           this.launchNav.navigate(location);
@@ -237,6 +270,26 @@ export class Tab4Page {
     }
 
     return client_array;
+  }
+
+  async presentAlertNotice(message) {
+    return new Promise(async (resolve, reject) => {
+      const alert = await this.alertController.create({
+        header: 'Uh Oh!',
+        message: message,
+        buttons: [
+          {
+            text: 'Okay',
+            handler: () => {
+              resolve(true);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    });  
+    
   }
 
   footerExpanded() {

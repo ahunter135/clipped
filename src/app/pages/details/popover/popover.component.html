@@ -2,11 +2,11 @@
   <!--<ion-item (click)="share()" *ngIf="showInsta">
     Share to Instagram
   </ion-item>-->
-  <ion-item (click)="sendSMS()" *ngIf="inDetails && isPro && client.phone_number">
-    Text Client
+  <ion-item (click)="sendSMS()" *ngIf="inDetails && client.phone_number">
+    Text Client <ion-icon name="star" style="color: goldenrod" *ngIf="!isPro"></ion-icon>
   </ion-item>
-  <ion-item (click)="call()" *ngIf="inDetails && isPro && client.phone_number">
-    Call Client
+  <ion-item (click)="call()" *ngIf="inDetails && client.phone_number">
+    Call Client <ion-icon name="star" style="color: goldenrod" *ngIf="!isPro"></ion-icon>
   </ion-item>
   <ion-item (click)="add()">
     Add Appointment

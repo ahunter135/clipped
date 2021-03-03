@@ -73,11 +73,11 @@ export class Tab1Page {
       });
       if (!this.adsShowing) {
         this.adsShowing = true;
-        if (!this.proMode)
-        await this.banner.show();
+        //if (!this.proMode)
+        //await this.banner.show();
       }
     } else {
-      await this.banner.hide();
+     // await this.banner.hide();
       this.adsShowing = false;
     }
   }

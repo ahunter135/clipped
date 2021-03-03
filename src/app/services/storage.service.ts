@@ -14,6 +14,7 @@ export class StorageService {
   cameFrom = "";
   security = "";
   clients = [];
+  appointments = [];
   productIds = [];
   products: any;
   proMode = false;
