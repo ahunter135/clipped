@@ -37,9 +37,9 @@ export class DbService {
           this.bypassPro = details.data().bypasspro ? details.data().bypasspro : false;
           console.log(this.bypassPro);
           if (details.data()) resolve(details.data().type);
-          else resolve();
+          else resolve(true);
         } catch (error) {
-          resolve();
+          resolve(true);
         }        
       }).catch((err) => {
         this.handleError(err)
@@ -55,7 +55,7 @@ export class DbService {
           limit: this.userLimit ? this.userLimit : this.proLimit
         }).then(details => {
           this.accountType = account;
-          resolve();
+          resolve(true);
         });  
       } else {
         this.db.collection('users').doc(this.uid).update({
@@ -63,7 +63,7 @@ export class DbService {
           limit: this.userLimit ? this.userLimit : this.proLimit
         }).then(details => {
           this.accountType = account;
-          resolve();
+          resolve(true);
         });  
       }
       
@@ -96,7 +96,7 @@ export class DbService {
           type: this.accountType ? this.accountType : 0
         }).then(details => {
           this.userLimit = this.proLimit + 5;
-          resolve();
+          resolve(true);
         });  
       } else {
         let limit = this.userLimit + 5;
@@ -105,7 +105,7 @@ export class DbService {
           type: this.accountType
         }).then(details => {
           this.userLimit = limit;
-          resolve();
+          resolve(true);
         });  
       }
       
