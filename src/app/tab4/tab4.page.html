@@ -15,31 +15,6 @@
       </ion-select>
     </ion-item>
   </ion-toolbar>-->
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-  <!--<span *ngIf="view == 'list'">
-    <ion-list *ngFor="let app of appointments">
-      <ion-item-group>
-        <ion-item-divider>
-          <ion-label>{{app.date | date:'mediumDate'}}</ion-label>
-        </ion-item-divider>
-
-        <ion-item *ngFor="let data of app.apps" button (click)="openAppointment(data)">
-          <ion-thumbnail slot="start">
-            <img [src]="data.client | clientByID:'img'">
-          </ion-thumbnail>
-          <ion-label>
-            <h3>{{data.client | clientByID}}</h3>
-            <p>{{data.summary}}</p>
-          </ion-label>
-          <ion-chip color="secondary">
-            <ion-label color="dark">{{data.date | date:'shortTime'}}</ion-label>
-          </ion-chip>
-        </ion-item>
-      </ion-item-group>
-    </ion-list>
-  </span>-->
   <div #map id="map"></div>
 </ion-content>
 <lib-ionic-pullup (onExpand)="footerExpanded()" (onCollapse)="footerCollapsed()" [(state)]="footerState"

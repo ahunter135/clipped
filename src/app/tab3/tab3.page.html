@@ -28,9 +28,9 @@
           <h2>{{dbService.email}}</h2>
         </ion-label>
       </ion-item>
-      <ion-item (click)="addToLimit()" button detail *ngIf="!storage.proMode && !dbService.bypassPro">
+      <!--<ion-item (click)="addToLimit()" button detail *ngIf="!storage.proMode && !dbService.bypassPro">
         <ion-icon name="add-circle-outline" slot="start"></ion-icon>Add 5 to Client Limit
-      </ion-item>
+      </ion-item>-->
       <ion-item button detail (click)="upgrade()" *ngIf="!storage.proMode && !dbService.bypassPro">
         <ion-icon name="pricetag-outline" slot="start"></ion-icon>Upgrade to Pro
       </ion-item>

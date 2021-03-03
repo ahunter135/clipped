@@ -312,18 +312,22 @@ async saveStylists(stylists) {
   }
 
   async addClientAppointment(obj) {
-    this.db.collection('users').doc(this.uid).collection('appointments').doc(this.uid).get().then((apps) => {
-      let appointments = apps.data().appointments != undefined ? apps.data().appointments : [];
-      appointments.push(obj);
-      this.db.collection('users').doc(this.uid).collection('appointments').doc(this.uid).update({
-        appointments: appointments
-      })
-    });    
+    this.db.collection('users').doc(this.uid).collection('appointments').doc(uuidv4()).set({
+      client: obj.client,
+      date: obj.date,
+      pet: obj.pet,
+      stylist: obj.stylist ? obj.stylist : null
+    });
   }
 
   async getAllAppointments() {
-    return this.db.collection('users').doc(this.uid).collection('appointments').doc(this.uid).get().then((apps) => {
-      return apps.data().appointments != undefined ? apps.data().appointments : [];
+    this.storage.appointments = [];
+    return this.db.collection('users').doc(this.uid).collection('appointments').get().then((apps) => {
+      apps.forEach(function(doc) {
+        let obj = doc.data();
+        obj.id = doc.id;
+        this.storage.appointments.push(obj);
+      }.bind(this));
     })
   }
 

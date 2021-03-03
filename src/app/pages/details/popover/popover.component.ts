@@ -45,6 +45,10 @@ export class PopoverComponent implements OnInit {
   }
 
   async sendSMS() {
+    if (!this.isPro) {
+      await this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
+      return;
+    }
     let modal = await this.modalCtrl.create({
       component: TextTemplateComponent,
       componentProps: {
@@ -59,6 +63,10 @@ export class PopoverComponent implements OnInit {
   }
 
   async call() {
+    if (!this.isPro) {
+      await this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
+      return;
+    }
     let res = await this.presentAlertConfirm("Are you sure you would like to call this client?");
     if (res)
       this.iab.create('tel:'+ this.client.phone_number , '_system');
@@ -134,6 +142,25 @@ export class PopoverComponent implements OnInit {
             }
           }, {
             text: 'Yes',
+            handler: () => {
+              resolve(true);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    });  
+    
+  }
+  async presentAlertNotice(message) {
+    return new Promise(async (resolve, reject) => {
+      const alert = await this.alertController.create({
+        header: 'Uh Oh!',
+        message: message,
+        buttons: [
+          {
+            text: 'Okay',
             handler: () => {
               resolve(true);
             }

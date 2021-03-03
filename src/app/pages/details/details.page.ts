@@ -92,7 +92,7 @@ export class DetailsPage implements OnInit {
     let modal = await this.modalCtrl.create({
       component: PetsComponent,
       componentProps: {
-        pets: this.client.pets
+        pets: this.client.pets ? this.client.pets : []
       }
     });
     modal.onDidDismiss().then((data) => {
