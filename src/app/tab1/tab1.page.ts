@@ -6,22 +6,33 @@ import { GlobalService } from '../services/global.service';
 import { ModalController, Platform } from '@ionic/angular';
 import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
 import { AdMob } from '@admob-plus/ionic/ngx';
-
+import { AnimationOptions } from 'ngx-lottie';
+import { AnimationItem } from 'lottie-web';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-
+  
   numClients = 0;
   proMode = false;
   adsShowing = false;
   banner;
+
+  options: AnimationOptions = {
+    path: '/assets/animations/toydog.json',
+  };
+
+ 
+  animationCreated(animationItem: AnimationItem): void {
+    
+  }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, public globalService: GlobalService,
     public modalCtrl: ModalController, private admob: AdMob, private platform: Platform) {}
 
-  ngOnInit() {}
+  ngOnInit() {    
+  }
 
   async ionViewWillEnter() {
     var loggedIn = await this.storage.getItem("loggedIn");
@@ -53,6 +64,8 @@ export class Tab1Page {
       await this.dbService.setupDb();
       await this.dbService.getClients();
       await this.dbService.getAccountType();
+      await this.dbService.getAllAppointments();
+      await this.dbService.getAllServices();
       this.numClients = this.storage.clients.length;
     }
   }

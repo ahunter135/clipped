@@ -10,7 +10,9 @@
   </ion-header>
 
   <ion-card>
-    <img src="../../assets/images/barber.jpeg" />
+    <div style="height: 200px; width: 100%;">
+      <ng-lottie [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
+    </div>
     <ion-card-header>
       <ion-card-title>Welcome!</ion-card-title>
     </ion-card-header>
@@ -19,7 +21,8 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <ion-card data-hint="These options are where you will manage your clients!" data-hintposition="top-right"
+    data-step="1">
     <ion-item [routerLink]="['/tabs/tab1/add']"
       [hidden]="numClients >= (dbService.userLimit ? dbService.userLimit : dbService.proLimit) && !proMode">
       <ion-icon name="add" slot="start"></ion-icon>

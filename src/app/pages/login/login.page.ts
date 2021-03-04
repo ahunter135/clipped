@@ -6,6 +6,8 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { DbService } from 'src/app/services/db.service';
 import { Platform } from '@ionic/angular';
 import { SignInWithApple, AppleSignInResponse, AppleSignInErrorResponse, ASAuthorizationAppleIDRequest } from '@ionic-native/sign-in-with-apple/ngx';
+import { AnimationOptions } from 'ngx-lottie';
+import { AnimationItem } from 'lottie-web';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,36 @@ export class LoginPage implements OnInit {
   email;
   password;
   loading = false;
-  constructor(private router: Router, private storage: StorageService,private googlePlus: GooglePlus, private dbService: DbService, public platform: Platform, private signInWithApple: SignInWithApple) { }
+  options: AnimationOptions = {
+    path: '/assets/animations/dog.json',
+  };
+
+  loadingOptions: AnimationOptions = {
+    path: '/assets/animations/rocket.json',
+    loop: false,
+    name: 'load'
+  }
+  loadingRocket;
+  loggedIn = false;
+ 
+  animationCreated(animationItem: AnimationItem): void {
+    console.log(animationItem);
+    animationItem.resize();
+    if (animationItem.name == 'load') {
+      animationItem.addEventListener('complete', async () => {
+        this.loading = false;
+        if (this.loggedIn) {
+          this.router.navigate(['/tabs/tab1'], {
+            replaceUrl: true
+          });
+        }
+        
+      })
+    }
+  }
+  constructor(private router: Router, private storage: StorageService,private googlePlus: GooglePlus, private dbService: DbService, public platform: Platform, private signInWithApple: SignInWithApple) {
+
+  }
 
   ngOnInit() {
   }
@@ -45,6 +76,7 @@ export class LoginPage implements OnInit {
   }
 
   async loginUsingApple(res) {
+    this.loading = true;
     const provider = new firebase.auth.OAuthProvider('apple.com');
  
     // Create sign in credentials with our token
@@ -63,6 +95,7 @@ export class LoginPage implements OnInit {
     });
   }
   async loginUsingGoogle(res) {
+    this.loading = true;
     try {
       const { idToken, accessToken } = res;
 
@@ -103,11 +136,8 @@ export class LoginPage implements OnInit {
   }
 
   async handleResponse(response) {
+    this.loggedIn = true;
     let loginResponse = { key: "loggedIn", value: JSON.stringify(response.user) };
     await this.storage.setItem(loginResponse);
-    this.loading = false;
-    this.router.navigate(['/tabs/tab1'], {
-      replaceUrl: true
-    });
   }
 }

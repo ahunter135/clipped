@@ -13,14 +13,16 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-card>
+  <ion-card style="z-index: 99">
     <ion-card-header>
       <ion-card-title>
         User Settings
       </ion-card-title>
     </ion-card-header>
     <ion-list>
-      <ion-item (click)="editAccount()" button detail>
+      <ion-item (click)="editAccount()" button detail
+        data-hint="Click here to manage services, stylists, and text templates!" data-hintposition="top-right"
+        data-step="2">
         <ion-avatar slot="start">
           <img src="https://ui-avatars.com/api/?background=f3f3f3&name={{dbService.email}}">
         </ion-avatar>
@@ -45,4 +47,8 @@
       </ion-item>
     </ion-list>
   </ion-card>
+  <div style="width: 100%; position: absolute; bottom: 10px; height: 200px;">
+    <ng-lottie [options]=" options" (animationCreated)="animationCreated($event)">
+    </ng-lottie>
+  </div>
 </ion-content>

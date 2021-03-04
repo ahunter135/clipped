@@ -6,7 +6,9 @@ import { EditAccountComponent } from '../modals/edit-account/edit-account.compon
 import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
 import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
-
+import * as introjs from 'intro.js';
+import { AnimationOptions } from 'ngx-lottie';
+import { AnimationItem } from 'lottie-web';
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
@@ -15,7 +17,14 @@ import { StorageService } from '../services/storage.service';
 export class Tab3Page {
   darkMode;
   rewarded;
-  
+  options: AnimationOptions = {
+    path: '/assets/animations/settings.json',
+  };
+
+ 
+  animationCreated(animationItem: AnimationItem): void {
+
+  }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, private modalCtrl: ModalController, private alertController: AlertController,
     private admob: AdMob, private platform: Platform) {
       document.addEventListener('admob.rewarded.close', async () => {
@@ -25,11 +34,6 @@ export class Tab3Page {
 
   async ionViewDidEnter() {
     this.darkMode = await this.storage.getItem("darkMode") ? await this.storage.getItem("darkMode") : false;
-    this.rewarded = new this.admob.RewardedAd({
-      adUnitId: this.platform.is('ios') ? 'a-app-pub-8417638044172769/1039173753' : 'ca-app-pub-8417638044172769/5761195001'
-    });
-
-    await this.rewarded.load();
   }
 
   logout() {

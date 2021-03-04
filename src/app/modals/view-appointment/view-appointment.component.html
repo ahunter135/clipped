@@ -17,9 +17,13 @@
       <ion-card-subtitle>{{app.date | date:'MMM d, y, h:mm a'}}</ion-card-subtitle>
       <ion-card-subtitle>Stylist: <span *ngIf="app.stylist">{{app.stylist}}</span><span *ngIf="!app.stylist">None</span>
       </ion-card-subtitle>
+      <ion-card-subtitle>Pet: {{app.pet}}
+      </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      {{app.summary}}
+      <h3>{{app.service.name}} - {{app.service.price}}</h3>
+      <br>
+      {{app.service.details}}
     </ion-card-content>
   </ion-card>
 </ion-content>

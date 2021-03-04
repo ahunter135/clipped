@@ -7,13 +7,22 @@ import { IonicModule } from '@ionic/angular';
 import { LoginPageRoutingModule } from './login-routing.module';
 
 import { LoginPage } from './login.page';
+import { LottieModule } from 'ngx-lottie';
 
+import player from 'lottie-web';
+ 
+// Note we need a separate function as it's required
+// by the AOT compiler.
+export function playerFactory() {
+  return player;
+}
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LoginPageRoutingModule
+    LoginPageRoutingModule,
+    LottieModule.forRoot({ player: playerFactory })
   ],
   declarations: [LoginPage]
 })
