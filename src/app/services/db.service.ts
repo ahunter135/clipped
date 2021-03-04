@@ -14,7 +14,7 @@ export class DbService {
   email;
   db;
   loader;
-  proLimit = 10;
+  proLimit = 25;
   userLimit;
   accountType;
   bypassPro = false;
@@ -316,7 +316,8 @@ async saveStylists(stylists) {
       client: obj.client,
       date: obj.date,
       pet: obj.pet,
-      stylist: obj.stylist ? obj.stylist : null
+      stylist: obj.stylist ? obj.stylist : null,
+      service: obj.service
     });
   }
 
@@ -329,6 +330,37 @@ async saveStylists(stylists) {
         this.storage.appointments.push(obj);
       }.bind(this));
     })
+  }
+
+  async deleteAppointment(app) {
+    return this.db.collection('users').doc(this.uid).collection('appointments').doc(app.app.id).delete();
+  }
+
+  async getAllServices() {
+    this.storage.services = [];
+    return this.db.collection('users').doc(this.uid).collection('services').get().then((apps) => {
+      apps.forEach(function(doc) {
+        let obj = doc.data();
+        obj.id = doc.id;
+        this.storage.services.push(obj);
+      }.bind(this));
+    })
+  }
+
+  async addService(obj) {
+    this.db.collection('users').doc(this.uid).collection('services').doc(uuidv4()).set({
+      name: obj.name,
+      price: obj.price,
+      details: obj.details
+    });
+  }
+
+  async editService(obj) {
+    this.db.collection('users').doc(this.uid).collection('services').doc(obj.id).update({
+      name: obj.name,
+      price: obj.price,
+      details: obj.details
+    });
   }
 
   async editClientVisit(client) {

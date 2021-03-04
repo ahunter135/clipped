@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { EditAccountComponent } from './modals/edit-account/edit-account.component';
+import { GuideComponent } from './modals/guide/guide.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,14 @@ const routes: Routes = [
   {
     path: 'edit-account',
     component: EditAccountComponent
+  },
+  {
+    path: 'guide',
+    component: GuideComponent
+  },
+  {
+    path: 'services',
+    loadChildren: () => import('./pages/services/services.module').then( m => m.ServicesPageModule)
   }
 ];
 @NgModule({

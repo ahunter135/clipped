@@ -42,40 +42,45 @@ export class Tab4Page {
     if (!this.map)
       this.addMap();
     else {
-      let clients = await this.getClientArrayFromAppointment();
-      await this.addMarkers(clients);
-      if (clients.length > 0) {
-        let address = clients[0].location.address + " " + clients[0].location.zip;
-        let results = await Geocoder.geocode( { 'address': address});
-  
-        let lat = results[0].position.lat;
-        let lng = results[0].position.lng;
-        let latLng = new LatLng(lat, lng);
-        this.map.animateCamera({
-          target: latLng,
-          zoom: 10
-        })
-
-        this.appointmentsShownOnMap = [];
-        //Bouunds are set, see if any markers are here.
-        for (let i = 0; i < this.markers.length; i++) {
-          let region = this.map.getVisibleRegion();
-          if (region.contains(this.markers[i].getPosition())) {
-            let client = this.markers[i].get('client');
-            this.appointmentsShownOnMap.push(client)
-          }
-        }
-        
-        this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
-      }
+      this.updateApps();
     }
   }
 
   ionViewDidEnter() {
   }
 
+  async updateApps() {
+    this.appointmentsShownOnMap = [];
+    this.markers = [];
+    this.map.clear();
+    await this.dbService.getAllAppointments();
+    await this.filterAppointments(this.storage.appointments);
+
+    let clients = await this.getClientArrayFromAppointment();
+    await this.addMarkers(clients);
+    if (clients.length > 0) {
+      let address = clients[0].location.address + " " + clients[0].location.zip;
+      let results = await Geocoder.geocode( { 'address': address});
+
+      let lat = results[0].position.lat;
+      let lng = results[0].position.lng;
+      let latLng = new LatLng(lat, lng);
+
+      
+      //Bouunds are set, see if any markers are here.
+      for (let i = 0; i < this.markers.length; i++) {
+        let region = this.map.getVisibleRegion();
+        if (region.contains(this.markers[i].getPosition())) {
+          let client = this.markers[i].get('client');
+          this.appointmentsShownOnMap.push(client)
+        }
+      }
+      
+      this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
+    }
+  }
+
   filterAppointments(appointments) {
-    console.log(appointments);
     let dates = [];
     for (let i = 0; i < appointments.length; i++) {
       let day = moment(appointments[i].date);
@@ -191,7 +196,6 @@ export class Tab4Page {
   }
 
   addMarkers(clients) {
-    this.markers = [];
     for (let i = 0; i < clients.length; i++) {
       this.addMarker(clients[i]);
     }
@@ -238,7 +242,35 @@ export class Tab4Page {
           let location = client.location.address + " " + client.location.city + ", " + client.location.state + " " + client.location.zip; 
           this.launchNav.navigate(location);
         }
-      }, {
+      },
+      {
+        text: 'Details',
+        icon: 'information-circle',
+        handler:async  () => {
+          const modal = await this.modalCtrl.create({
+            component: ViewAppointmentComponent,
+            componentProps: {
+              app: client.app
+            }
+          });
+
+          return await modal.present();
+        }
+      }, 
+      {
+        text: 'Delete',
+        role: 'destructive',
+        icon: 'trash',
+        handler: async () => {
+          this.presentAlertConfirm("Are you sure you want to delete this appointment?").then(async (res) => {
+            if (res) {
+              await this.dbService.deleteAppointment(client);
+              await this.updateApps();
+            }
+          });
+          return true;
+        }
+      },{
         text: 'Cancel',
         icon: 'close',
         role: 'cancel',
@@ -270,6 +302,33 @@ export class Tab4Page {
     }
 
     return client_array;
+  }
+
+  async presentAlertConfirm(message) {
+    return new Promise(async (resolve, reject) => {
+      const alert = await this.alertController.create({
+        header: 'Confirm!',
+        message: message,
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              resolve(false);
+            }
+          }, {
+            text: 'Yes',
+            handler: () => {
+              resolve(true);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    });  
+    
   }
 
   async presentAlertNotice(message) {

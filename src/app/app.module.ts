@@ -31,9 +31,10 @@ import { GoogleMaps } from '@ionic-native/google-maps/ngx';
 import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
 import { PetsComponent } from './modals/pets/pets.component';
 import { FormsModule } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
-
+import { GuideComponent } from './modals/guide/guide.component';
+import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
   authDomain: "clipped-3c152.firebaseapp.com",
@@ -47,14 +48,15 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 @NgModule({
-  declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent],
-  entryComponents: [UpgradeComponent, AddStylistComponent, PetsComponent],
+  declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent],
+  entryComponents: [UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent],
   imports: [BrowserModule, IonicModule.forRoot({
     mode: 'ios'
   }), AppRoutingModule, FormsModule],
   providers: [
     StatusBar,
     SplashScreen,
+    LottieSplashScreen,
     InAppPurchase,
     Camera,
     File,
@@ -73,6 +75,7 @@ firebase.initializeApp(firebaseConfig);
     AndroidPermissions,
     ClientByIDPipe,
     DatePipe,
+    CurrencyPipe,
     LaunchNavigator,
     SignInWithApple,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

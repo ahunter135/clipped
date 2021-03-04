@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" color="dark">
+      <ion-button (click)="goBack()" color="dark">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Edit Services</ion-title>
+    <ion-buttons slot="end" color="dark">
+      <ion-button (click)="add()" color="dark">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let item of storage.services">
+    <ion-card-header>
+      Details
+      <ion-button style="float: right; margin: auto;
+      position: absolute;
+      top: 0; bottom: 0; right: 0;" fill="clear" size="small" (click)="editService(item)">
+        <ion-icon name="pencil" color="dark"></ion-icon>
+      </ion-button>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-label position="floating">Name</ion-label>
+        <ion-input type="text" [(ngModel)]="item.name" readonly></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="floating">Price</ion-label>
+        <ion-input type="text" [(ngModel)]="item.price" readonly></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="floating">Details</ion-label>
+        <ion-input type="text" [(ngModel)]="item.details" readonly></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

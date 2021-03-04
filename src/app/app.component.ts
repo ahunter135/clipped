@@ -6,6 +6,10 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { StorageService } from './services/storage.service';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { LaunchReview } from '@ionic-native/launch-review/ngx';
+import * as introjs from 'intro.js';
+import { GlobalService } from './services/global.service';
+import { Router } from '@angular/router';
+import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +23,10 @@ export class AppComponent {
     private statusBar: StatusBar,
     private storage: StorageService,
     private oneSignal: OneSignal,
-    private launchReview: LaunchReview
+    private launchReview: LaunchReview,
+    private globalService: GlobalService,
+    private router: Router,
+    private lottie: LottieSplashScreen
   ) {
     this.initializeApp();
   }
@@ -28,7 +35,6 @@ export class AppComponent {
     this.platform.ready().then(async () => {
      
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
       
       this.oneSignal.promptForPushNotificationsWithUserResponse();
       
@@ -66,6 +72,7 @@ export class AppComponent {
       function toggleDarkTheme(shouldAdd) {
         document.body.classList.toggle('dark', shouldAdd);
       }
-    });
+
+    });    
   }
 }

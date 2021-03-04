@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { AddStylistComponent } from '../add-stylist/add-stylist.component';
@@ -16,7 +17,7 @@ export class EditAccountComponent implements OnInit {
   templates = [];
   stylists = [];
   constructor(private dbService: DbService, public modalCtrl: ModalController, private navCtrl: NavController,
-    private alertController: AlertController) { }
+    private alertController: AlertController, private router: Router) { }
 
   async ngOnInit() {
     let type = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
@@ -50,6 +51,10 @@ export class EditAccountComponent implements OnInit {
 
   async addStylist() {
     
+  }
+
+  async editServices() {
+    this.router.navigate(['/services']);
   }
 
   async save() {

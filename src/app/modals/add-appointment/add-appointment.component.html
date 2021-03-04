@@ -28,11 +28,19 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label>Pet</ion-label>
+        <ion-label>Pet <span style="color: red">*</span></ion-label>
         <ion-select placeholder="Select One" [(ngModel)]="pet">
           <ion-select-option *ngFor="let item of client.pets" value="{{item.name}}">{{item.name}}</ion-select-option>
         </ion-select>
       </ion-item>
+      <ion-item>
+        <ion-label>Service <span style="color: red">*</span></ion-label>
+        <ion-select placeholder="Select One" [(ngModel)]="service">
+          <ion-select-option *ngFor="let item of storage.services" value="{{item.id}}">{{item.name}} - {{item.price}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <br>
       <ion-button expand="block" color="dark" (click)="submit()">
         <span>Submit</span>
       </ion-button>

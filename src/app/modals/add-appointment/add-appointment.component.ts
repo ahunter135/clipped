@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import * as moment from 'moment';
 import { DbService } from 'src/app/services/db.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-add-appointment',
@@ -17,22 +18,23 @@ export class AddAppointmentComponent implements OnInit {
   stylist;
   stylists = [];
   pet;
-  constructor(public modalCtrl: ModalController, private navParams: NavParams, private db: DbService) {
-    this.client = this.navParams.data.client;
-    
+  service;
+  constructor(public modalCtrl: ModalController, private navParams: NavParams, private db: DbService, public storage: StorageService) {
+    this.client = this.navParams.data.client; 
   }
 
   async ngOnInit() {this.stylists = <any>await this.db.getStylists();}
 
   submit() {
-    if (!this.app_date || !this.pet) {
+    if (!this.app_date || !this.pet || !this.service) {
       return;
     }
     let obj = {
       date: this.app_date,
       pet: this.pet,
       client: this.client.id,
-      stylist: this.stylist ? this.stylist : null
+      stylist: this.stylist ? this.stylist : null,
+      service: this.service
     }
     this.db.addClientAppointment(obj);
     this.modalCtrl.dismiss();
