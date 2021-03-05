@@ -28,7 +28,7 @@ export class RegisterPage implements OnInit {
       this.loading = false;
       this.dbService.uid = response.user.uid;
       await this.dbService.setupDb();
-      await this.dbService.saveAccountType(0, true);
+      await this.dbService.saveAccountType(0, true, false);
       this.router.navigate(['/tabs/tab1'], {
         replaceUrl: true
       });

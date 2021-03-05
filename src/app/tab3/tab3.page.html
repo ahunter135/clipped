@@ -41,13 +41,19 @@
         <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"
           [disabled]="!storage.proMode && !dbService.bypassPro"></ion-toggle>
       </ion-item>
+      <ion-item button detail (click)="editStylists()">
+        Edit Stylists
+      </ion-item>
+      <ion-item button detail (click)="editServices()">
+        Edit Services
+      </ion-item>
       <ion-item button detail (click)="logout()">
         <ion-icon name="exit-outline" slot="start"></ion-icon>
         Logout
       </ion-item>
     </ion-list>
   </ion-card>
-  <div style="width: 100%; position: absolute; bottom: 10px; height: 200px;">
+  <div class="person">
     <ng-lottie [options]=" options" (animationCreated)="animationCreated($event)">
     </ng-lottie>
   </div>

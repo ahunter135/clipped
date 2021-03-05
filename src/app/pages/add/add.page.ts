@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
+import { ActionSheetController, ModalController, NavController, PopoverController } from '@ionic/angular';
 import * as moment from 'moment';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -11,7 +11,10 @@ import { Base64 } from '@ionic-native/base64/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
 import csc from 'country-state-city'
 import { PetsComponent } from 'src/app/modals/pets/pets.component';
+import * as randomcolor from 'random-hex-color'
+import { PhonePipe } from 'src/app/pipes/phone.pipe';
 
+declare var google: any;
 @Component({
   selector: 'app-add',
   templateUrl: './add.page.html',
@@ -19,7 +22,9 @@ import { PetsComponent } from 'src/app/modals/pets/pets.component';
 })
 export class AddPage implements OnInit {
 
-  client = <any>{}
+  client = <any>{
+    color: randomcolor()
+  }
   today = moment().format("YYYY-MM-DD");
   max = moment().format("YYYY-MM-DD");
   actionSheet;
@@ -27,16 +32,24 @@ export class AddPage implements OnInit {
   accountType;
   countries = csc.getAllCountries();
   states;
+  tempAddress = "";
+  items = [];
+  searching = false;
   constructor(private router: Router, private dbService: DbService, public storage: StorageService, 
     private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, private camera: Camera, private file: File,
-    private crop: Crop, private base64: Base64, private sanitizer: DomSanitizer, private modalCtrl: ModalController) { }
+    private crop: Crop, private base64: Base64, private sanitizer: DomSanitizer, private modalCtrl: ModalController, private phone: PhonePipe) { }
 
   async ngOnInit() {
     this.client.last_visit = this.today;
     let account = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
     this.accountType = account;
-    console.log(this.accountType);
-    console.log(this.countries);
+
+    const input = document.getElementById("pac-input") as HTMLInputElement;
+    const searchBox = new google.maps.places.SearchBox(input);
+    searchBox.addListener("places_changed", (data) => {
+      const places = searchBox.getPlaces();
+      this.client.address = places[0].formatted_address;
+    })
   }
 
   goBack() {
@@ -47,11 +60,15 @@ export class AddPage implements OnInit {
     this.states = csc.getStatesOfCountry(this.client.country);
   }
 
+  async formatPhone() {
+    this.client.phone_number = this.phone.transform(this.client.phone_number, 'US');
+  }
+
   async submit() {
     if (this.loading) return;
     else this.loading = true;
-    console.log(this.client);
     this.client.visits = [];
+    if (!this.client.pets) this.client.pets = [];
     await this.dbService.addClient(this.client);
     this.loading = false;
     this.goBack();

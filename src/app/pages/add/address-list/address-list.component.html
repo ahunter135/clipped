@@ -1,0 +1,5 @@
+<ion-list style="width: 100%">
+  <ion-item *ngFor="let item of items" button detail (click)="selectAddress(item.description)" style="width: 100%">
+    {{item.description}}
+  </ion-item>
+</ion-list>

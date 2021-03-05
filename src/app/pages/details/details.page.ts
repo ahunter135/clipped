@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { StorageService } from 'src/app/services/storage.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { DbService } from 'src/app/services/db.service';
-import { ActionSheetController, ModalController, NavController, PopoverController } from '@ionic/angular';
+import { ActionSheetController, IonInput, ModalController, NavController, PopoverController } from '@ionic/angular';
 import { PopoverComponent } from './popover/popover.component';
 import { GlobalService } from 'src/app/services/global.service';
 import { File } from '@ionic-native/file/ngx';
@@ -12,14 +12,17 @@ import { VisitsComponent } from 'src/app/modals/visits/visits.component';
 import { CameraService } from 'src/app/services/camera.service';
 import csc from 'country-state-city'
 import { PetsComponent } from 'src/app/modals/pets/pets.component';
+import * as randomcolor from 'random-hex-color'
+import { PhonePipe } from 'src/app/pipes/phone.pipe';
 
+declare var google: any;
 @Component({
   selector: 'app-details',
   templateUrl: './details.page.html',
   styleUrls: ['./details.page.scss'],
 })
 export class DetailsPage implements OnInit {
-
+  @ViewChild('searchbar') searchbar: IonInput;
   client = <any>{
     location: <any>{}
   };
@@ -35,19 +38,24 @@ export class DetailsPage implements OnInit {
   loadingValue = 0;
   countries = csc.getAllCountries();
   states;
+  searching = false;
   constructor(private storage: StorageService, private camera: Camera, 
     private dbService: DbService, private popoverCtrl: PopoverController, public globalService: GlobalService, 
     private file: File, private crop: Crop, private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, 
-    public modalCtrl: ModalController, private cameraService: CameraService) { }
+    public modalCtrl: ModalController, private cameraService: CameraService, private phone: PhonePipe) { }
 
   async ngOnInit() {
     this.client = this.storage.data;
-    console.log(this.client);
+
+    if (!this.client.color) {
+      this.client.color = randomcolor();
+      this.save();
+    }
     if (!this.client.location) this.client.location = <any>{};
     if (this.client.location.country) this.getStates();
     let account = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
     this.accountType = account;
-    console.log(this.accountType);
+
     this.subscription = this.globalService.getObservable().subscribe(async (data) => {
       if (data.key === 'pro') {
         this.proMode = data.value;
@@ -73,6 +81,14 @@ export class DetailsPage implements OnInit {
       } else if (data.key === 'uploadStatus') {
         this.loadingValue = data.value;
       }
+    })
+
+    const input = document.getElementById("pac-input") as HTMLInputElement;
+    const searchBox = new google.maps.places.SearchBox(input);
+    searchBox.addListener("places_changed", (data) => {
+      const places = searchBox.getPlaces();
+      this.client.location.address = places[0].formatted_address;
+      this.save();
     })
   }
 
@@ -152,6 +168,10 @@ export class DetailsPage implements OnInit {
     return await this.popover.present();
   }
 
+  async formatPhone() {
+    this.client.phone_number = this.phone.transform(this.client.phone_number, 'US');
+  }
+
   async showVisits(visit) {
     let modal = await this.modalCtrl.create({
       component: VisitsComponent,
@@ -178,6 +198,30 @@ export class DetailsPage implements OnInit {
     this.popover.dismiss();
   }
 
-  
+  async searchAddress(ev: any) { 
+    let searchVal = this.searchbar.value;
+    const autocomplete = new google.maps.places.AutocompleteService();
 
+    autocomplete.getPlacePredictions({
+      input: searchVal,
+      types: ['address']
+    }, function(predictions, status) {
+      console.log(predictions);
+      this.items = predictions;
+      this.searching = true;
+    }.bind(this))
+  }
+
+  selectAddress(item) {
+    this.client.location.address = item;
+    this.searching = false;
+    this.searchbar.value = "";
+  }
+
+  resetSearching() {
+    if (this.client.location.address == "") {
+      this.searching = false;
+      this.searchbar.value = "";
+    }
+  }
 }

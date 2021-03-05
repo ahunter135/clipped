@@ -17,11 +17,17 @@
       <ion-item button detail (click)="editTextTemplates()" lines="none">
         Edit Text Templates
       </ion-item>
-      <ion-item button detail (click)="editStylists()" lines="none">
-        Edit Stylists
+      <ion-item [disabled]="!isPro" *ngIf="false">
+        <ion-label>Appointment SMS Reminders</ion-label>
+        <ion-toggle [(ngModel)]="remindersOn" (ionChange)="save()"></ion-toggle>
       </ion-item>
-      <ion-item button detail (click)="editServices()" lines="none">
-        Edit Services
+      <ion-item *ngIf="remindersOn" [disabled]="!isPro">
+        <ion-label>Minutes Before Appointment</ion-label>
+        <ion-select [(ngModel)]="reminderFrequency" (ionChange)="save()">
+          <ion-select-option value="15">15</ion-select-option>
+          <ion-select-option value="30">30</ion-select-option>
+          <ion-select-option value="60">60</ion-select-option>
+        </ion-select>
       </ion-item>
       <!--<br>
       <ion-label position="stacked">Type of Account</ion-label>
