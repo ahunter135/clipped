@@ -1,6 +1,6 @@
 <ion-content>
   <span class="form">
-    <div style="width: 100%; position: absolute; top: -88px; ">
+    <div style="width: 100%; position: absolute; top: -88px; " class="dog-logo">
       <ng-lottie [options]=" options" (animationCreated)="animationCreated($event)">
       </ng-lottie>
     </div>
@@ -12,8 +12,8 @@
         *ngIf="platform.is('ios')"></ion-icon>
     </div>
     <span>or use your account</span>
-    <input type="email" placeholder="Email" [(ngModel)]="email" />
-    <input type="password" placeholder="Password" [(ngModel)]="password" />
+    <input type="email" placeholder="Email" [(ngModel)]="email" style="z-index: 99" />
+    <input type="password" placeholder="Password" [(ngModel)]="password" style="z-index: 99" />
     <a [routerLink]="['/register']">Create an Account</a>
     <button (click)="login()" *ngIf="!loading">
       <span>Sign In</span>
