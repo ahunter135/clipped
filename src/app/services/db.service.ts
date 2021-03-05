@@ -17,6 +17,7 @@ export class DbService {
   proLimit = 25;
   userLimit;
   accountType;
+  reminders;
   bypassPro = false;
   constructor(private storage: StorageService, private router: Router, private globalService: GlobalService) {}
 
@@ -35,7 +36,7 @@ export class DbService {
           this.accountType = details.data().type;
           this.userLimit = details.data().limit;
           this.bypassPro = details.data().bypasspro ? details.data().bypasspro : false;
-          console.log(this.bypassPro);
+          this.reminders = details.data().reminders ? details.data().reminders : {on: false, frequency: "15"};
           if (details.data()) resolve(details.data().type);
           else resolve();
         } catch (error) {
@@ -47,12 +48,17 @@ export class DbService {
     });
   }
 
-  async saveAccountType(account, isNew) {
+  async saveAccountType(account, isNew, reminders) {
     return new Promise((resolve, reject) => {
       if (isNew) {
         this.db.collection('users').doc(this.uid).set({
           type: account,
-          limit: this.userLimit ? this.userLimit : this.proLimit
+          limit: this.userLimit ? this.userLimit : this.proLimit,
+          reminders: {
+            on: false,
+            frequency: "15"
+          },
+          bypasspro: false
         }).then(details => {
           this.accountType = account;
           resolve();
@@ -60,7 +66,12 @@ export class DbService {
       } else {
         this.db.collection('users').doc(this.uid).update({
           type: account,
-          limit: this.userLimit ? this.userLimit : this.proLimit
+          limit: this.userLimit ? this.userLimit : this.proLimit,
+          reminders: {
+            on: reminders.on,
+            frequency: reminders.frequency
+          },
+          bypasspro: this.storage.proMode
         }).then(details => {
           this.accountType = account;
           resolve();
@@ -127,13 +138,15 @@ export class DbService {
       uuid: client.uuid,
       phone_number: client.phone_number ? client.phone_number : null,
       pets: client.pets ? client.pets : [],
+      email: client.email ? client.email : null,
       location: {
         address: client.address ? client.address : null,
         city: client.city ? client.city : null,
         state: client.state ? client.state : null,
         country: client.country ? client.country : null,
         zip: client.zip ? client.zip : null
-      }
+      },
+      color: client.color
     }).catch((err) => {
       this.handleError(err)
     });
@@ -151,7 +164,9 @@ export class DbService {
       uuid: client.uuid,
       phone_number: client.phone_number ? client.phone_number : null,
       pets: client.pets ? client.pets : [],
-      location: client.location
+      email: client.email ? client.email : null,
+      location: client.location,
+      color: client.color
     }).catch((err) => {
       this.handleError(err)
     });   ;
@@ -317,7 +332,8 @@ async saveStylists(stylists) {
       date: obj.date,
       pet: obj.pet,
       stylist: obj.stylist ? obj.stylist : null,
-      service: obj.service
+      service: obj.service,
+      notified: false
     });
   }
 
@@ -372,6 +388,12 @@ async saveStylists(stylists) {
     this.router.navigate(['/login'], {
       replaceUrl: true
     });
+  }
+
+  async updateAccountPro(flag) {
+    this.db.collection('users').doc(this.uid).update({
+      bypasspro: flag
+    })
   }
  
 }

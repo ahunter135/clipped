@@ -24,7 +24,7 @@ export function playerFactory() {
     Tab3PageRoutingModule,
     LottieModule.forRoot({ player: playerFactory })
   ],
-  declarations: [Tab3Page, EditAccountComponent],
-  entryComponents: [EditAccountComponent]
+  declarations: [Tab3Page],
+  entryComponents: []
 })
 export class Tab3PageModule {}

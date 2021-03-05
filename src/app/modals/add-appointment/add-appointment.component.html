@@ -19,7 +19,7 @@
       <ion-item>
         <ion-label position="floating">Date of Appointment <span style="color: red">*</span></ion-label>
         <ion-datetime displayFormat="MM/DD/YYYY hh:mm a" min="{{ min }}" max="{{ max }}" value="{{ today }}"
-          [(ngModel)]="app_date"></ion-datetime>
+          [(ngModel)]="app_date" minuteValues="0, 15, 30, 45"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label>Stylist</ion-label>

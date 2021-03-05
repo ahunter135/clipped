@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
+import { StorageService } from 'src/app/services/storage.service';
 import { AddStylistComponent } from '../add-stylist/add-stylist.component';
 import { TextTemplateComponent } from '../text-template/text-template.component';
 
@@ -16,11 +17,16 @@ export class EditAccountComponent implements OnInit {
   state = "home";
   templates = [];
   stylists = [];
+  remindersOn = false;
+  reminderFrequency = "15";
+  isPro = this.storage.proMode;
   constructor(private dbService: DbService, public modalCtrl: ModalController, private navCtrl: NavController,
-    private alertController: AlertController, private router: Router) { }
+    private alertController: AlertController, private router: Router, private storage: StorageService) { }
 
   async ngOnInit() {
     let type = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
+    this.reminderFrequency = this.dbService.reminders.frequency;
+    this.remindersOn = false;//this.isPro ? this.dbService.reminders.on : false;
     if (type) this.account = type;
     else {
       this.account = {
@@ -28,7 +34,6 @@ export class EditAccountComponent implements OnInit {
       }
     }
     this.templates = <any>await this.dbService.getAllTemplates();
-    //this.stylists = <any>await this.dbService.getAllStylists();
   }
 
   async goBack() {
@@ -58,7 +63,7 @@ export class EditAccountComponent implements OnInit {
   }
 
   async save() {
-    this.dbService.saveAccountType(this.account, false);
+    this.dbService.saveAccountType(this.account, false, {on: this.remindersOn, frequency: this.reminderFrequency});
     await this.modalCtrl.dismiss();
   }
 

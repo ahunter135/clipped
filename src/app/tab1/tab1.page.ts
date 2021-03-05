@@ -21,7 +21,7 @@ export class Tab1Page {
   banner;
 
   options: AnimationOptions = {
-    path: '/assets/animations/toydog.json',
+    path: '/assets/animations/dog.json',
   };
 
  
@@ -49,6 +49,8 @@ export class Tab1Page {
       this.globalService.getObservable().subscribe(async (data) => {
         if (data.key === 'pro') {
           this.proMode = data.value;
+          console.log("HERE");
+          this.dbService.updateAccountPro(this.proMode);
           if (!this.adsShowing && !this.proMode && !this.dbService.bypassPro) {
             //showads
             this.setupAds(true);

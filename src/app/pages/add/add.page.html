@@ -18,14 +18,18 @@
       <ion-item>
         <ion-label position="floating">Contact #</ion-label>
         <ion-input placeholder="123-456-7890" type="tel" [(ngModel)]="client.phone_number" autocapitalize="on"
-          autocomplete="name" autocorrection="on"></ion-input>
+          autocomplete="name" autocorrection="on" (ionBlur)="formatPhone()"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Address</ion-label>
-        <ion-input placeholder="123 South Street" type="text" [(ngModel)]="client.address" autocapitalize="on"
-          autocomplete="name" autocorrection="on"></ion-input>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input placeholder="john@gmail.com" type="email" [(ngModel)]="client.email" autocomplete="email">
+        </ion-input>
       </ion-item>
       <ion-item>
+        <input id="pac-input" class="controls" type="text" placeholder="Search Address" [(ngModel)]="client.address"
+          style="border: none; width: 100%;" />
+      </ion-item>
+      <!--<ion-item>
         <ion-label position="floating">City</ion-label>
         <ion-input placeholder="Lebanon" type="text" [(ngModel)]="client.city" autocapitalize="on" autocomplete="name"
           autocorrection="on"></ion-input>
@@ -48,10 +52,15 @@
         <ion-label position="floating">Zip</ion-label>
         <ion-input placeholder="37087" type="number" [(ngModel)]="client.zip" autocapitalize="on" autocomplete="name"
           autocorrection="on"></ion-input>
-      </ion-item>
+      </ion-item>-->
       <ion-item button (click)="addPets()">
         <ion-label>Pets <span *ngIf="client.pets">({{client.pets.length}})</span><span *ngIf="!client.pets">(0)</span>
         </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Client Color</ion-label>
+        <ion-chip [ngStyle]="{'background': client.color}">
+        </ion-chip>
       </ion-item>
       <!--<div *ngIf="accountType == 1">
         <ion-item>

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -35,6 +35,11 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 import { GuideComponent } from './modals/guide/guide.component';
 import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
+import { AddressListComponent } from './pages/add/address-list/address-list.component';
+import { EditAccountComponent } from './modals/edit-account/edit-account.component';
+import { ColorSketchModule } from 'ngx-color/sketch';
+import { PhonePipe } from './pipes/phone.pipe';
+
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
   authDomain: "clipped-3c152.firebaseapp.com",
@@ -48,11 +53,11 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 @NgModule({
-  declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent],
-  entryComponents: [UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent],
+  declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent, PhonePipe],
+  entryComponents: [UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent],
   imports: [BrowserModule, IonicModule.forRoot({
     mode: 'ios'
-  }), AppRoutingModule, FormsModule],
+  }), AppRoutingModule, FormsModule, ColorSketchModule],
   providers: [
     StatusBar,
     SplashScreen,
@@ -74,6 +79,7 @@ firebase.initializeApp(firebaseConfig);
     GoogleMaps,
     AndroidPermissions,
     ClientByIDPipe,
+    PhonePipe,
     DatePipe,
     CurrencyPipe,
     LaunchNavigator,

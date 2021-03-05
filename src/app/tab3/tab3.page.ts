@@ -9,6 +9,7 @@ import { StorageService } from '../services/storage.service';
 import * as introjs from 'intro.js';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
+import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component';
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
@@ -34,6 +35,22 @@ export class Tab3Page {
 
   async ionViewDidEnter() {
     this.darkMode = await this.storage.getItem("darkMode") ? await this.storage.getItem("darkMode") : false;
+  }
+
+  async editStylists() {
+    let modal = await this.modalCtrl.create({
+      component: AddStylistComponent
+    });
+
+    return await modal.present();
+  }
+
+  async addStylist() {
+    
+  }
+
+  async editServices() {
+    this.router.navigate(['/services']);
   }
 
   logout() {

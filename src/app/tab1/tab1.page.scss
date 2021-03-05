@@ -1,3 +1,27 @@
 ion-toolbar {
     --border-style: 'none';
 }
+
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation:portrait) {
+	/* For portrait layouts only */
+.dog {
+    height: 400px; 
+    width: 100%;
+}
+}
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 767px) and (orientation:portrait) {
+	/* For portrait layouts only */
+.dog {
+    height: 250px; 
+        width: 100%;
+}
+}
+@media only screen and (min-device-width: 120px) and (max-device-width: 374px) and (orientation:portrait) {
+	/* For portrait layouts only */
+.dog {
+    height: 150px; 
+    width: 100%;
+}
+}
+ 

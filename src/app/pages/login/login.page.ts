@@ -88,7 +88,7 @@ export class LoginPage implements OnInit {
     firebase.auth().signInWithCredential(credential).then(async response => {
       this.dbService.uid = response.user.uid;
         await this.dbService.setupDb();
-        await this.dbService.saveAccountType(0, true);
+        await this.dbService.saveAccountType(0, true, false);
         this.handleResponse(response);
     }).catch(error => {
       this.loading = false;
@@ -106,7 +106,7 @@ export class LoginPage implements OnInit {
       firebase.auth().signInWithCredential(credential).then(async response => {
         this.dbService.uid = response.user.uid;
         await this.dbService.setupDb();
-        await this.dbService.saveAccountType(0, true);
+        await this.dbService.saveAccountType(0, true, false);
         this.handleResponse(response);
       })    
     .catch(error => {

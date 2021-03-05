@@ -37,8 +37,8 @@
           <h5 *ngIf="app.app.stylist">Stylist: {{app.app.stylist}}</h5>
           <p>{{app.app.date | date: 'mediumDate'}}</p>
         </ion-label>
-        <ion-chip color="secondary">
-          <ion-label color="dark">{{app.app.date | date:'shortTime'}}</ion-label>
+        <ion-chip [ngStyle]="{'background': app.color}">
+          <ion-label color="light">{{app.app.date | date:'shortTime'}}</ion-label>
         </ion-chip>
       </ion-item>
     </ion-list>

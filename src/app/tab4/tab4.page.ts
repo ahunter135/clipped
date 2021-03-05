@@ -157,7 +157,10 @@ export class Tab4Page {
     let mapOptions: GoogleMapOptions = {
       camera: {
         zoom: 5,
-        target: latLng
+        target: latLng,
+      },
+      controls: {
+        mapToolbar: false
       },
       mapType: GoogleMapsMapTypeId.ROADMAP
     }
@@ -187,6 +190,7 @@ export class Tab4Page {
         let region = this.map.getVisibleRegion();
         if (region.contains(this.markers[i].getPosition())) {
           let client = this.markers[i].get('client');
+
           this.appointmentsShownOnMap.push(client)
         }
       }
@@ -208,11 +212,19 @@ export class Tab4Page {
     let lng = results[0].position.lng;
 
     let latLng = new LatLng(lat, lng);
-    
+
+    let pinColor;
+    for (let i = 0; i < this.storage.clients.length; i++) {
+      if (this.storage.clients[i].id == client.client_id) {
+        pinColor = this.storage.clients[i].color ? this.storage.clients[i].color : 'red';
+        client.color = pinColor;
+        break;
+      }
+    }
     this.map.addMarker({
       position: latLng,
       animation: GoogleMapsAnimation.DROP,
-      icon: 'red',
+      icon: pinColor,
       title: this.clientByID.transform(client.client_id).toString(),
       snippet: client.location.address + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
     }).then((marker:Marker) => {

@@ -22,10 +22,6 @@
         <ion-label position="floating">Price</ion-label>
         <ion-input type="text" [(ngModel)]="service.price" (ionBlur)="formatPrice($event)"></ion-input>
       </ion-item>
-      <ion-item lines="none">
-        <ion-label position="floating">Details</ion-label>
-        <ion-input type="text" [(ngModel)]="service.details"></ion-input>
-      </ion-item>
       <br>
       <ion-button expand="block" color="dark" (click)="save()">Save</ion-button>
     </ion-card-content>
