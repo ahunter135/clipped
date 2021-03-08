@@ -25,8 +25,27 @@ export class Tab2Page {
   }
 
   ionViewDidEnter() {
+    console.log(this.storage.clients);
+    for (let i = 0; i < this.storage.clients.length; i++) {
+      this.storage.clients[i].visits.sort(this.sortByProperty("date"));
+    }
     this.temp = this.storage.clients;
   }
+
+  sortByProperty(property){  
+    return function(a,b){  
+       if(a[property] < b[property])  
+          return 1;  
+       else if(a[property] > b[property])  
+          return -1;  
+   
+       return 0;  
+    }  
+ }
+
+ async openSettings() {
+  this.router.navigate(['/tabs/tab2/settings']);
+}
 
   async refresh(event) {
     await this.dbService.getClients();

@@ -13,6 +13,7 @@ import csc from 'country-state-city'
 import { PetsComponent } from 'src/app/modals/pets/pets.component';
 import * as randomcolor from 'random-hex-color'
 import { PhonePipe } from 'src/app/pipes/phone.pipe';
+import { ColorPickerComponent } from 'src/app/modals/color-picker/color-picker.component';
 
 declare var google: any;
 @Component({
@@ -72,6 +73,19 @@ export class AddPage implements OnInit {
     await this.dbService.addClient(this.client);
     this.loading = false;
     this.goBack();
+  }
+
+  async openColorPicker() {
+    let modal = await this.modalCtrl.create({
+      component: ColorPickerComponent,
+      componentProps: {
+        
+      }
+    })
+    modal.onDidDismiss().then(() => {
+      
+    })
+    return await modal.present();
   }
 
   async addPhoto() {

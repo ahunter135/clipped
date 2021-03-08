@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="danger">
     <ion-buttons slot="start" color="dark">
       <ion-button (click)="goBack()" color="dark">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
@@ -7,7 +7,9 @@
     </ion-buttons>
     <ion-title>Client Visit</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="submit()" color="dark" *ngIf="isEditing"> Save </ion-button>
+      <ion-button (click)="submit()" color="dark" *ngIf="isEditing">
+        Save
+      </ion-button>
       <ion-button (click)="showMore($event)" color="dark" *ngIf="!isEditing">
         <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
       </ion-button>
@@ -18,9 +20,19 @@
 <ion-content>
   <ion-card *ngIf="!isEditing">
     <img *ngIf="visit.image" src="{{ visit.image }}" />
-    <img *ngIf="!visit.image && !loading" src="https://via.placeholder.com/1024x1024.jpg?text={{ visit.date }}" />
+    <img
+      *ngIf="!visit.image && !loading"
+      src="https://via.placeholder.com/1024x1024.jpg?text={{ visit.date }}"
+    />
     <div style="width: 100%; height: 100%" *ngIf="loading">
-      <ion-spinner style="display: block; margin: auto; margin-top: 50px; margin-bottom: 50px;"></ion-spinner>
+      <ion-spinner
+        style="
+          display: block;
+          margin: auto;
+          margin-top: 50px;
+          margin-bottom: 50px;
+        "
+      ></ion-spinner>
     </div>
     <ion-card-header>
       <ion-card-subtitle>{{ visit.date }}</ion-card-subtitle>
@@ -32,25 +44,51 @@
   </ion-card>
   <ion-card *ngIf="isEditing">
     <img *ngIf="added_image && !loading" src="{{ added_image }}" />
-    <img *ngIf="!added_image && !loading" src="https://via.placeholder.com/1024x1024.jpg?text={{
+    <img
+      *ngIf="!added_image && !loading"
+      src="https://via.placeholder.com/1024x1024.jpg?text={{
         today | date: 'mediumDate'
-      }}" />
+      }}"
+    />
     <div style="width: 100%; height: 100%" *ngIf="loading">
-      <ion-spinner style="display: block; margin: auto; margin-top: 50px; margin-bottom: 50px;"></ion-spinner>
+      <ion-spinner
+        style="
+          display: block;
+          margin: auto;
+          margin-top: 50px;
+          margin-bottom: 50px;
+        "
+      ></ion-spinner>
     </div>
     <ion-card-header>
       <ion-card-title>{{ client.name }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-item>
-        <ion-label position="floating">Date of Visit <span style="color: red">*</span></ion-label>
-        <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="{{ max }}" value="{{ today }}"
-          [(ngModel)]="visit_date"></ion-datetime>
+        <ion-label position="floating"
+          >Date of Visit <span style="color: red">*</span></ion-label
+        >
+        <ion-datetime
+          displayFormat="MM/DD/YYYY"
+          min="1994-03-14"
+          max="{{ max }}"
+          value="{{ today }}"
+          [(ngModel)]="visit_date"
+        ></ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Summary of Visit <span style="color: red">*</span></ion-label>
-        <ion-textarea rows="8" style="height: 120px" [(ngModel)]="summary" autoGrow="true" maxlength="750"
-          autocapitalize="on" mode="ios">
+        <ion-label position="floating"
+          >Summary of Visit <span style="color: red">*</span></ion-label
+        >
+        <ion-textarea
+          rows="8"
+          style="height: 120px"
+          [(ngModel)]="summary"
+          autoGrow="true"
+          maxlength="750"
+          autocapitalize="on"
+          mode="ios"
+        >
         </ion-textarea>
       </ion-item>
     </ion-card-content>
@@ -58,9 +96,18 @@
 </ion-content>
 <ion-footer class="ion-no-border">
   <ion-toolbar>
-    <ion-button expand="block" color="dark" (click)="addPhoto()" *ngIf="(visit == null || !visit.image) && !loading">
+    <ion-button
+      expand="block"
+      color="dark"
+      (click)="addPhoto()"
+      *ngIf="(visit == null || !visit.image) && !loading"
+    >
       <span>Add Photo</span>
     </ion-button>
-    <ion-progress-bar style="padding-top: 5px" *ngIf="loading" value="{{ loadingValue }}"></ion-progress-bar>
+    <ion-progress-bar
+      style="padding-top: 5px"
+      *ngIf="loading"
+      value="{{ loadingValue }}"
+    ></ion-progress-bar>
   </ion-toolbar>
 </ion-footer>

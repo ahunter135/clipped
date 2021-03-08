@@ -19,7 +19,7 @@ export class LoginPage implements OnInit {
   password;
   loading = false;
   options: AnimationOptions = {
-    path: '/assets/animations/dog.json',
+    path: '/assets/animations/cat.json',
   };
 
   loadingOptions: AnimationOptions = {

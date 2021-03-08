@@ -37,7 +37,8 @@ export class EditAccountComponent implements OnInit {
   }
 
   async goBack() {
-    this.navCtrl.navigateBack("tabs/tab3", {
+    let url = this.router.url.split('/edit-account');
+    this.navCtrl.navigateBack(url[0], {
       replaceUrl: true
     });
   }

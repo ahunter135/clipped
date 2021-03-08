@@ -1,7 +1,7 @@
 import { AdMob } from '@admob-plus/ionic/ngx';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController, Platform } from '@ionic/angular';
+import { AlertController, ModalController, NavController, Platform } from '@ionic/angular';
 import { EditAccountComponent } from '../modals/edit-account/edit-account.component';
 import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
 import { DbService } from '../services/db.service';
@@ -27,7 +27,7 @@ export class Tab3Page {
 
   }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, private modalCtrl: ModalController, private alertController: AlertController,
-    private admob: AdMob, private platform: Platform) {
+    private admob: AdMob, private platform: Platform, private navCtrl: NavController) {
       document.addEventListener('admob.rewarded.close', async () => {
         await this.rewarded.load();
       })
@@ -35,22 +35,6 @@ export class Tab3Page {
 
   async ionViewDidEnter() {
     this.darkMode = await this.storage.getItem("darkMode") ? await this.storage.getItem("darkMode") : false;
-  }
-
-  async editStylists() {
-    let modal = await this.modalCtrl.create({
-      component: AddStylistComponent
-    });
-
-    return await modal.present();
-  }
-
-  async addStylist() {
-    
-  }
-
-  async editServices() {
-    this.router.navigate(['/services']);
   }
 
   logout() {
@@ -66,7 +50,7 @@ export class Tab3Page {
     });
 
     return await accountModal.present();*/
-    this.router.navigate(['edit-account'], {
+    this.router.navigate([this.router.url + '/edit-account'], {
       replaceUrl: true
     });
   }
@@ -122,5 +106,12 @@ export class Tab3Page {
   async toggleDarkMode() {
       this.storage.setItem({key: 'darkMode', value: this.darkMode});
       document.body.classList.toggle('dark', this.darkMode);
+  }
+
+  async goBack() {
+    let url = this.router.url.split('/settings');
+    this.navCtrl.navigateBack(url[0], {
+      replaceUrl: true
+    });
   }
 }

@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: Tab4Page,
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
   }
 ];
 

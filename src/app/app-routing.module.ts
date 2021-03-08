@@ -17,16 +17,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
   {
-    path: 'edit-account',
-    component: EditAccountComponent
-  },
-  {
     path: 'guide',
     component: GuideComponent
-  },
-  {
-    path: 'services',
-    loadChildren: () => import('./pages/services/services.module').then( m => m.ServicesPageModule)
   }
 ];
 @NgModule({

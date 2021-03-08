@@ -9,6 +9,7 @@ import { ClientByIDPipe } from '../pipes/client-by-id.pipe';
 import { GoogleMaps, GoogleMapsEvent, LatLng, MarkerOptions, Marker, GoogleMapsMapTypeId, Geocoder, GoogleMapsAnimation, HtmlInfoWindow, GoogleMapOptions, GoogleMap } from "@ionic-native/google-maps";
 import { DatePipe } from '@angular/common';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab4',
@@ -29,7 +30,8 @@ export class Tab4Page {
   footerState: IonPullUpFooterState;
   isPro = this.storage.proMode;
   constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe,
-    private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator, private alertController: AlertController) {
+    private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator, private alertController: AlertController,
+    private router: Router) {
   }
 
   async ngOnInit() {
@@ -47,6 +49,10 @@ export class Tab4Page {
   }
 
   ionViewDidEnter() {
+  }
+
+  async openSettings() {
+    this.router.navigate(['/tabs/tab4/settings']);
   }
 
   async updateApps() {

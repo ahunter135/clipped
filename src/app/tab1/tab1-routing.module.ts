@@ -16,7 +16,15 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginPage
-  }
+  },
+  {
+    path: 'services',
+    loadChildren: () => import('../pages/services/services.module').then( m => m.ServicesPageModule)
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
+  },
 ];
 
 @NgModule({

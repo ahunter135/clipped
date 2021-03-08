@@ -10,7 +10,11 @@ const routes: Routes = [
   {
     path: 'details',
     loadChildren: () => import('../pages/details/details.module').then( m => m.DetailsPageModule)
-  }
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
+  },
 ];
 
 @NgModule({

@@ -8,6 +8,7 @@ import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
 import { AdMob } from '@admob-plus/ionic/ngx';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
+import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -77,6 +78,22 @@ export class Tab1Page {
       component: UpgradeComponent
     });
     return await modal.present();
+  }
+
+  async editStylists() {
+    let modal = await this.modalCtrl.create({
+      component: AddStylistComponent
+    });
+
+    return await modal.present();
+  }
+
+  async editServices() {
+    this.router.navigate(['/tabs/tab1/services']);
+  }
+
+  async openSettings() {
+    this.router.navigate(['/tabs/tab1/settings']);
   }
 
   async setupAds(flag) {

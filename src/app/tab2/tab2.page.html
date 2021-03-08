@@ -1,12 +1,25 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Clients
-    </ion-title>
+  <ion-toolbar color="danger">
+    <ion-title color="dark"> Clients </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openSettings()">
+        <ion-icon
+          color="dark"
+          style="opacity: 0.9"
+          slot="icon-only"
+          name="cog-outline"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar>
-    <ion-searchbar (ionInput)="search($event.target.value)" debounce="200" showCancelButton="focus"
-      (ionCancel)="resetSearch()"></ion-searchbar>
+  <ion-toolbar color="danger">
+    <ion-searchbar
+      color="light"
+      (ionInput)="search($event.target.value)"
+      debounce="200"
+      showCancelButton="focus"
+      (ionCancel)="resetSearch()"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -14,30 +27,32 @@
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Clients</ion-title>
-    </ion-toolbar>
-  </ion-header>
   <ion-list>
-    <ion-item button detail *ngFor="let client of storage.clients" (click)="goToDetails(client)">
+    <ion-item
+      button
+      detail
+      *ngFor="let client of storage.clients"
+      (click)="goToDetails(client)"
+    >
       <ion-avatar slot="start">
-        <img src="{{client.image}}">
+        <img src="{{client.image}}" />
       </ion-avatar>
       <ion-label>
         <h2>{{client.name}}</h2>
-        <h3 *ngIf="client.visits.length > 0">Last Visit: {{client.visits[client.visits.length - 1].date}}</h3>
-        <p *ngIf="client.visits.length > 0" style="text-overflow: ellipsis;">
-          {{client.visits[client.visits.length - 1].summary}}</p>
+        <h3 *ngIf="client.visits.length > 0">
+          Last Visit: {{client.visits[0].date}}
+        </h3>
+        <p *ngIf="client.visits.length > 0" style="text-overflow: ellipsis">
+          {{client.visits[0].summary}}
+        </p>
       </ion-label>
     </ion-item>
     <ion-item lines="none" *ngIf="!proMode && !dbService.bypassPro">
-      <p style="opacity: 0.6; font-size: 14px;">
-        You have an account limit of {{(dbService.userLimit ? dbService.userLimit : dbService.proLimit)}} clients. To
-        unlock unlimited clients, please consider
-        subscribing via settings.
+      <p style="opacity: 0.6; font-size: 14px">
+        You have an account limit of {{(dbService.userLimit ?
+        dbService.userLimit : dbService.proLimit)}} clients. To unlock unlimited
+        clients, please consider subscribing via settings.
       </p>
     </ion-item>
   </ion-list>
-
 </ion-content>

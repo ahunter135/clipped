@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="danger">
     <ion-buttons slot="start" color="dark">
       <ion-button (click)="modalCtrl.dismiss()" color="dark">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Edit Stylists</ion-title>
+    <ion-title>Edit Groomers</ion-title>
     <ion-buttons slot="end" color="dark">
       <ion-button (click)="add()" color="dark">
         <ion-icon slot="icon-only" name="add"></ion-icon>
@@ -16,8 +16,13 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let item of stylists; let index = index">
-      <ion-icon name="remove-circle" slot="start" color="danger" (click)="remove(index)"></ion-icon>
-      {{item}}
+      <ion-icon
+        name="remove-circle"
+        slot="start"
+        color="danger"
+        (click)="remove(index)"
+      ></ion-icon>
+      {{ item }}
     </ion-item>
   </ion-list>
 </ion-content>
