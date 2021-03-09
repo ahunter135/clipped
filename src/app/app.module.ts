@@ -40,6 +40,7 @@ import { EditAccountComponent } from './modals/edit-account/edit-account.compone
 import { ColorSketchModule } from 'ngx-color/sketch';
 import { PhonePipe } from './pipes/phone.pipe';
 import { ColorPickerComponent } from './modals/color-picker/color-picker.component';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -85,6 +86,7 @@ firebase.initializeApp(firebaseConfig);
     CurrencyPipe,
     LaunchNavigator,
     SignInWithApple,
+    SocialSharing,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

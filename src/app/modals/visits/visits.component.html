@@ -7,6 +7,9 @@
     </ion-buttons>
     <ion-title>Client Visit</ion-title>
     <ion-buttons slot="end">
+      <ion-button color="dark" *ngIf="!isEditing" (click)="share()">
+        <ion-icon slot="icon-only" name="share-outline"></ion-icon>
+      </ion-button>
       <ion-button (click)="submit()" color="dark" *ngIf="isEditing">
         Save
       </ion-button>
@@ -36,7 +39,10 @@
     </div>
     <ion-card-header>
       <ion-card-subtitle>{{ visit.date }}</ion-card-subtitle>
-      <ion-card-title>{{ client.name }}</ion-card-title>
+      <ion-card-title
+        ><span *ngIf="visit.pet">{{ visit.pet }}</span
+        ><span *ngIf="!visit.pet">{{ client.name }}</span></ion-card-title
+      >
     </ion-card-header>
     <ion-card-content>
       {{ visit.summary }}
@@ -61,7 +67,7 @@
       ></ion-spinner>
     </div>
     <ion-card-header>
-      <ion-card-title>{{ client.name }}</ion-card-title>
+      <ion-card-title>{{ pet }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-item>
@@ -75,6 +81,16 @@
           value="{{ today }}"
           [(ngModel)]="visit_date"
         ></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Pet <span style="color: red">*</span></ion-label>
+        <ion-select placeholder="Select One" [(ngModel)]="pet">
+          <ion-select-option
+            *ngFor="let item of client.pets"
+            value="{{ item.name }}"
+            >{{ item.name }}
+          </ion-select-option>
+        </ion-select>
       </ion-item>
       <ion-item>
         <ion-label position="floating"

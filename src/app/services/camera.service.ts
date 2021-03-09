@@ -19,13 +19,13 @@ export class CameraService {
     if (client) {
       return new Promise(async (resolve, reject) => {
         await this.showActionSheet(flag, client);
-        resolve();
+        resolve(true);
       });
     } else {
       this.dontUpload = true;
       return new Promise(async (resolve, reject) => {
         await this.showActionSheet(flag, client);
-        resolve();
+        resolve(true);
       });
     }
   }
@@ -91,10 +91,10 @@ export class CameraService {
             let images = <any>await this.dbService.getClientImages(client);
             console.log(images);
             this.globalService.publishData({key: 'images', value: images, flag: flag});
-            resolve();
+            resolve(true);
           } else {
             this.globalService.publishData({key: 'images', value: img, flag: flag});
-            resolve();
+            resolve(true);
           }
           
         });

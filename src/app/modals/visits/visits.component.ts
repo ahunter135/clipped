@@ -11,6 +11,10 @@ import { GlobalService } from 'src/app/services/global.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { v4 as uuidv4 } from 'uuid';
 import { CropImageComponent } from '../crop-image/crop-image.component';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import * as watermark from 'watermarkjs';
+
 @Component({
   selector: 'app-visits',
   templateUrl: './visits.component.html',
@@ -32,9 +36,11 @@ export class VisitsComponent implements OnInit {
   subscription; 
   popover;
   loadingValue = 0;
+  pet = "";
   constructor(public navParams: NavParams, private storage: StorageService,
     private dbService: DbService, private modalCtrl: ModalController,
-    private cameraService: CameraService, private globalService: GlobalService, private popoverCtrl: PopoverController) { 
+    private cameraService: CameraService, private globalService: GlobalService, private popoverCtrl: PopoverController,
+    private socialShare: SocialSharing, private fileTransfer: FileTransfer, private file: File) { 
     if (this.navParams.data.visit != null) {
       this.visit = this.navParams.data.visit;
     } else {
@@ -87,14 +93,61 @@ export class VisitsComponent implements OnInit {
       this.cameraService.startCameraProcess(this.client, false);
   }
 
+  async share() {
+    let file = <any>await this.downloadFile(this.visit.image);
+    //if (this.proMode) {
+      file = await this.file.readAsDataURL(this.file.dataDirectory, "temp.png");
+      let blobFile = await this.dataURItoBlob(file);
+      file = <any>await this.addTextWatermark(blobFile);
+    //}
+    
+    this.socialShare.share(null, null, file, null);
+  }
+
+  async downloadFile(image) {
+    return new Promise( async (resolve, reject) => {
+      const fileTransfer = this.fileTransfer.create();
+      let file = await fileTransfer.download(image, this.file.dataDirectory + 'temp.png');
+      resolve(file.toURL());
+    });
+  }
+
+  async addTextWatermark(file) {
+    return new Promise( async (resolve, reject) => {
+        let img = await watermark([file]).image(watermark.text.lowerLeft('Shared from Clipped', '95px Arial', '#fff', 0.8));
+        resolve(img.src);
+    });
+  }
+
+  dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ia], {type:mimeString});
+}
+
 
   async submit() {
     if (this.isEditing) {
-      if(!this.summary) return
+      if(!this.summary || !this.visit_date || !this.pet) return
       let obj = <any>{
         summary: this.summary,
         uuid: uuidv4(),
-        date: moment(this.visit_date).format("MMM Do YYYY")
+        date: moment(this.visit_date).format("MMM Do YYYY"),
+        pet: this.pet
       }
       if (this.added_image) obj.image = this.added_image;
       this.client.visits.push(obj);
