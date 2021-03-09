@@ -14,9 +14,9 @@
       <ion-card-subtitle>Account Details</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <ion-item button detail (click)="editTextTemplates()" lines="none">
+      <!--<ion-item button detail (click)="editTextTemplates()" lines="none">
         Edit Text Templates
-      </ion-item>
+      </ion-item>-->
       <ion-item [disabled]="!isPro" *ngIf="false">
         <ion-label>Appointment SMS Reminders</ion-label>
         <ion-toggle [(ngModel)]="remindersOn" (ionChange)="save()"></ion-toggle>
@@ -60,12 +60,7 @@
 <ion-content *ngIf="state == 'edit-templates'">
   <ion-list>
     <ion-item *ngFor="let template of templates; let indexOfTemplate = index">
-      <ion-icon
-        name="remove-circle"
-        slot="start"
-        color="danger"
-        (click)="remove(indexOfTemplate)"
-      ></ion-icon>
+      <ion-icon name="remove-circle" slot="start" color="danger" (click)="remove(indexOfTemplate)"></ion-icon>
       {{ template }}
     </ion-item>
   </ion-list>

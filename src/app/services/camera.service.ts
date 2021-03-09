@@ -89,6 +89,7 @@ export class CameraService {
           if (!this.dontUpload) {
             await this.dbService.uploadImage(img, client.uuid, flag);
             let images = <any>await this.dbService.getClientImages(client);
+            console.log(images);
             this.globalService.publishData({key: 'images', value: images, flag: flag});
             resolve();
           } else {

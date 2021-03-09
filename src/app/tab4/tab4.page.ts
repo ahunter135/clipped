@@ -322,6 +322,10 @@ export class Tab4Page {
     return client_array;
   }
 
+  async addApp() {
+    this.router.navigate(["tabs/tab4/select-client"]);
+  }
+
   async presentAlertConfirm(message) {
     return new Promise(async (resolve, reject) => {
       const alert = await this.alertController.create({

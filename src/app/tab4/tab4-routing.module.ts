@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SelectClientComponent } from '../modals/select-client/select-client.component';
 import { Tab4Page } from './tab4.page';
 
 const routes: Routes = [
@@ -10,6 +11,10 @@ const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
+  },
+  {
+    path: 'select-client',
+    component: SelectClientComponent
   }
 ];
 

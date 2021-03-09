@@ -71,12 +71,6 @@ export class DetailsPage implements OnInit {
           this.loading = false;
           this.save();
         } else {
-          if (!data.value) {
-            this.loading = false;
-            return;
-          }
-          this.clientImages = await this.dbService.getClientImages(this.client);
-          //this.clientImages.shift();
           this.loading = false;
         }
       } else if (data.key === 'uploadStatus') {
@@ -207,8 +201,9 @@ export class DetailsPage implements OnInit {
         
       }
     })
-    modal.onDidDismiss().then(() => {
-      
+    modal.onDidDismiss().then((data) => {
+      if (data.data)
+      this.client.color = data.data.color;
     })
     return await modal.present();
   }

@@ -9,6 +9,7 @@ import { IonicPullupModule } from 'ionic-pullup';
 import { Tab4PageRoutingModule } from './tab4-routing.module';
 import { ClientByIDPipe } from '../pipes/client-by-id.pipe';
 import { ViewAppointmentComponent } from '../modals/view-appointment/view-appointment.component';
+import { SelectClientComponent } from '../modals/select-client/select-client.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { ViewAppointmentComponent } from '../modals/view-appointment/view-appoin
     Tab4PageRoutingModule,
     IonicPullupModule
   ],
-  declarations: [Tab4Page, ClientByIDPipe, ViewAppointmentComponent],
-  entryComponents: [ViewAppointmentComponent]
+  declarations: [Tab4Page, ClientByIDPipe, ViewAppointmentComponent, SelectClientComponent],
+  entryComponents: [ViewAppointmentComponent, SelectClientComponent]
 })
 export class Tab4PageModule {}

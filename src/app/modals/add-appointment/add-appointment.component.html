@@ -15,17 +15,9 @@
     </ion-card-header>
     <ion-card-content>
       <ion-item>
-        <ion-label position="floating"
-          >Date of Appointment <span style="color: red">*</span></ion-label
-        >
-        <ion-datetime
-          displayFormat="MM/DD/YYYY hh:mm a"
-          min="{{ min }}"
-          max="{{ max }}"
-          value="{{ today }}"
-          [(ngModel)]="app_date"
-          minuteValues="0, 15, 30, 45"
-        ></ion-datetime>
+        <ion-label position="floating">Date of Appointment <span style="color: red">*</span></ion-label>
+        <ion-datetime displayFormat="MMM DD YY hh:mm a" min="{{ min }}" max="{{ max }}" value="{{ today }}"
+          [(ngModel)]="app_date" minuteValues="0, 15, 30, 45"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label>Stylist</ion-label>
@@ -38,20 +30,15 @@
       <ion-item>
         <ion-label>Pet <span style="color: red">*</span></ion-label>
         <ion-select placeholder="Select One" [(ngModel)]="pet">
-          <ion-select-option
-            *ngFor="let item of client.pets"
-            value="{{ item.name }}"
-            >{{ item.name }}</ion-select-option
-          >
+          <ion-select-option *ngFor="let item of client.pets" value="{{ item.name }}">{{ item.name }}
+          </ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
         <ion-label>Service <span style="color: red">*</span></ion-label>
         <ion-select placeholder="Select One" [(ngModel)]="service">
-          <ion-select-option
-            *ngFor="let item of storage.services"
-            value="{{ item.id }}"
-            >{{ item.name }} - {{ item.price }}
+          <ion-select-option *ngFor="let item of storage.services" value="{{ item.id }}">{{ item.name }} -
+            {{ item.price }}
           </ion-select-option>
         </ion-select>
       </ion-item>

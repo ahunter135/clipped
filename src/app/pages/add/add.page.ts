@@ -82,8 +82,9 @@ export class AddPage implements OnInit {
         
       }
     })
-    modal.onDidDismiss().then(() => {
-      
+    modal.onDidDismiss().then((data) => {
+      if (data.data)
+      this.client.color = data.data.color;
     })
     return await modal.present();
   }

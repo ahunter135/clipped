@@ -12,4 +12,9 @@ export class ColorPickerComponent implements OnInit {
 
   ngOnInit() {}
 
+  chooseColor(color) {
+    this.modalCtrl.dismiss({
+      color: color
+    })
+  }
 }

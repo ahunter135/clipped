@@ -38,7 +38,9 @@ export class VisitsComponent implements OnInit {
     if (this.navParams.data.visit != null) {
       this.visit = this.navParams.data.visit;
     } else {
-      this.visit = <any>{};
+      this.visit = <any>{
+        image: ""
+      };
     }
     this.client = this.navParams.data.client;
     this.isEditing = this.navParams.data.editing;
@@ -50,10 +52,20 @@ export class VisitsComponent implements OnInit {
           return;
         }
         this.added_image = data.value[data.value.length - 1];
-        if (this.visit == null) {
-          this.visit = {
-            image: this.added_image
+        if (!this.visit)
+          this.visit = <any>{
+            image: ""
           }
+        this.visit.image = this.added_image;
+        
+        if (!this.isEditing) {
+          for (let i = 0; i < this.client.visits.length; i++) {
+            if (this.client.visits[i].uuid == this.visit.uuid) {
+              this.client.visits[i] = this.visit;
+              break;
+            }
+          }
+          await this.dbService.editClientVisit(this.client);
         }
         this.loading = false;
       } else if (data.key === 'uploadStatus') {

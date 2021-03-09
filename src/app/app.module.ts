@@ -39,6 +39,7 @@ import { AddressListComponent } from './pages/add/address-list/address-list.comp
 import { EditAccountComponent } from './modals/edit-account/edit-account.component';
 import { ColorSketchModule } from 'ngx-color/sketch';
 import { PhonePipe } from './pipes/phone.pipe';
+import { ColorPickerComponent } from './modals/color-picker/color-picker.component';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -53,8 +54,8 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 @NgModule({
-  declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent, PhonePipe],
-  entryComponents: [UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent],
+  declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent, PhonePipe, ColorPickerComponent],
+  entryComponents: [UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent, ColorPickerComponent],
   imports: [BrowserModule, IonicModule.forRoot({
     mode: 'ios'
   }), AppRoutingModule, FormsModule, ColorSketchModule],

@@ -2,10 +2,10 @@ ion-toolbar {
   --border-style: "none";
 }
 
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+@media only screen and (min-device-width: 768px) and (max-device-width: 1025px) {
   /* For portrait layouts only */
   .dog {
-    height: 400px;
+    height: 500px;
     width: 100%;
   }
 }
@@ -13,19 +13,14 @@ ion-toolbar {
 @media only screen and (min-device-width: 375px) and (max-device-width: 767px) {
   /* For portrait layouts only */
   .dog {
-    height: 250px;
+    height: 300px;
     width: 100%;
   }
 }
 @media only screen and (min-device-width: 120px) and (max-device-width: 374px) {
   /* For portrait layouts only */
   .dog {
-    height: 150px;
+    height: 200px;
     width: 100%;
   }
-}
-
-.dog {
-  height: 200px;
-  width: 100%;
 }
