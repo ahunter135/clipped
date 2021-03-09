@@ -64,26 +64,6 @@ export class Tab4Page {
 
     let clients = await this.getClientArrayFromAppointment();
     await this.addMarkers(clients);
-    if (clients.length > 0) {
-      let address = clients[0].location.address + " " + clients[0].location.zip;
-      let results = await Geocoder.geocode( { 'address': address});
-
-      let lat = results[0].position.lat;
-      let lng = results[0].position.lng;
-      let latLng = new LatLng(lat, lng);
-
-      
-      //Bouunds are set, see if any markers are here.
-      for (let i = 0; i < this.markers.length; i++) {
-        let region = this.map.getVisibleRegion();
-        if (region.contains(this.markers[i].getPosition())) {
-          let client = this.markers[i].get('client');
-          this.appointmentsShownOnMap.push(client)
-        }
-      }
-      
-      this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
-    }
   }
 
   filterAppointments(appointments) {
@@ -205,9 +185,9 @@ export class Tab4Page {
     })
   }
 
-  addMarkers(clients) {
+  async addMarkers(clients) {
     for (let i = 0; i < clients.length; i++) {
-      this.addMarker(clients[i]);
+      await this.addMarker(clients[i]);
     }
   }
 
@@ -237,6 +217,13 @@ export class Tab4Page {
       marker.set('client', client);
       marker.set('pet', client.app.pet ? JSON.stringify(client.app.pet) : null);
       this.markers.push(marker);
+
+      let region = this.map.getVisibleRegion();
+      if (region.contains(marker.getPosition())) {
+        this.appointmentsShownOnMap.push(client)
+      }
+      
+      this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
 
       marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
         marker.showInfoWindow();
