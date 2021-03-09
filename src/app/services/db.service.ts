@@ -141,6 +141,7 @@ export class DbService {
       email: client.email ? client.email : null,
       location: {
         address: client.address ? client.address : null,
+        address2: client.address2 ? client.address2 : null,
         city: client.city ? client.city : null,
         state: client.state ? client.state : null,
         country: client.country ? client.country : null,

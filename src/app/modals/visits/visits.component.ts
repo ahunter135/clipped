@@ -95,11 +95,11 @@ export class VisitsComponent implements OnInit {
 
   async share() {
     let file = <any>await this.downloadFile(this.visit.image);
-    //if (this.proMode) {
+    if (!this.proMode) {
       file = await this.file.readAsDataURL(this.file.dataDirectory, "temp.png");
       let blobFile = await this.dataURItoBlob(file);
       file = <any>await this.addTextWatermark(blobFile);
-    //}
+    }
     
     this.socialShare.share(null, null, file, null);
   }
