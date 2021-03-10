@@ -2,6 +2,7 @@ import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-add-service',
@@ -12,10 +13,11 @@ export class AddServiceComponent implements OnInit {
   service = {
     name: '',
     price: '0.00',
-    details: ''
+    details: '',
+    id: ''
   }
   isEdit = false;
-  constructor(public modalCtrl: ModalController, private currency: CurrencyPipe, private dbService: DbService, private navParams: NavParams) { }
+  constructor(public modalCtrl: ModalController, private currency: CurrencyPipe, private dbService: DbService, private navParams: NavParams, private storage: StorageService) { }
 
   ngOnInit() {
     this.service = this.navParams.data.item ? this.navParams.data.item : {
@@ -29,6 +31,20 @@ export class AddServiceComponent implements OnInit {
     let amount = this.currency.transform(this.service.price, '$');
 
     this.service.price = amount;
+  }
+
+  async delete() {
+    console.log(this.storage.services);
+    let id = '';
+    for (let i = 0; i < this.storage.services.length; i++) {
+      if (this.storage.services[i].id == this.service.id) {
+        id = this.service.id;
+        break;
+      }
+    }
+
+    await this.dbService.deleteService(id);
+    this.modalCtrl.dismiss();
   }
 
   async save() {

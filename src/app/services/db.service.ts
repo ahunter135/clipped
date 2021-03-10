@@ -380,6 +380,10 @@ async saveStylists(stylists) {
     });
   }
 
+  async deleteService(id) {
+    return this.db.collection('users').doc(this.uid).collection('services').doc(id).delete();
+  }
+
   async editClientVisit(client) {
     this.editClient(client);
   }
