@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { ModalController, NavController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { StorageService } from './services/storage.service';
@@ -26,7 +26,9 @@ export class AppComponent {
     private launchReview: LaunchReview,
     private globalService: GlobalService,
     private router: Router,
-    private lottie: LottieSplashScreen
+    private lottie: LottieSplashScreen,
+    private modalCtrl: ModalController,
+    private navCtrl: NavController
   ) {
     this.initializeApp();
   }
@@ -60,19 +62,10 @@ export class AppComponent {
       });
 
       this.oneSignal.endInit();
-      //let token = await this.fcm.getToken();
-      //console.log(token);
-      if (await this.storage.getItem("darkMode")) {
-        toggleDarkTheme(true);
-      } else {
-        toggleDarkTheme(false);
-      }
 
-      // Add or remove the "dark" class based on if the media query matches
-      function toggleDarkTheme(shouldAdd) {
-        document.body.classList.toggle('dark', shouldAdd);
-      }
-
+      this.platform.backButton.subscribeWithPriority(10, () => {
+          this.navCtrl.pop();
+      });
     });    
   }
 }

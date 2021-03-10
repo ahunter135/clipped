@@ -11,12 +11,7 @@ export class ColorPickerComponent implements OnInit {
   constructor(public modalCtrl: ModalController, private platform: Platform) { }
 
   ngOnInit() {
-    this.platform.backButton.subscribeWithPriority(10, () => {
-      this.modalCtrl.dismiss();
-    });
-  }
-  ionViewWillLeave() {
-    this.platform.backButton.unsubscribe();
+
   }
 
   chooseColor(color) {

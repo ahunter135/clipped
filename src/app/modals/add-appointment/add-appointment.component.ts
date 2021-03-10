@@ -21,14 +21,6 @@ export class AddAppointmentComponent implements OnInit {
   service;
   constructor(public modalCtrl: ModalController, private navParams: NavParams, private db: DbService, public storage: StorageService, private platform: Platform) {
     this.client = this.navParams.data.client;
-
-    this.platform.backButton.subscribeWithPriority(10, () => {
-      this.modalCtrl.dismiss();
-    });
-  }
-
-  ionViewWillLeave() {
-    this.platform.backButton.unsubscribe();
   }
 
   async ngOnInit() {

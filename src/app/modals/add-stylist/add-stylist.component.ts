@@ -13,12 +13,6 @@ export class AddStylistComponent implements OnInit {
 
   async ngOnInit() {
     this.stylists = <any>await this.dbService.getStylists();
-    this.platform.backButton.subscribeWithPriority(10, () => {
-      this.modalCtrl.dismiss();
-    });
-  }
-  ionViewWillLeave() {
-    this.platform.backButton.unsubscribe();
   }
 
   async add() {

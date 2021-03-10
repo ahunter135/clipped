@@ -2,24 +2,17 @@
   <ion-toolbar color="danger">
     <ion-title color="dark"> Clients </ion-title>
     <ion-buttons slot="end">
+      <ion-button [routerLink]="['/tabs/tab2/add']" color="dark">
+        <ion-icon style="opacity: 0.9" slot="icon-only" name="add"></ion-icon>
+      </ion-button>
       <ion-button (click)="openSettings()">
-        <ion-icon
-          color="dark"
-          style="opacity: 0.9"
-          slot="icon-only"
-          name="cog-outline"
-        ></ion-icon>
+        <ion-icon color="dark" style="opacity: 0.9" slot="icon-only" name="cog-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar color="danger">
-    <ion-searchbar
-      color="light"
-      (ionInput)="search($event.target.value)"
-      debounce="200"
-      showCancelButton="focus"
-      (ionCancel)="resetSearch()"
-    ></ion-searchbar>
+  <ion-toolbar color="warning">
+    <ion-searchbar color="light" (ionInput)="search($event.target.value)" debounce="200" showCancelButton="focus"
+      (ionCancel)="resetSearch()"></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -28,12 +21,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-list>
-    <ion-item
-      button
-      detail
-      *ngFor="let client of storage.clients"
-      (click)="goToDetails(client)"
-    >
+    <ion-item button detail *ngFor="let client of storage.clients" (click)="goToDetails(client)">
       <ion-avatar slot="start">
         <img src="{{client.image}}" />
       </ion-avatar>

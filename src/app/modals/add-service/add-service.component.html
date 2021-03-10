@@ -11,22 +11,15 @@
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-card-subtitle
-        >Details
-        <ion-button
-          style="
+      <ion-card-subtitle>Details
+        <ion-button style="
             float: right;
             margin: auto;
             position: absolute;
             top: 0;
             bottom: 0;
             right: 0;
-          "
-          fill="clear"
-          size="small"
-          (click)="delete()"
-          *ngIf="isEdit"
-        >
+          " fill="clear" size="small" (click)="delete()" *ngIf="isEdit">
           <ion-icon name="trash" color="dark"></ion-icon>
         </ion-button>
       </ion-card-subtitle>
@@ -38,11 +31,8 @@
       </ion-item>
       <ion-item lines="none">
         <ion-label position="floating">Price</ion-label>
-        <ion-input
-          type="text"
-          [(ngModel)]="service.price"
-          (ionBlur)="formatPrice($event)"
-        ></ion-input>
+        <ion-input type="text" [(ngModel)]="service.price" (ionBlur)="formatPrice($event)" (ionFocus)="erasePrice()">
+        </ion-input>
       </ion-item>
       <br />
       <ion-button expand="block" color="dark" (click)="save()">Save</ion-button>

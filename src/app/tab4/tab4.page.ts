@@ -186,6 +186,7 @@ export class Tab4Page {
   }
 
   async addMarkers(clients) {
+    this.appointmentsShownOnMap = [];
     for (let i = 0; i < clients.length; i++) {
       await this.addMarker(clients[i]);
     }

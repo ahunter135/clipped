@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AddPage } from '../pages/add/add.page';
 import { Tab2Page } from './tab2.page';
 
 const routes: Routes = [
   {
     path: '',
     component: Tab2Page,
+  },
+  {
+    path: 'add',
+    component: AddPage
   },
   {
     path: 'details',

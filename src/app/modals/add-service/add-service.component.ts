@@ -1,6 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams, Platform } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
 
@@ -17,7 +17,7 @@ export class AddServiceComponent implements OnInit {
     id: ''
   }
   isEdit = false;
-  constructor(public modalCtrl: ModalController, private currency: CurrencyPipe, private dbService: DbService, private navParams: NavParams, private storage: StorageService, private platform: Platform) { }
+  constructor(public modalCtrl: ModalController, private currency: CurrencyPipe, private dbService: DbService, private navParams: NavParams, private storage: StorageService) { }
 
   ngOnInit() {
     this.service = this.navParams.data.item ? this.navParams.data.item : {
@@ -25,19 +25,12 @@ export class AddServiceComponent implements OnInit {
       price: '0.00'
     };
     this.isEdit = this.navParams.data.isEdit;
-    this.platform.backButton.subscribeWithPriority(10, () => {
-      this.modalCtrl.dismiss();
-    });
-  }
-
-  ionViewWillLeave() {
-    this.platform.backButton.unsubscribe();
   }
 
   formatPrice(ev) {
     let amount = this.currency.transform(this.service.price, '$');
 
-    this.service.price = amount;
+    this.service.price = amount.toString();
   }
 
   async delete() {
@@ -52,6 +45,10 @@ export class AddServiceComponent implements OnInit {
 
     await this.dbService.deleteService(id);
     this.modalCtrl.dismiss();
+  }
+
+  erasePrice() {
+    if (!this.isEdit) this.service.price = "";
   }
 
   async save() {
