@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-color-picker',
@@ -8,9 +8,16 @@ import { ModalController } from '@ionic/angular';
 })
 export class ColorPickerComponent implements OnInit {
 
-  constructor(public modalCtrl: ModalController) { }
+  constructor(public modalCtrl: ModalController, private platform: Platform) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.modalCtrl.dismiss();
+    });
+  }
+  ionViewWillLeave() {
+    this.platform.backButton.unsubscribe();
+  }
 
   chooseColor(color) {
     this.modalCtrl.dismiss({

@@ -332,7 +332,7 @@ async saveStylists(stylists) {
       client: obj.client,
       date: obj.date,
       pet: obj.pet,
-      stylist: obj.stylist ? obj.stylist : null,
+      //stylist: obj.stylist ? obj.stylist : null,
       service: obj.service,
       notified: false
     });
@@ -367,16 +367,14 @@ async saveStylists(stylists) {
   async addService(obj) {
     this.db.collection('users').doc(this.uid).collection('services').doc(uuidv4()).set({
       name: obj.name,
-      price: obj.price,
-      details: obj.details
+      price: obj.price
     });
   }
 
   async editService(obj) {
     this.db.collection('users').doc(this.uid).collection('services').doc(obj.id).update({
       name: obj.name,
-      price: obj.price,
-      details: obj.details
+      price: obj.price
     });
   }
 

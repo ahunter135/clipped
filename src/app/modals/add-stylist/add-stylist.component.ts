@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, Platform } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 
 @Component({
@@ -9,10 +9,16 @@ import { DbService } from 'src/app/services/db.service';
 })
 export class AddStylistComponent implements OnInit {
   stylists = [];
-  constructor(private alertCtrl: AlertController, public modalCtrl: ModalController, private dbService: DbService) { }
+  constructor(private alertCtrl: AlertController, public modalCtrl: ModalController, private dbService: DbService, private platform: Platform) { }
 
   async ngOnInit() {
     this.stylists = <any>await this.dbService.getStylists();
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      this.modalCtrl.dismiss();
+    });
+  }
+  ionViewWillLeave() {
+    this.platform.backButton.unsubscribe();
   }
 
   async add() {

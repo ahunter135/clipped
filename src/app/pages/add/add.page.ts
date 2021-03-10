@@ -24,7 +24,7 @@ declare var google: any;
 export class AddPage implements OnInit {
 
   client = <any>{
-    color: randomcolor()
+    color: "#ff9aa2"
   }
   today = moment().format("YYYY-MM-DD");
   max = moment().format("YYYY-MM-DD");

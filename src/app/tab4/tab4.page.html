@@ -54,7 +54,7 @@
         <ion-label>
           <h3>{{app.client_id | clientByID}}; {{app.location.address}}</h3>
           <h5 *ngIf="app.app.pet">For {{app.app.pet}}</h5>
-          <h5 *ngIf="app.app.stylist">Stylist: {{app.app.stylist}}</h5>
+          <!--<h5 *ngIf="app.app.stylist">Stylist: {{app.app.stylist}}</h5>-->
           <p>{{app.app.date | date: 'mediumDate'}}</p>
         </ion-label>
         <ion-chip [ngStyle]="{'background': app.color}">
