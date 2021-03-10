@@ -23,6 +23,7 @@ import * as watermark from 'watermarkjs';
 export class VisitsComponent implements OnInit {
   client;
   max = moment().format("YYYY-MM-DD");
+  today = moment().format("YYYY-MM-DD");
   last_visit;
   proMode = this.storage.proMode || this.dbService.bypassPro;
   actionSheet;
