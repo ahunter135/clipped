@@ -5,7 +5,7 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Client Visit</ion-title>
+    <ion-title>Past Appointment</ion-title>
     <ion-buttons slot="end">
       <ion-button color="dark" *ngIf="!isEditing" (click)="share()">
         <ion-icon slot="icon-only" name="share-outline"></ion-icon>
@@ -80,11 +80,27 @@
           max="{{ max }}"
           value="{{ today }}"
           [(ngModel)]="visit_date"
+          readonly
         ></ion-datetime>
       </ion-item>
       <ion-item>
+        <ion-label position="floating">Appointment</ion-label>
+        <ion-select
+          [(ngModel)]="selectedAppointment"
+          (ionChange)="appointmentSelected()"
+        >
+          <ion-select-option
+            *ngFor="let item of appointments; let i = index"
+            value="{{ i }}"
+          >
+            {{ item.pet }} -
+            {{ item.date | date: "mediumDate" }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
         <ion-label>Pet <span style="color: red">*</span></ion-label>
-        <ion-select placeholder="Select One" [(ngModel)]="pet">
+        <ion-select placeholder="Select One" [(ngModel)]="pet" readonly>
           <ion-select-option
             *ngFor="let item of client.pets"
             value="{{ item.name }}"
@@ -93,9 +109,7 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-label position="floating"
-          >Summary of Visit <span style="color: red">*</span></ion-label
-        >
+        <ion-label position="floating">Summary of Visit</ion-label>
         <ion-textarea
           rows="8"
           style="height: 120px"

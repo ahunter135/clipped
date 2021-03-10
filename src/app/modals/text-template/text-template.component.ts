@@ -28,13 +28,6 @@ export class TextTemplateComponent implements OnInit {
   }
 
   async send() {
-    if (!this.text.template) {
-      let res = await this.presentAlertConfirm("Would you like to save this text as a template?");
-      if (res) {
-        this.templates.push(this.text.message);
-        await this.dbService.saveTemplate(this.templates);
-      }
-    }
     let number = this.client.phone_number;
     number = number.replace('-', '');
       this.sms.send(number, this.text.message, {android: { intent: 'INTENT' }});

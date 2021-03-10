@@ -15,6 +15,7 @@ import { PetsComponent } from 'src/app/modals/pets/pets.component';
 import * as randomcolor from 'random-hex-color'
 import { PhonePipe } from 'src/app/pipes/phone.pipe';
 import { ColorPickerComponent } from 'src/app/modals/color-picker/color-picker.component';
+import { AddAppointmentComponent } from 'src/app/modals/add-appointment/add-appointment.component';
 
 declare var google: any;
 @Component({
@@ -118,11 +119,14 @@ export class DetailsPage implements OnInit {
 
   sortByProperty(property){  
     return function(a,b){  
-       if(a[property] < b[property])  
+      let date1 = moment(a[property], "MMM Do YYYY");
+      let date2 = moment(b[property], "MMM Do YYYY");
+
+       if(date1.isBefore(date2))  
           return 1;  
-       else if(a[property] > b[property])  
+       else if(date1.isAfter(date2))  
           return -1;  
-   
+      
        return 0;  
     }  
  }
@@ -233,5 +237,19 @@ export class DetailsPage implements OnInit {
       this.searching = false;
       this.searchbar.value = "";
     }
+  }
+
+  async addAppointment() {
+    let modal = await this.modalCtrl.create({
+      component: AddAppointmentComponent,
+      componentProps: {
+        client: this.client,
+        cameFromList: false
+      }
+    })
+    modal.onDidDismiss().then(() => {
+    });
+
+    await modal.present();
   }
 }

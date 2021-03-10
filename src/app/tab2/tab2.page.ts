@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DbService } from '../services/db.service';
 import { GlobalService } from '../services/global.service';
 import { StorageService } from '../services/storage.service';
-
+import * as moment from 'moment';
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -34,11 +34,14 @@ export class Tab2Page {
 
   sortByProperty(property){  
     return function(a,b){  
-       if(a[property] < b[property])  
+      let date1 = moment(a[property], "MMM Do YYYY");
+      let date2 = moment(b[property], "MMM Do YYYY");
+
+       if(date1.isBefore(date2))  
           return 1;  
-       else if(a[property] > b[property])  
+       else if(date1.isAfter(date2))  
           return -1;  
-   
+      
        return 0;  
     }  
  }

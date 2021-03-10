@@ -16,26 +16,31 @@
     <ion-card-content>
       <ion-item>
         <ion-label position="floating">Contact #</ion-label>
-        <ion-input placeholder="123-456-7890" type="tel" [(ngModel)]="client.phone_number" autocapitalize="on"
-          autocomplete="name" autocorrection="on"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Templates</ion-label>
-        <ion-select okText="Okay" cancelText="Dismiss" [(ngModel)]="text.template" (ionChange)="setMessageText()">
-          <ion-select-option *ngFor="let template of templates">{{template}}</ion-select-option>
-        </ion-select>
+        <ion-input
+          placeholder="123-456-7890"
+          type="tel"
+          [(ngModel)]="client.phone_number"
+          autocapitalize="on"
+          autocomplete="name"
+          autocorrection="on"
+        ></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Text Message</ion-label>
-        <ion-textarea placeholder="Don't forget about your appointment at 10:30!" [(ngModel)]="text.message"
-          autoGrow="false" rows="8" maxlength="750" autocapitalize="on">
+        <ion-textarea
+          placeholder="Don't forget about your appointment at 10:30!"
+          [(ngModel)]="text.message"
+          autoGrow="false"
+          rows="8"
+          maxlength="750"
+          autocapitalize="on"
+        >
         </ion-textarea>
       </ion-item>
     </ion-card-content>
-    <ion-button expand="block" color="dark" (click)="send()">Send
+    <ion-button expand="block" color="dark" (click)="send()">Send </ion-button>
+    <ion-button expand="block" color="light" (click)="clear()"
+      >Clear
     </ion-button>
-    <ion-button expand="block" color="light" (click)="clear()">Clear
-    </ion-button>
-
   </ion-card>
 </ion-content>

@@ -88,18 +88,7 @@ export class PopoverComponent implements OnInit {
   }
 
   async add() {
-    let modal = await this.modalCtrl.create({
-      component: AddAppointmentComponent,
-      componentProps: {
-        client: this.client,
-        cameFromList: false
-      }
-    })
-    modal.onDidDismiss().then(() => {
-      this.dismissPopover.dismiss();
-    });
-
-    await modal.present();
+    
   }
 
   async delete() {

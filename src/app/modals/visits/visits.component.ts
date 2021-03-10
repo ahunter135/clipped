@@ -23,20 +23,21 @@ import * as watermark from 'watermarkjs';
 export class VisitsComponent implements OnInit {
   client;
   max = moment().format("YYYY-MM-DD");
-  today = moment().format("YYYY-MM-DD");
   last_visit;
   proMode = this.storage.proMode || this.dbService.bypassPro;
   actionSheet;
   isEditing = false;
   visit = <any>{};
   summary;
-  visit_date = this.today;
+  visit_date;
   added_image;
   loading = false;
   subscription; 
   popover;
   loadingValue = 0;
   pet = "";
+  appointments = [];
+  selectedAppointment = <any>{};
   constructor(public navParams: NavParams, private storage: StorageService,
     private dbService: DbService, private modalCtrl: ModalController,
     private cameraService: CameraService, private globalService: GlobalService, private popoverCtrl: PopoverController,
@@ -50,7 +51,6 @@ export class VisitsComponent implements OnInit {
     }
     this.client = this.navParams.data.client;
     this.isEditing = this.navParams.data.editing;
-    this.last_visit = this.today;
     this.subscription = this.globalService.getObservable().subscribe(async (data) => {
       if (data.key === 'images') {
         if (!data.value) {
@@ -80,7 +80,23 @@ export class VisitsComponent implements OnInit {
     })
   }
 
-  ngOnInit() {}
+  async ngOnInit() {
+    await this.dbService.getAllAppointments();
+    for (let i = 0; i < this.storage.appointments.length; i++) {
+      if (this.storage.appointments[i].client == this.client.id) {
+        let appDate = moment(this.storage.appointments[i].date);
+        if (appDate.isSameOrBefore(moment()))
+          this.appointments.push(this.storage.appointments[i]);
+      }
+    }
+  }
+
+  appointmentSelected() {
+    let temp = this.appointments[this.selectedAppointment];
+    this.pet = temp.pet
+    this.visit_date = temp.date;
+    console.log(this.pet);
+  }
 
   ngOnDestroy() {
     //this.subscription.unsubscribe();
@@ -142,9 +158,9 @@ export class VisitsComponent implements OnInit {
 
   async submit() {
     if (this.isEditing) {
-      if(!this.summary || !this.visit_date || !this.pet) return
+      if(!this.visit_date || !this.pet) return
       let obj = <any>{
-        summary: this.summary,
+        summary: this.summary ? this.summary : null,
         uuid: uuidv4(),
         date: moment(this.visit_date).format("MMM Do YYYY"),
         pet: this.pet
