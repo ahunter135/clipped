@@ -61,7 +61,7 @@ export class DbService {
             frequency: "15"
           },
           bypasspro: false,
-          name: this.name
+          name: this.name ? this.name : ""
         }).then(details => {
           this.accountType = account;
           resolve(true);
