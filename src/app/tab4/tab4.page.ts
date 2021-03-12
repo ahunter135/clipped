@@ -120,11 +120,15 @@ export class Tab4Page {
   }
 
   async openAppointment(item) {
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: ViewAppointmentComponent,
       componentProps: {
         app: item
       }
+    })
+    modal.onDidDismiss().then(() => {
+      this.storage.modalShown = false;
     })
     return await modal.present();
   }
@@ -238,7 +242,8 @@ export class Tab4Page {
       cssClass: 'my-custom-class',
       buttons: [{
         text: 'Navigate To',
-        icon: this.isPro ? 'navigate' : 'star',
+        role: !this.isPro ? 'destructive' : null,
+        icon: this.isPro ? 'navigate' : 'lock-closed-outline',
         handler: () => {
           if (!this.isPro) {
             this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
@@ -253,13 +258,16 @@ export class Tab4Page {
         text: 'Details',
         icon: 'information-circle',
         handler:async  () => {
+          this.storage.modalShown = true;
           const modal = await this.modalCtrl.create({
             component: ViewAppointmentComponent,
             componentProps: {
               app: client.app
             }
           });
-
+          modal.onDidDismiss().then(() => {
+            this.storage.modalShown = false;
+          })
           return await modal.present();
         }
       }, 

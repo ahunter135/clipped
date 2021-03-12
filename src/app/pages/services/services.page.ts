@@ -25,6 +25,7 @@ export class ServicesPage implements OnInit {
   }
 
   async add() {
+    this.storage.modalShown = true;
     const modal = await this.modalCtrl.create({
       component: AddServiceComponent,
       componentProps: {
@@ -34,12 +35,14 @@ export class ServicesPage implements OnInit {
 
     modal.onDidDismiss().then(async (data) => {
       await this.dbService.getAllServices();
+      this.storage.modalShown = false;
     })
 
     return await modal.present();
   }
 
   async editService(item) {
+    this.storage.modalShown = true;
     const modal = await this.modalCtrl.create({
       component: AddServiceComponent,
       componentProps: {
@@ -50,6 +53,7 @@ export class ServicesPage implements OnInit {
 
     modal.onDidDismiss().then(async (data) => {
       await this.dbService.getAllServices();
+      this.storage.modalShown = false;
     })
 
     return await modal.present();

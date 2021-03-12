@@ -49,6 +49,7 @@ export class PopoverComponent implements OnInit {
       await this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
       return;
     }
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: TextTemplateComponent,
       componentProps: {
@@ -57,6 +58,7 @@ export class PopoverComponent implements OnInit {
     })
     modal.onDidDismiss().then(() => {
       this.dismissPopover.dismiss();
+      this.storage.modalShown = false;
     });
 
     await modal.present();

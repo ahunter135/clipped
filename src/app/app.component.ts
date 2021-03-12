@@ -1,15 +1,11 @@
 import { Component } from '@angular/core';
 
 import { ModalController, NavController, Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { StorageService } from './services/storage.service';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { LaunchReview } from '@ionic-native/launch-review/ngx';
 import * as introjs from 'intro.js';
-import { GlobalService } from './services/global.service';
-import { Router } from '@angular/router';
-import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 
 @Component({
   selector: 'app-root',
@@ -19,14 +15,10 @@ import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 export class AppComponent {
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private storage: StorageService,
     private oneSignal: OneSignal,
     private launchReview: LaunchReview,
-    private globalService: GlobalService,
-    private router: Router,
-    private lottie: LottieSplashScreen,
     private modalCtrl: ModalController,
     private navCtrl: NavController
   ) {
@@ -62,10 +54,22 @@ export class AppComponent {
       });
 
       this.oneSignal.endInit();
-
-      this.platform.backButton.subscribeWithPriority(10, () => {
-          this.navCtrl.pop();
-      });
     });    
+
+    this.platform.backButton.subscribeWithPriority(998, () => {
+      this.navCtrl.pop();
+      return;
+    });
+
+    this.platform.backButton.subscribeWithPriority(999, (processNextHandler) => {
+      if (this.storage.modalShown) {
+        this.modalCtrl.dismiss();
+        this.storage.modalShown = false;
+      } else {
+        processNextHandler();
+      }
+      return;
+    });
+
   }
 }

@@ -101,6 +101,7 @@ export class DetailsPage implements OnInit {
   }
 
   async viewPets() {
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: PetsComponent,
       componentProps: {
@@ -112,6 +113,7 @@ export class DetailsPage implements OnInit {
         this.client.pets = data.data;
         this.save();
       }
+      this.storage.modalShown = false;
     });
 
     return await modal.present();
@@ -172,6 +174,7 @@ export class DetailsPage implements OnInit {
   }
 
   async showVisits(visit) {
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: VisitsComponent,
       componentProps: {
@@ -185,6 +188,7 @@ export class DetailsPage implements OnInit {
       this.client = this.storage.data;
       console.log(this.client);
       this.client.visits.sort(this.sortByProperty("date"));
+      this.storage.modalShown = false;
     })
     return await modal.present();
   }
@@ -199,6 +203,7 @@ export class DetailsPage implements OnInit {
   }
 
   async openColorPicker() {
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: ColorPickerComponent,
       componentProps: {
@@ -208,6 +213,7 @@ export class DetailsPage implements OnInit {
     modal.onDidDismiss().then((data) => {
       if (data.data)
       this.client.color = data.data.color;
+      this.storage.modalShown = false;
     })
     return await modal.present();
   }
@@ -240,6 +246,7 @@ export class DetailsPage implements OnInit {
   }
 
   async addAppointment() {
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: AddAppointmentComponent,
       componentProps: {
@@ -248,6 +255,7 @@ export class DetailsPage implements OnInit {
       }
     })
     modal.onDidDismiss().then(() => {
+      this.storage.modalShown = false;
     });
 
     await modal.present();

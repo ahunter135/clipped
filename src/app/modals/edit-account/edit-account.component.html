@@ -1,4 +1,4 @@
-<ion-header *ngIf="state == 'home'">
+<ion-header>
   <ion-toolbar color="danger">
     <ion-buttons slot="start" color="dark">
       <ion-button (click)="goBack()" color="dark">
@@ -8,15 +8,27 @@
     <ion-title>Edit Account</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="state == 'home'">
+<ion-content>
   <ion-card>
     <ion-card-header>
       <ion-card-subtitle>Account Details</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <!--<ion-item button detail (click)="editTextTemplates()" lines="none">
-        Edit Text Templates
-      </ion-item>-->
+
+      <ion-item>
+        <ion-label position="floating">
+          Name
+        </ion-label>
+        <ion-input placeholder="John Doe" [(ngModel)]="dbService.name" (ionChange)="save()" debounce="500"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">
+          Email
+        </ion-label>
+        <ion-input placeholder="John@doe.com" [(ngModel)]="email" readonly></ion-input>
+      </ion-item>
+
+
       <ion-item [disabled]="!isPro" *ngIf="false">
         <ion-label>Appointment SMS Reminders</ion-label>
         <ion-toggle [(ngModel)]="remindersOn" (ionChange)="save()"></ion-toggle>
@@ -29,39 +41,6 @@
           <ion-select-option value="60">60</ion-select-option>
         </ion-select>
       </ion-item>
-      <!--<br>
-      <ion-label position="stacked">Type of Account</ion-label>
-      <ion-segment [(ngModel)]="account">
-        <ion-segment-button value="0">
-          <ion-label>Salon/Barber</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="1">
-          <ion-label>Pets</ion-label>
-        </ion-segment-button>
-      </ion-segment>-->
     </ion-card-content>
   </ion-card>
-</ion-content>
-<ion-header *ngIf="state == 'edit-templates'">
-  <ion-toolbar>
-    <ion-buttons slot="start" color="dark">
-      <ion-button (click)="state = 'home'" color="dark">
-        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Edit Templates</ion-title>
-    <!--<ion-buttons slot="end" color="dark">
-      <ion-button (click)="addTemplate()" color="dark">
-        <ion-icon slot="icon-only" name="add"></ion-icon>
-      </ion-button>
-    </ion-buttons>-->
-  </ion-toolbar>
-</ion-header>
-<ion-content *ngIf="state == 'edit-templates'">
-  <ion-list>
-    <ion-item *ngFor="let template of templates; let indexOfTemplate = index">
-      <ion-icon name="remove-circle" slot="start" color="danger" (click)="remove(indexOfTemplate)"></ion-icon>
-      {{ template }}
-    </ion-item>
-  </ion-list>
 </ion-content>

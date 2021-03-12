@@ -12,16 +12,14 @@ import { TextTemplateComponent } from '../text-template/text-template.component'
   styleUrls: ['./edit-account.component.scss'],
 })
 export class EditAccountComponent implements OnInit {
-
+  name = this.dbService.name != "" ? this.dbService.name : null;
+  email = this.dbService.email;
   account = <any>{};
-  state = "home";
-  templates = [];
-  stylists = [];
   remindersOn = false;
   reminderFrequency = "15";
   isPro = this.storage.proMode;
-  constructor(private dbService: DbService, public modalCtrl: ModalController, private navCtrl: NavController,
-    private alertController: AlertController, private router: Router, private storage: StorageService) { }
+  constructor(public dbService: DbService, public modalCtrl: ModalController, private navCtrl: NavController,
+    private alertController: AlertController, private storage: StorageService) { }
 
   async ngOnInit() {
     let type = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
@@ -33,47 +31,19 @@ export class EditAccountComponent implements OnInit {
         type: 0
       }
     }
-    this.templates = <any>await this.dbService.getAllTemplates();
   }
 
   async goBack() {
-    let url = this.router.url.split('/edit-account');
-    this.navCtrl.navigateBack(url[0], {
-      replaceUrl: true
-    });
+    this.modalCtrl.dismiss();
   }
 
-  async editTextTemplates() {
-    this.state = "edit-templates";
-  }
-
-  async editStylists() {
-    let modal = await this.modalCtrl.create({
-      component: AddStylistComponent
-    });
-
-    return await modal.present();
-  }
-
-  async addStylist() {
-    
-  }
-
-  async editServices() {
-    this.router.navigate(['/services']);
-  }
+  async changeEmail() {}
 
   async save() {
-    this.dbService.saveAccountType(this.account, false, {on: this.remindersOn, frequency: this.reminderFrequency});
-    await this.modalCtrl.dismiss();
-  }
-
-  async remove(index) {
-    let res = await this.presentAlertConfirm("Are you sure you would like to delete this template");
-    if (res) {
-      this.templates.splice(index, 1);
-      this.dbService.saveTemplate(this.templates);
-    }
+    this.dbService.saveAccountType(0, false, {
+      on: false,
+      frequency: "60"
+    });
   }
 
   async presentAlertConfirm(message) {

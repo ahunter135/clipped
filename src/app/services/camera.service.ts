@@ -5,6 +5,7 @@ import { rejects } from 'assert';
 import { CropImageComponent } from '../modals/crop-image/crop-image.component';
 import { DbService } from './db.service';
 import { GlobalService } from './global.service';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class CameraService {
   actionSheet;
   dontUpload = false;
   constructor(private actionSheetCtrl: ActionSheetController, private camera: Camera, private modalCtrl: ModalController,
-    private dbService: DbService, private globalService: GlobalService) { }
+    private dbService: DbService, private globalService: GlobalService, private storage: StorageService) { }
 
   async startCameraProcess(client, flag) {
     if (client) {
@@ -80,12 +81,14 @@ export class CameraService {
         correctOrientation: true
       }      
       this.camera.getPicture(options).then(async (imageData) => {
+        this.storage.modalShown = true;
         let cropModal = await this.modalCtrl.create({
           component: CropImageComponent,
           componentProps: { "imageBase64": "data:image/jpeg;base64," + imageData, "width": 1024, "height": 1024 }
         });
         cropModal.onDidDismiss().then(async data => {
           let img = data.data;
+          this.storage.modalShown = false;
           if (!this.dontUpload) {
             await this.dbService.uploadImage(img, client.uuid, flag);
             let images = <any>await this.dbService.getClientImages(client);

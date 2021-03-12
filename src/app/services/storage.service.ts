@@ -19,6 +19,7 @@ export class StorageService {
   products: any;
   proMode = false;
   services = [];
+  modalShown = false;
   constructor(private iap: InAppPurchase, public globalService: GlobalService, private modalCtrl: ModalController, private platform: Platform) {
     //Storage.clear();
   }

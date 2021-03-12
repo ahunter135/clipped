@@ -19,73 +19,36 @@
         <ion-avatar slot="start">
           <img src="{{client.image}}" />
         </ion-avatar>
-        <ion-button (click)="editProfileImg()" color="light" *ngIf="!loading"
-          >Edit Profile Image</ion-button
-        >
-        <ion-progress-bar
-          *ngIf="loading"
-          type="indeterminate"
-        ></ion-progress-bar>
+        <ion-button (click)="editProfileImg()" color="light" *ngIf="!loading">Edit Profile Image</ion-button>
+        <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Name</ion-label>
-        <ion-input
-          placeholder="John Doe"
-          type="text"
-          [(ngModel)]="client.name"
-          autocapitalize="on"
-          autocomplete="name"
-          autocorrection="on"
-          (ionChange)="save()"
-        ></ion-input>
+        <ion-input placeholder="John Doe" type="text" [(ngModel)]="client.name" autocapitalize="on" autocomplete="name"
+          autocorrection="on" (ionChange)="save()"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Contact #</ion-label>
-        <ion-input
-          placeholder="123-456-7890"
-          type="tel"
-          [(ngModel)]="client.phone_number"
-          autocapitalize="on"
-          autocomplete="name"
-          autocorrection="on"
-          (ionChange)="save()"
-          (ionBlur)="formatPhone()"
-        ></ion-input>
+        <ion-input placeholder="123-456-7890" type="tel" [(ngModel)]="client.phone_number" autocapitalize="on"
+          autocomplete="name" autocorrection="on" (ionChange)="save()" (ionBlur)="formatPhone()"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Email</ion-label>
-        <ion-input
-          placeholder="john@gmail.com"
-          type="email"
-          [(ngModel)]="client.email"
-          autocomplete="email"
-          (ionChange)="save()"
-        ></ion-input>
+        <ion-input autocapitalize="on" placeholder="john@gmail.com" type="email" [(ngModel)]="client.email"
+          autocomplete="email" (ionChange)="save()"></ion-input>
       </ion-item>
       <ion-item>
-        <input
-          id="pac-input"
-          class="controls"
-          type="text"
-          placeholder="Search Address"
-          [(ngModel)]="client.location.address"
-          style="border: none; width: 100%; background-color: #ffffff"
-        />
+        <input id="pac-input" class="controls" type="text" placeholder="Search Address"
+          [(ngModel)]="client.location.address" style="border: none; width: 100%; background-color: #ffffff" />
       </ion-item>
       <ion-item>
         <ion-label position="floating">Address 2</ion-label>
-        <ion-input
-          placeholder="Apt B4"
-          type="text"
-          [(ngModel)]="client.location.address2"
-          (ionChange)="save()"
-        >
+        <ion-input placeholder="Apt B4" type="text" [(ngModel)]="client.location.address2" autocapitalize="on"
+          (ionChange)="save()">
         </ion-input>
       </ion-item>
       <ion-item button (click)="viewPets()">
-        <ion-label
-          >Pets <span *ngIf="client.pets">({{client.pets.length}})</span
-          ><span *ngIf="!client.pets">(0)</span>
+        <ion-label>Pets <span *ngIf="client.pets">({{client.pets.length}})</span><span *ngIf="!client.pets">(0)</span>
         </ion-label>
       </ion-item>
       <ion-item button (click)="openColorPicker()">
@@ -93,9 +56,7 @@
         <ion-chip [ngStyle]="{'background': client.color}"> </ion-chip>
       </ion-item>
       <br />
-      <ion-button expand="block" color="dark" (click)="addAppointment()"
-        >Add Appointment</ion-button
-      >
+      <ion-button expand="block" color="dark" (click)="addAppointment()">Add Appointment</ion-button>
     </ion-list>
   </ion-card>
   <ion-card>
@@ -105,43 +66,19 @@
     <ion-card-content>
       <ion-grid>
         <ion-row>
-          <ion-col
-            sizeLg="4"
-            sizeMd="4"
-            sizeXs="6"
-            style="
+          <ion-col sizeLg="4" sizeMd="4" sizeXs="6" style="
               padding: 1px;
               border: solid #ffdac1;
               border-width: 1px;
               border-radius: 5px;
-            "
-            (click)="showVisits(null)"
-          >
-            <ion-icon
-              name="add-circle-outline"
-              size="large"
-              style="display: block; margin: auto; height: 100%; color: #ffdac1"
-            ></ion-icon>
+            " (click)="showVisits(null)">
+            <ion-icon name="add-circle-outline" size="large"
+              style="display: block; margin: auto; height: 100%; color: #ffdac1"></ion-icon>
           </ion-col>
-          <ion-col
-            sizeLg="4"
-            sizeMd="4"
-            sizeXs="6"
-            *ngFor="let visit of client.visits"
-            style="padding: 1px"
-          >
-            <img
-              *ngIf="visit.image"
-              class="img-wrapper"
-              src="{{visit.image}}"
-              (click)="showVisits(visit)"
-            />
-            <img
-              *ngIf="!visit.image"
-              (click)="showVisits(visit)"
-              class="img-wrapper"
-              src="https://via.placeholder.com/1024x1024.jpg?text={{visit.date}}"
-            />
+          <ion-col sizeLg="4" sizeMd="4" sizeXs="6" *ngFor="let visit of client.visits" style="padding: 1px">
+            <img *ngIf="visit.image" class="img-wrapper" src="{{visit.image}}" (click)="showVisits(visit)" />
+            <img *ngIf="!visit.image" (click)="showVisits(visit)" class="img-wrapper"
+              src="https://via.placeholder.com/1024x1024.jpg?text={{visit.date}}" />
           </ion-col>
         </ion-row>
       </ion-grid>

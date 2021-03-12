@@ -76,6 +76,7 @@ export class AddPage implements OnInit {
   }
 
   async openColorPicker() {
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: ColorPickerComponent,
       componentProps: {
@@ -85,6 +86,7 @@ export class AddPage implements OnInit {
     modal.onDidDismiss().then((data) => {
       if (data.data)
       this.client.color = data.data.color;
+      this.storage.modalShown = false;
     })
     return await modal.present();
   }
@@ -94,6 +96,7 @@ export class AddPage implements OnInit {
   }
 
   async addPets() {
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: PetsComponent,
       componentProps: {
@@ -103,6 +106,7 @@ export class AddPage implements OnInit {
     modal.onDidDismiss().then((data) => {
       if (data.data) {
         this.client.pets = data.data;
+        this.storage.modalShown = false;
       }
     });
     return await modal.present();

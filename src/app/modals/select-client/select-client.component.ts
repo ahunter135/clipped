@@ -19,6 +19,7 @@ export class SelectClientComponent implements OnInit {
   }
 
   async goToApp(client) {
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: AddAppointmentComponent,
       componentProps: {
@@ -28,6 +29,7 @@ export class SelectClientComponent implements OnInit {
     })
     modal.onDidDismiss().then(() => {
       this.goBack();
+      this.storage.modalShown = false;
     });
 
     await modal.present();

@@ -45,21 +45,24 @@ export class Tab3Page {
   }
 
   async editAccount() {
-   /* let accountModal = await this.modalCtrl.create({
+    this.storage.modalShown = true;
+    let accountModal = await this.modalCtrl.create({
       component: EditAccountComponent
     });
-
-    return await accountModal.present();*/
-    this.router.navigate([this.router.url + '/edit-account'], {
-      replaceUrl: true
-    });
+    accountModal.onDidDismiss().then(() => {
+      this.storage.modalShown = false;
+    })
+    return await accountModal.present();
   }
 
   async upgrade() {
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: UpgradeComponent
     });
-
+    modal.onDidDismiss().then(() => {
+      this.storage.modalShown = false;
+    })
     return await modal.present();
     //let proRecipt = await this.storage.upgradeToPro();
   }

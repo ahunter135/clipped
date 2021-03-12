@@ -74,17 +74,24 @@ export class Tab1Page {
   }
 
   async upgrade() {
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: UpgradeComponent
     });
+    modal.onDidDismiss().then(() => {
+      this.storage.modalShown = false;
+    })
     return await modal.present();
   }
 
   async editStylists() {
+    this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: AddStylistComponent
     });
-
+    modal.onDidDismiss().then(() => {
+      this.storage.modalShown = false;
+    })
     return await modal.present();
   }
 

@@ -12,6 +12,7 @@ import { StorageService } from './storage.service';
 export class DbService {
   uid;
   email;
+  name;
   db;
   loader;
   proLimit = 25;
@@ -37,6 +38,7 @@ export class DbService {
           this.userLimit = details.data().limit;
           this.bypassPro = details.data().bypasspro ? details.data().bypasspro : false;
           this.reminders = details.data().reminders ? details.data().reminders : {on: false, frequency: "15"};
+          this.name = details.data().name ? details.data().name : "";
           if (details.data()) resolve(details.data().type);
           else resolve(true);
         } catch (error) {
@@ -58,7 +60,8 @@ export class DbService {
             on: false,
             frequency: "15"
           },
-          bypasspro: false
+          bypasspro: false,
+          name: this.name
         }).then(details => {
           this.accountType = account;
           resolve(true);
@@ -71,7 +74,8 @@ export class DbService {
             on: reminders.on,
             frequency: reminders.frequency
           },
-          bypasspro: this.storage.proMode
+          bypasspro: this.storage.proMode,
+          name: this.name
         }).then(details => {
           this.accountType = account;
           resolve(true);

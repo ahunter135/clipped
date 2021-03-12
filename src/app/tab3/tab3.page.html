@@ -21,7 +21,7 @@
         </ion-thumbnail>
         <ion-label>
           <h3>{{dbService.email}}</h3>
-          <p>Name</p>
+          <p><span *ngIf="dbService.name">{{dbService.name}}</span><span *ngIf="!dbService.name">Name</span></p>
         </ion-label>
       </ion-item>
       <ion-item button detail (click)="upgrade()" *ngIf="!storage.proMode && !dbService.bypassPro">
