@@ -1,25 +1,48 @@
 <ion-content>
   <span class="form">
     <div style="width: 100%; height: 100px; z-index: 0" class="dog-logo">
-      <ng-lottie [options]=" options" (animationCreated)="animationCreated($event)"
-        style="position: absolute; top: 0; left: 0; right: 0">
+      <ng-lottie
+        [options]=" options"
+        (animationCreated)="animationCreated($event)"
+        style="position: absolute; top: 0; left: 0; right: 0"
+      >
       </ng-lottie>
     </div>
-    <h1 style="padding-top: 25px">Sign in</h1>
+    <h1 style="padding-top: 25px">Sign In With</h1>
     <div class="social-container" style="z-index: 99">
       <ion-button (click)="loginWithGoogle()" size="small">
-        <ion-icon name="logo-google" class="social" style="font-size: 26px; padding: 5px">
+        <ion-icon
+          name="logo-google"
+          class="social"
+          style="font-size: 26px; padding: 5px"
+        >
         </ion-icon>
-        Google
       </ion-button>
-      <ion-button *ngIf="platform.is('ios')" (click)="loginWithApple()" size="small">
-        <ion-icon name="logo-apple" class="social" style="font-size: 26px; padding: 5px; color: white"></ion-icon>
-        Apple
+      <ion-button
+        *ngIf="platform.is('ios')"
+        (click)="loginWithApple()"
+        size="small"
+      >
+        <ion-icon
+          name="logo-apple"
+          class="social"
+          style="font-size: 26px; padding: 5px; color: white"
+        ></ion-icon>
       </ion-button>
     </div>
     <span>or use your account</span>
-    <input type="email" placeholder="Email" [(ngModel)]="email" style="z-index: 99" />
-    <input type="password" placeholder="Password" [(ngModel)]="password" style="z-index: 99" />
+    <input
+      type="email"
+      placeholder="Email"
+      [(ngModel)]="email"
+      style="z-index: 99"
+    />
+    <input
+      type="password"
+      placeholder="Password"
+      [(ngModel)]="password"
+      style="z-index: 99"
+    />
     <a [routerLink]="['/register']">Create an Account</a>
     <a [routerLink]="['/reset-password']">Reset Password</a>
     <button (click)="login()" *ngIf="!loading" class="login">
@@ -27,15 +50,20 @@
     </button>
   </span>
   <span *ngIf="loading">
-    <div style="
+    <div
+      style="
         height: 150px;
         width: 100%;
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
-      ">
-      <ng-lottie [options]="loadingOptions" (animationCreated)="animationCreated($event)"></ng-lottie>
+      "
+    >
+      <ng-lottie
+        [options]="loadingOptions"
+        (animationCreated)="animationCreated($event)"
+      ></ng-lottie>
     </div>
   </span>
   <!--<ion-card>

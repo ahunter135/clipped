@@ -160,7 +160,7 @@ export class DbService {
   async editClient(client) {
     let clientRef = this.db.collection('users').doc(this.uid).collection('clients');
     for (let i = 0; i < client.pets.length; i++) {
-      client.pets[i] = Object.assign({}, client.pets[0]);
+      client.pets[i] = Object.assign({}, client.pets[i]);
     }
     return await clientRef.doc(client.id).update({
       name: client.name,

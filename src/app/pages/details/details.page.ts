@@ -110,6 +110,7 @@ export class DetailsPage implements OnInit {
     });
     modal.onDidDismiss().then((data) => {
       if (data.data) {
+        console.log(data.data);
         this.client.pets = data.data;
         this.save();
       }
@@ -184,9 +185,7 @@ export class DetailsPage implements OnInit {
       }
     })
     modal.onDidDismiss().then(() => {
-      console.log(this.client);
       this.client = this.storage.data;
-      console.log(this.client);
       this.client.visits.sort(this.sortByProperty("date"));
       this.storage.modalShown = false;
     })
