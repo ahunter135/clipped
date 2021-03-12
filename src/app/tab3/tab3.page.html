@@ -17,29 +17,40 @@
     <ion-list>
       <ion-item (click)="editAccount()" button detail>
         <ion-thumbnail slot="start">
-          <img src="https://ui-avatars.com/api/?background=f3f3f3&name={{dbService.email}}" />
+          <img
+            src="https://ui-avatars.com/api/?background=ffdac1&name={{dbService.email}}"
+          />
         </ion-thumbnail>
         <ion-label>
           <h3>{{dbService.email}}</h3>
-          <p><span *ngIf="dbService.name">{{dbService.name}}</span><span *ngIf="!dbService.name">Name</span></p>
+          <p>
+            <span *ngIf="dbService.name">{{dbService.name}}</span
+            ><span *ngIf="!dbService.name">Name</span>
+          </p>
         </ion-label>
       </ion-item>
-      <ion-item button detail (click)="upgrade()" *ngIf="!storage.proMode && !dbService.bypassPro">
+      <ion-item detail button href="mailto:ashley@getclipped.app">
+        <ion-label>Contact Us </ion-label>
+      </ion-item>
+      <ion-item
+        button
+        detail
+        (click)="upgrade()"
+        *ngIf="!storage.proMode && !dbService.bypassPro"
+      >
         <ion-icon name="pricetag-outline" slot="start"></ion-icon>Upgrade to Pro
       </ion-item>
-      <!--<ion-item>
-        <ion-label>Dark Mode</ion-label>
-        <ion-toggle [(ngModel)]="darkMode" (ionChange)="toggleDarkMode()"
-          [disabled]="!storage.proMode && !dbService.bypassPro"></ion-toggle>
-      </ion-item>-->
     </ion-list>
   </ion-card>
-  <a (click)="logout()" style="padding-left: 15px;">
+  <a (click)="logout()" style="padding-left: 15px">
     <ion-icon name="exit-outline" slot="start"></ion-icon>
     Logout
   </a>
   <div class="person">
-    <ng-lottie [options]=" options" (animationCreated)="animationCreated($event)">
+    <ng-lottie
+      [options]=" options"
+      (animationCreated)="animationCreated($event)"
+    >
     </ng-lottie>
   </div>
 </ion-content>

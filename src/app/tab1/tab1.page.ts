@@ -50,14 +50,13 @@ export class Tab1Page {
       this.globalService.getObservable().subscribe(async (data) => {
         if (data.key === 'pro') {
           this.proMode = data.value;
-          console.log("HERE");
           this.dbService.updateAccountPro(this.proMode);
           if (!this.adsShowing && !this.proMode && !this.dbService.bypassPro) {
             //showads
-            this.setupAds(true);
+            //this.setupAds(true);
           } else if (this.proMode) {
             //hideads
-            this.setupAds(false);
+           // this.setupAds(false);
           }
         }
       })

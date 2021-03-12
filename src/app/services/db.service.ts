@@ -37,6 +37,9 @@ export class DbService {
           this.accountType = details.data().type;
           this.userLimit = details.data().limit;
           this.bypassPro = details.data().bypasspro ? details.data().bypasspro : false;
+          this.storage.setItem({key: 'pro', value: this.bypassPro});
+          this.storage.proMode = this.bypassPro;
+          this.globalService.publishData({key: 'pro', value: this.bypassPro});
           this.reminders = details.data().reminders ? details.data().reminders : {on: false, frequency: "15"};
           this.name = details.data().name ? details.data().name : "";
           if (details.data()) resolve(details.data().type);
@@ -58,7 +61,10 @@ export class DbService {
           limit: this.userLimit ? this.userLimit : this.proLimit,
           reminders: {
             on: false,
-            frequency: "15"
+            frequency: "15",
+            notifications: false,
+            notificationsFrequency: "15",
+            ids: {}
           },
           bypasspro: false,
           name: this.name ? this.name : ""
@@ -72,7 +78,10 @@ export class DbService {
           limit: this.userLimit ? this.userLimit : this.proLimit,
           reminders: {
             on: reminders.on,
-            frequency: reminders.frequency
+            frequency: reminders.frequency,
+            notifications: reminders.notifications,
+            notificationsFrequency: reminders.notificationsFrequency,
+            id: reminders.id
           },
           bypasspro: this.storage.proMode,
           name: this.name

@@ -6,13 +6,23 @@
         <ion-icon style="opacity: 0.9" slot="icon-only" name="add"></ion-icon>
       </ion-button>
       <ion-button (click)="openSettings()">
-        <ion-icon color="dark" style="opacity: 0.9" slot="icon-only" name="cog-outline"></ion-icon>
+        <ion-icon
+          color="dark"
+          style="opacity: 0.9"
+          slot="icon-only"
+          name="cog-outline"
+        ></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar color="warning">
-    <ion-searchbar color="light" (ionInput)="search($event.target.value)" debounce="200" showCancelButton="focus"
-      (ionCancel)="resetSearch()"></ion-searchbar>
+    <ion-searchbar
+      color="light"
+      (ionInput)="search($event.target.value)"
+      debounce="200"
+      showCancelButton="focus"
+      (ionCancel)="resetSearch()"
+    ></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
@@ -21,18 +31,19 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-list>
-    <ion-item button detail *ngFor="let client of storage.clients" (click)="goToDetails(client)">
+    <ion-item
+      button
+      detail
+      *ngFor="let client of storage.clients"
+      (click)="goToDetails(client)"
+    >
       <ion-avatar slot="start">
         <img src="{{client.image}}" />
       </ion-avatar>
       <ion-label>
         <h2>{{client.name}}</h2>
-        <h3 *ngIf="client.visits.length > 0">
-          Last Visit: {{client.visits[0].date}}
-        </h3>
-        <p *ngIf="client.visits.length > 0" style="text-overflow: ellipsis">
-          {{client.visits[0].summary}}
-        </p>
+        <h3>{{client.phone_number}}</h3>
+        <p style="text-overflow: ellipsis">{{client.email}}</p>
       </ion-label>
     </ion-item>
     <ion-item lines="none" *ngIf="!proMode && !dbService.bypassPro">
