@@ -214,7 +214,6 @@ export class DbService {
 
   async addStylist(name) {
    let stylists = <any>await this.getStylists();
-   console.log(stylists);
    stylists.push(name);
 
     this.db.collection('users').doc(this.uid).collection('stylists').doc(this.uid).set({
@@ -347,7 +346,8 @@ async saveStylists(stylists) {
       pet: obj.pet,
       //stylist: obj.stylist ? obj.stylist : null,
       service: obj.service,
-      notified: false
+      notified: false,
+      notifiedUser: false
     });
   }
 

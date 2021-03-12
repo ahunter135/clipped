@@ -34,7 +34,7 @@ export class AppComponent {
       
       this.oneSignal.startInit('2f131849-a4b9-475f-908c-cc7f8770c435', '607609406851');
 
-      this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+      this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
 
       this.oneSignal.handleInAppMessageClicked().subscribe((data) => {
         if (data.click_name == 'review') {
@@ -55,21 +55,6 @@ export class AppComponent {
 
       this.oneSignal.endInit();
     });    
-
-    this.platform.backButton.subscribeWithPriority(998, () => {
-      this.navCtrl.pop();
-      return;
-    });
-
-    this.platform.backButton.subscribeWithPriority(999, (processNextHandler) => {
-      if (this.storage.modalShown) {
-        this.modalCtrl.dismiss();
-        this.storage.modalShown = false;
-      } else {
-        processNextHandler();
-      }
-      return;
-    });
 
   }
 }

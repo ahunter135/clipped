@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
 import { GlobalService } from '../services/global.service';
-import { ModalController, Platform } from '@ionic/angular';
+import { ModalController, NavController, Platform } from '@ionic/angular';
 import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
 import { AdMob } from '@admob-plus/ionic/ngx';
 import { AnimationOptions } from 'ngx-lottie';
@@ -30,9 +30,25 @@ export class Tab1Page {
     
   }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, public globalService: GlobalService,
-    public modalCtrl: ModalController, private admob: AdMob, private platform: Platform) {}
+    public modalCtrl: ModalController, private admob: AdMob, private platform: Platform, private navCtrl: NavController) {}
 
-  ngOnInit() {    
+  ngOnInit() {
+    this.platform.backButton.subscribeWithPriority(998, () => {
+      console.log('2');
+      this.navCtrl.pop();
+      return;
+    });
+
+    this.platform.backButton.subscribeWithPriority(999, (processNextHandler) => {
+      console.log('1');
+      if (this.storage.modalShown) {
+        this.modalCtrl.dismiss();
+        this.storage.modalShown = false;
+      } else {
+        processNextHandler();
+      }
+      return;
+    });
   }
 
   async ionViewWillEnter() {
