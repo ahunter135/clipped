@@ -169,7 +169,7 @@ export class VisitsComponent implements OnInit {
       let obj = <any>{
         summary: this.summary ? this.summary : null,
         uuid: uuidv4(),
-        //date: moment(this.visit_date).format("MMM Do YYYY"),
+        date: moment().format("MMM Do YYYY"),
         pet: this.pet
       }
       if (this.added_image) obj.image = this.added_image;
