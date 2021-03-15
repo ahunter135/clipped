@@ -137,7 +137,6 @@ export class LoginPage implements OnInit {
 
   async handleResponse(response) {
     this.loggedIn = true;
-    this.dbService.name = response.user.displayName;
     let loginResponse = { key: "loggedIn", value: JSON.stringify(response.user) };
     await this.storage.setItem(loginResponse);
   }

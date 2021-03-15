@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar color="danger">
+  <ion-toolbar color="tertiary">
     <ion-buttons slot="start" color="dark">
-      <ion-button (click)="modalCtrl.dismiss()" color="dark">
+      <ion-button (click)="modalCtrl.dismiss(pets)" color="dark">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -32,6 +32,10 @@
         <ion-label>Fully Vaccinated?</ion-label>
         <ion-checkbox slot="end" [(ngModel)]="pet.isFullyVaccinated"></ion-checkbox>
       </ion-item>
+      <ion-item>
+        <ion-label>Active</ion-label>
+        <ion-checkbox slot="end" [(ngModel)]="pet.isActive"></ion-checkbox>
+      </ion-item>
       <br />
       <ion-segment [(ngModel)]="pet.temperament">
         <ion-segment-button value="0">
@@ -55,10 +59,3 @@
       padding-top: 5px;
     " size="large" color="medium" (click)="addPet()"></ion-icon>
 </ion-content>
-<ion-footer class="ion-no-border">
-  <ion-toolbar>
-    <ion-button expand="block" color="dark" (click)="submit()">
-      <span>Save</span>
-    </ion-button>
-  </ion-toolbar>
-</ion-footer>

@@ -115,7 +115,7 @@ export class VisitsComponent implements OnInit {
     if (!this.proMode) {
       file = await this.file.readAsDataURL(this.file.dataDirectory, "temp.png");
       let blobFile = await this.dataURItoBlob(file);
-      file = <any>await this.addTextWatermark(blobFile);
+      file = <any>await this.addImageWatermark(blobFile);
     }
     
     this.socialShare.share(null, null, file, null);
@@ -136,6 +136,12 @@ export class VisitsComponent implements OnInit {
     });
   }
 
+  async addImageWatermark(file) {
+    return new Promise( async (resolve, reject) => {
+      let img = await watermark([file, 'assets/images/watermark.png']).image(watermark.image.lowerLeft(0.7));
+      resolve(img.src);
+  });
+  }
   dataURItoBlob(dataURI) {
     // convert base64/URLEncoded data component to raw binary data held in a string
     var byteString;

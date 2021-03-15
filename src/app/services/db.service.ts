@@ -142,7 +142,7 @@ export class DbService {
     //let ref = this.uploadImage(image, client.uuid);
     let clientRef = this.db.collection('users').doc(this.uid).collection('clients');
     for (let i = 0; i < client.pets.length; i++) {
-      client.pets[i] = Object.assign({}, client.pets[0]);
+      client.pets[i] = Object.assign({}, client.pets[i]);
     }
     return await clientRef.doc(uuidv4()).set({
       name: client.name ? client.name : null,

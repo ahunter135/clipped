@@ -41,6 +41,7 @@ import { ColorSketchModule } from 'ngx-color/sketch';
 import { PhonePipe } from './pipes/phone.pipe';
 import { ColorPickerComponent } from './modals/color-picker/color-picker.component';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { FilterPipe } from './pipes/filter.pipe';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -81,6 +82,7 @@ firebase.initializeApp(firebaseConfig);
     GoogleMaps,
     AndroidPermissions,
     ClientByIDPipe,
+    FilterPipe,
     PhonePipe,
     DatePipe,
     CurrencyPipe,

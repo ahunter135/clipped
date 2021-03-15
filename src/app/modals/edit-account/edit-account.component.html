@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="danger">
+  <ion-toolbar color="tertiary">
     <ion-buttons slot="start" color="dark">
       <ion-button (click)="goBack()" color="dark">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
@@ -16,28 +16,16 @@
     <ion-card-content>
       <ion-item>
         <ion-label position="floating"> Name </ion-label>
-        <ion-input
-          placeholder="John Doe"
-          [(ngModel)]="dbService.name"
-          (ionChange)="save()"
-          debounce="500"
-        ></ion-input>
+        <ion-input placeholder="John Doe" [(ngModel)]="dbService.name" (ionChange)="save()" debounce="500"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating"> Email </ion-label>
-        <ion-input
-          placeholder="John@doe.com"
-          [(ngModel)]="email"
-          readonly
-        ></ion-input>
+        <ion-input placeholder="John@doe.com" [(ngModel)]="email" readonly></ion-input>
       </ion-item>
 
       <ion-item [disabled]="!isPro">
         <ion-label>Appointment Push Notifications</ion-label>
-        <ion-toggle
-          [(ngModel)]="notifications"
-          (ionChange)="save()"
-        ></ion-toggle>
+        <ion-toggle [(ngModel)]="notifications" (ionChange)="save()"></ion-toggle>
       </ion-item>
       <ion-item *ngIf="notifications" [disabled]="!isPro">
         <ion-label>Minutes Before Appointment</ion-label>

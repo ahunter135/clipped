@@ -13,6 +13,7 @@ import { CropImageComponent } from 'src/app/modals/crop-image/crop-image.compone
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { TextTemplateComponent } from 'src/app/modals/text-template/text-template.component';
 import { AddAppointmentComponent } from 'src/app/modals/add-appointment/add-appointment.component';
+import { CalendarModule } from 'ion2-calendar';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { AddAppointmentComponent } from 'src/app/modals/add-appointment/add-appo
     FormsModule,
     IonicModule,
     DetailsPageRoutingModule,
-    ImageCropperModule
+    ImageCropperModule,
+    CalendarModule
   ],
   declarations: [PopoverComponent, VisitsComponent, CropImageComponent, TextTemplateComponent, AddAppointmentComponent],
   entryComponents: [VisitsComponent, CropImageComponent, TextTemplateComponent, AddAppointmentComponent]

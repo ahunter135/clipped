@@ -1,5 +1,10 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="danger">
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-button (click)="showFilter()" color="dark">
+        <ion-icon style="opacity: 0.9" slot="icon-only" name="funnel-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title color="dark"> Appointments </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="addApp()" color="dark">
@@ -8,12 +13,7 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button (click)="openSettings()">
-        <ion-icon
-          color="dark"
-          style="opacity: 0.9"
-          slot="icon-only"
-          name="cog-outline"
-        ></ion-icon>
+        <ion-icon color="dark" style="opacity: 0.9" slot="icon-only" name="cog-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -30,24 +30,21 @@
   </ion-toolbar>-->
   <div #map id="map"></div>
 </ion-content>
-<lib-ionic-pullup
-  (onExpand)="footerExpanded()"
-  (onCollapse)="footerCollapsed()"
-  [(state)]="footerState"
-  [toolbarTopMargin]="275"
-  [minBottomVisible]="50"
->
-  <ion-toolbar color="danger" (click)="toggleFooter()" #ionDragFooter>
+<lib-ionic-pullup (onExpand)="footerExpanded()" (onCollapse)="footerCollapsed()" [(state)]="footerState"
+  [toolbarTopMargin]="275" [minBottomVisible]="50">
+  <ion-toolbar color="tertiary" (click)="toggleFooter()" #ionDragFooter>
     <ion-title>
       <ion-icon name="menu"></ion-icon>
     </ion-title>
   </ion-toolbar>
   <ion-content>
     <ion-list>
-      <ion-item
-        *ngFor="let app of appointmentsShownOnMap"
-        (click)="openSheet(app)"
-      >
+      <ion-item-divider>
+        <ion-label>
+          {{currentFilter | filter}}
+        </ion-label>
+      </ion-item-divider>
+      <ion-item *ngFor="let app of appointmentsShownOnMap" (click)="openSheet(app)">
         <ion-thumbnail slot="start">
           <img [src]="app.client_id | clientByID:'img'" />
         </ion-thumbnail>
@@ -58,9 +55,7 @@
           <p>{{app.app.date | date: 'mediumDate'}}</p>
         </ion-label>
         <ion-chip [ngStyle]="{'background': app.color}">
-          <ion-label color="light"
-            >{{app.app.date | date:'shortTime'}}</ion-label
-          >
+          <ion-label color="dark">{{app.app.date | date:'shortTime'}}</ion-label>
         </ion-chip>
       </ion-item>
     </ion-list>

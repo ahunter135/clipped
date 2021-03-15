@@ -14,6 +14,11 @@ export class PetsComponent implements OnInit {
 
   ngOnInit() {
     this.pets = this.navParams.data.pets;
+    for (let i = 0; i < this.pets.length; i++) {
+      if (this.pets[i].isActive == undefined) {
+        this.pets[i].isActive = true;
+      }
+    }
   }
 
   async addPet() {
@@ -26,7 +31,6 @@ export class PetsComponent implements OnInit {
   }
 
   async remove(i) {
-    console.log(i);
     let res = await this.presentAlertConfirm("Are you sure you want to remove this pet?");
     if (res) {
       this.pets.splice(i, 1);

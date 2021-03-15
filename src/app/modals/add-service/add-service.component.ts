@@ -1,6 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
 
@@ -17,7 +17,7 @@ export class AddServiceComponent implements OnInit {
     id: ''
   }
   isEdit = false;
-  constructor(public modalCtrl: ModalController, private currency: CurrencyPipe, private dbService: DbService, private navParams: NavParams, private storage: StorageService) { }
+  constructor(public modalCtrl: ModalController, private currency: CurrencyPipe, private dbService: DbService, private navParams: NavParams, private storage: StorageService, private alertController: AlertController) { }
 
   ngOnInit() {
     this.service = this.navParams.data.item ? this.navParams.data.item : {
@@ -34,7 +34,10 @@ export class AddServiceComponent implements OnInit {
   }
 
   async delete() {
-    console.log(this.storage.services);
+    let res = await this.presentAlertConfirm("Are you sure you would like to delete this client?");
+    if (!res) {
+      return;
+    };
     let id = '';
     for (let i = 0; i < this.storage.services.length; i++) {
       if (this.storage.services[i].id == this.service.id) {
@@ -49,6 +52,33 @@ export class AddServiceComponent implements OnInit {
 
   erasePrice() {
     if (!this.isEdit) this.service.price = "";
+  }
+
+  async presentAlertConfirm(message) {
+    return new Promise(async (resolve, reject) => {
+      const alert = await this.alertController.create({
+        header: 'Confirm!',
+        message: message,
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {
+              resolve(false);
+            }
+          }, {
+            text: 'Yes',
+            handler: () => {
+              resolve(true);
+            }
+          }
+        ]
+      });
+  
+      await alert.present();
+    });  
+    
   }
 
   async save() {

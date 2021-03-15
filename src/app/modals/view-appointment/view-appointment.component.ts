@@ -21,7 +21,6 @@ export class ViewAppointmentComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.app.service);
     for (let i = 0; i < this.storage.services.length; i++) {
       if (this.storage.services[i].id == this.app.service) {
         this.app.service = this.storage.services[i];

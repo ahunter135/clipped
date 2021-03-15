@@ -16,10 +16,6 @@ export class ServicesPage implements OnInit {
   ngOnInit() {
   }
 
-  async ionViewWillEnter() {
-    await this.dbService.getAllServices();
-  }
-
   async goBack() {
     this.navCtrl.pop();
   }

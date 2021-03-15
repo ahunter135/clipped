@@ -213,6 +213,7 @@ export class DetailsPage implements OnInit {
       if (data.data)
       this.client.color = data.data.color;
       this.storage.modalShown = false;
+      this.save();
     })
     return await modal.present();
   }

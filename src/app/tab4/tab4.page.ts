@@ -29,6 +29,7 @@ export class Tab4Page {
   markers = [];
   footerState: IonPullUpFooterState;
   isPro = this.storage.proMode;
+  currentFilter = 0;
   constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe,
     private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator, private alertController: AlertController,
     private router: Router) {
@@ -41,14 +42,57 @@ export class Tab4Page {
     await this.dbService.getAllAppointments();
     await this.filterAppointments(this.storage.appointments);
     this.stylists = <any>await this.dbService.getStylists();
-    if (!this.map)
-      this.addMap();
-    else {
-      this.updateApps();
-    }
   }
 
   ionViewDidEnter() {
+  }
+
+  async showFilter() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Select View',
+      cssClass: 'my-custom-class',
+      buttons: [{
+        text: 'Today',
+        handler: async () => {
+          this.currentFilter = 0;
+          await this.filterAppointments(this.storage.appointments);
+          return true;
+        }
+      },
+      {
+        text: 'Tomorrow',
+        handler:async  () => {
+          this.currentFilter = 1;
+          await this.filterAppointments(this.storage.appointments);
+          return true;
+        }
+      }, 
+      {
+        text: 'Last 7 Days',
+        handler: async () => {
+          this.currentFilter = 2;
+          await this.filterAppointments(this.storage.appointments);
+          return true;
+        }
+      },
+      {
+        text: 'All Upcoming',
+        handler: async () => {
+          this.currentFilter = 3;
+          await this.filterAppointments(this.storage.appointments);
+          return true;
+        }
+      },
+      {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+    await actionSheet.present();
   }
 
   async openSettings() {
@@ -59,8 +103,8 @@ export class Tab4Page {
     this.appointmentsShownOnMap = [];
     this.markers = [];
     this.map.clear();
-    await this.dbService.getAllAppointments();
-    await this.filterAppointments(this.storage.appointments);
+    //await this.dbService.getAllAppointments();
+    //await this.filterAppointments(this.storage.appointments);
 
     let clients = await this.getClientArrayFromAppointment();
     await this.addMarkers(clients);
@@ -70,10 +114,26 @@ export class Tab4Page {
     let dates = [];
     for (let i = 0; i < appointments.length; i++) {
       let day = moment(appointments[i].date);
-      day.format("MM/DD/YYYY hh:mm a");
-      if (day.isAfter(moment().format("MM/DD/YYYY hh:mm a")))
+      if (this.currentFilter == 0) {
+       // Today
+       if (moment(day).isSame(moment())) {
         dates.push(day.format("MM/DD/YYYY"));
-      
+       }
+      } else if (this.currentFilter == 1) {
+        // Tomorrow
+        if (moment(day).isBetween(moment(), moment().add(1, 'days'))) {
+          dates.push(day.format("MM/DD/YYYY"));
+        }
+      } else if (this.currentFilter == 2) {
+        //Last 7 Days
+        if (moment(day).isBetween(moment().subtract(7, 'days'), moment())) {
+          dates.push(day.format("MM/DD/YYYY"));
+        }
+      } else if (this.currentFilter == 3) {
+        // All Future
+        if (day.isAfter(moment()))
+        dates.push(day.format("MM/DD/YYYY"));
+      }
     }
 
     let uniqueDates = Array.from(new Set(dates));
@@ -86,8 +146,24 @@ export class Tab4Page {
         if (day == uniqueDates[i]) {
           let day = moment(appointments[j].date);
           let now = moment();
-          if (day.isSameOrAfter(now)) 
-          apps[i].apps.push(appointments[j]);
+          if (this.currentFilter == 0) {
+            if (day.isSame(now)) {
+              apps[i].apps.push(appointments[j]);
+            }
+          } else if (this.currentFilter == 1) {
+            // Tomorrow
+            if (day.isBetween(moment(), moment().add(1, 'days'))) {
+              apps[i].apps.push(appointments[j]);
+            }
+          } else if (this.currentFilter == 2) {
+            //Last 7 Days
+            if (moment(day).isBetween(moment().subtract(7, 'days'), moment())) {
+              apps[i].apps.push(appointments[j]);
+            }
+          } else if (this.currentFilter == 3) {
+            if (day.isSameOrAfter(now)) 
+              apps[i].apps.push(appointments[j]);
+          }
         }
       }
     }
@@ -95,6 +171,12 @@ export class Tab4Page {
     
     this.appointments = apps.sort(this.custom_sort);
     this.tempAppointments = this.appointments;
+
+    if (!this.map)
+      this.addMap();
+   else {
+      this.updateApps();
+    }
   }
 
   filterByStylist() {
@@ -216,11 +298,13 @@ export class Tab4Page {
       position: latLng,
       animation: GoogleMapsAnimation.DROP,
       icon: pinColor,
+      visible: this.isLocationFree(latLng),
       title: this.clientByID.transform(client.client_id).toString(),
       snippet: client.location.address + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
     }).then((marker:Marker) => {
       marker.set('client', client);
       marker.set('pet', client.app.pet ? JSON.stringify(client.app.pet) : null);
+      marker.set('latlng', latLng);
       this.markers.push(marker);
 
       let region = this.map.getVisibleRegion();
@@ -231,9 +315,18 @@ export class Tab4Page {
       this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
 
       marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-        marker.showInfoWindow();
+        this.openSheet(marker.get('client'));
       })
     })
+  }
+
+  isLocationFree(search) {
+    for (var i = 0, l = this.markers.length; i < l; i++) {
+      if (this.markers[i].get('latlng').lat == search.lat && this.markers[i].get('latlng').lng == search.lng) {
+        return false;
+      }
+    }
+    return true;
   }
 
   async openSheet(client) {
@@ -242,7 +335,6 @@ export class Tab4Page {
       cssClass: 'my-custom-class',
       buttons: [{
         text: 'Navigate To',
-        role: !this.isPro ? 'destructive' : null,
         icon: this.isPro ? 'navigate' : 'lock-closed-outline',
         handler: () => {
           if (!this.isPro) {
