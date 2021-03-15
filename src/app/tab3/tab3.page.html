@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="dantertiaryger">
+  <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
       <ion-button (click)="goBack()" color="dark">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
@@ -17,19 +17,27 @@
     <ion-list>
       <ion-item (click)="editAccount()" button detail>
         <ion-thumbnail slot="start">
-          <img src="https://ui-avatars.com/api/?background=ffdac1&name={{dbService.email}}" />
+          <img
+            src="https://ui-avatars.com/api/?background=ffdac1&name={{dbService.email}}"
+          />
         </ion-thumbnail>
         <ion-label>
           <h3>{{dbService.email}}</h3>
           <p>
-            <span *ngIf="dbService.name">{{dbService.name}}</span><span *ngIf="!dbService.name">Name</span>
+            <span *ngIf="dbService.name">{{dbService.name}}</span
+            ><span *ngIf="!dbService.name">Name</span>
           </p>
         </ion-label>
       </ion-item>
       <ion-item detail button href="mailto:ashley@getclipped.app">
         <ion-label>Contact Us </ion-label>
       </ion-item>
-      <ion-item button detail (click)="upgrade()" *ngIf="!storage.proMode && !dbService.bypassPro">
+      <ion-item
+        button
+        detail
+        (click)="upgrade()"
+        *ngIf="!storage.proMode && !dbService.bypassPro"
+      >
         <ion-icon name="pricetag-outline" slot="start"></ion-icon>Upgrade to Pro
       </ion-item>
     </ion-list>
@@ -39,7 +47,10 @@
     Logout
   </a>
   <div class="person">
-    <ng-lottie [options]=" options" (animationCreated)="animationCreated($event)">
+    <ng-lottie
+      [options]=" options"
+      (animationCreated)="animationCreated($event)"
+    >
     </ng-lottie>
   </div>
 </ion-content>

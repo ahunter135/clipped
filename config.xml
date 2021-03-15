@@ -55,8 +55,8 @@
         <preference name="deployment-target" value="11.0" />
         <preference name="SwiftVersion" value="5.3" />
         <preference name="HideKeyboardFormAccessoryBar" value="false" />
-        <preference name="KeyboardResizeMode" value="body" />
-        <preference name="KeyboardResize" value="false" />
+        <preference name="KeyboardResizeMode" value="native" />
+        <preference name="KeyboardResize" value="true" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
         <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
         <icon height="29" src="resources/ios/icon/icon-small.png" width="29" />

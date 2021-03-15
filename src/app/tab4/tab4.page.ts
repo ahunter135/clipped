@@ -113,26 +113,28 @@ export class Tab4Page {
   filterAppointments(appointments) {
     let dates = [];
     for (let i = 0; i < appointments.length; i++) {
-      let day = moment(appointments[i].date);
+      let day = moment(appointments[i].date).format("MM/DD/YYYY hh:mm a");
+      
       if (this.currentFilter == 0) {
        // Today
-       if (moment(day).isSame(moment())) {
-        dates.push(day.format("MM/DD/YYYY"));
+       if (moment(day).isSame(moment(), 'days')) {
+        dates.push(moment(day).format("MM/DD/YYYY"));
        }
       } else if (this.currentFilter == 1) {
         // Tomorrow
-        if (moment(day).isBetween(moment(), moment().add(1, 'days'))) {
-          dates.push(day.format("MM/DD/YYYY"));
+        let tomorrow = moment().add(1, 'days');
+        if (moment(day).isSame(tomorrow, 'days')) {
+          dates.push(moment(day).format("MM/DD/YYYY"));
         }
       } else if (this.currentFilter == 2) {
         //Last 7 Days
         if (moment(day).isBetween(moment().subtract(7, 'days'), moment())) {
-          dates.push(day.format("MM/DD/YYYY"));
+          dates.push(moment(day).format("MM/DD/YYYY"));
         }
       } else if (this.currentFilter == 3) {
         // All Future
-        if (day.isAfter(moment()))
-        dates.push(day.format("MM/DD/YYYY"));
+        if (moment(day).isSameOrAfter(moment(), 'days'))
+        dates.push(moment(day).format("MM/DD/YYYY"));
       }
     }
 
@@ -147,12 +149,13 @@ export class Tab4Page {
           let day = moment(appointments[j].date);
           let now = moment();
           if (this.currentFilter == 0) {
-            if (day.isSame(now)) {
+            if (moment(day).isSame(now, 'days')) {
               apps[i].apps.push(appointments[j]);
             }
           } else if (this.currentFilter == 1) {
             // Tomorrow
-            if (day.isBetween(moment(), moment().add(1, 'days'))) {
+            let tomorrow = moment().add(1, 'days');
+            if (moment(day).isSame(tomorrow, 'days')) {
               apps[i].apps.push(appointments[j]);
             }
           } else if (this.currentFilter == 2) {
@@ -161,7 +164,7 @@ export class Tab4Page {
               apps[i].apps.push(appointments[j]);
             }
           } else if (this.currentFilter == 3) {
-            if (day.isSameOrAfter(now)) 
+            if (moment(day).isSameOrAfter(now, 'days')) 
               apps[i].apps.push(appointments[j]);
           }
         }

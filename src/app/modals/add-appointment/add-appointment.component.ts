@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams, Platform } from '@ionic/angular';
 import * as moment from 'moment';
@@ -22,7 +23,12 @@ export class AddAppointmentComponent implements OnInit {
   pet;
   service;
   pets = [];
-  constructor(public modalCtrl: ModalController, private navParams: NavParams, private db: DbService, public storage: StorageService, private platform: Platform) {
+  customService = <any>{
+    price: '$0.00',
+    name: ''
+  };
+  constructor(public modalCtrl: ModalController, private navParams: NavParams, private db: DbService, public storage: StorageService, private platform: Platform,
+    private currency: CurrencyPipe, private dbService: DbService) {
     this.client = this.navParams.data.client;
   }
 
@@ -37,7 +43,7 @@ export class AddAppointmentComponent implements OnInit {
   onChange($event) {
   }
 
-  submit() {
+  async submit() {
     let chosenDate = moment(this.app_date).format("MM/DD/YYYY");
     let time = moment(this.app_time).format("hh:mm a");
     let appointmentDate = moment(chosenDate + " " + time).toISOString();
@@ -49,9 +55,24 @@ export class AddAppointmentComponent implements OnInit {
       pet: this.pet,
       client: this.client.id,
       //stylist: this.stylist ? this.stylist : null,
-      service: this.service
+      service: {}
     }
+    if (this.service == 0) {
+      await this.dbService.addService(this.customService);
+      obj.service = this.customService
+    } else obj.service = this.service
+    
     this.db.addClientAppointment(obj);
     this.modalCtrl.dismiss();
+  }
+
+  formatPrice(ev) {
+    let amount = this.currency.transform(this.customService.price, '$');
+
+    this.customService.price = amount.toString();
+  }
+
+  erasePrice() {
+    this.customService.price = "";
   }
 }

@@ -14,11 +14,22 @@
       <ion-card-subtitle> Details </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <ion-calendar [(ngModel)]="app_date" (change)="onChange($event)" [type]="type" [format]="'MM-DD-YYYY'">
+      <ion-calendar
+        [(ngModel)]="app_date"
+        (change)="onChange($event)"
+        [type]="type"
+        [format]="'MM-DD-YYYY'"
+      >
       </ion-calendar>
       <ion-item>
-        <ion-label position="floating">Time of Appointment <span style="color: red">*</span></ion-label>
-        <ion-datetime displayFormat="hh:mm a" [(ngModel)]="app_time" minuteValues="0, 15, 30, 45">
+        <ion-label position="floating"
+          >Time of Appointment <span style="color: red">*</span></ion-label
+        >
+        <ion-datetime
+          displayFormat="hh:mm a"
+          [(ngModel)]="app_time"
+          minuteValues="0, 15, 30, 45"
+        >
         </ion-datetime>
       </ion-item>
       <!--<ion-item>
@@ -32,17 +43,40 @@
       <ion-item>
         <ion-label>Pet <span style="color: red">*</span></ion-label>
         <ion-select placeholder="Select One" [(ngModel)]="pet">
-          <ion-select-option *ngFor="let item of pets" value="{{ item.name }}">{{ item.name }}
+          <ion-select-option *ngFor="let item of pets" value="{{ item.name }}"
+            >{{ item.name }}
           </ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
         <ion-label>Service <span style="color: red">*</span></ion-label>
         <ion-select placeholder="Select One" [(ngModel)]="service">
-          <ion-select-option *ngFor="let item of storage.services" value="{{ item.id }}">{{ item.name }} -
+          <ion-select-option value="0">New Service</ion-select-option>
+          <ion-select-option
+            *ngFor="let item of storage.services"
+            value="{{ item.id }}"
+            >{{ item.name }} -
             {{ item.price }}
           </ion-select-option>
         </ion-select>
+      </ion-item>
+      <ion-item *ngIf="service == 0">
+        <ion-label position="floating">Service Name</ion-label>
+        <ion-input
+          [(ngModel)]="customService.name"
+          placeholder="Full Groom"
+        ></ion-input>
+      </ion-item>
+      <ion-item *ngIf="service == 0">
+        <ion-label position="floating">Service Price</ion-label>
+        <ion-input
+          type="text"
+          autocapitalize="on"
+          [(ngModel)]="customService.price"
+          (ionBlur)="formatPrice($event)"
+          (ionFocus)="erasePrice()"
+        >
+        </ion-input>
       </ion-item>
       <br />
       <ion-button expand="block" color="dark" (click)="submit()">
