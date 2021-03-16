@@ -374,7 +374,7 @@ export class Tab4Page {
           this.presentAlertConfirm("Are you sure you want to delete this appointment?").then(async (res) => {
             if (res) {
               await this.dbService.deleteAppointment(client);
-              await this.updateApps();
+              await this.filterAppointments(this.storage.appointments);
             }
           });
           return true;
