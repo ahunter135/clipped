@@ -100,16 +100,16 @@ export class PopoverComponent implements OnInit {
       return;
     };
     if (this.text === "Delete Client") {
-      for (let i = 0; i < this.storage.clients.length; i++) {
+      /*for (let i = 0; i < this.storage.clients.length; i++) {
         if (this.storage.clients[i].uuid == this.client.uuid) {
           this.storage.clients.splice(i, 1);
         }
-      }
+      }*/
       this.dbService.deleteClient(this.client);
     } else if (this.text === "Delete Visit") {
       for (let i = 0; i < this.client.visits.length; i++) {
         if (this.client.visits[i].uuid == this.visit.uuid) {
-          this.client.visits.splice(i, 1);
+          this.client.visits[i].deleted = true;
           break;
         }
       }

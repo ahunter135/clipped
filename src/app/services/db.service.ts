@@ -102,6 +102,7 @@ export class DbService {
         clients.forEach(function(doc) {
           let obj = doc.data();
           obj.id = doc.id;
+          if (!obj.deleted)
           this.storage.clients.push(obj);
         }.bind(this));
         resolve(this.storage.clients);
@@ -183,23 +184,25 @@ export class DbService {
       color: client.color
     }).catch((err) => {
       this.handleError(err)
-    });   ;
+    });
   }
 
   async deleteClient(client) {
     let storageRef = firebase.storage().ref();
-    storageRef.child(this.uid).child(client.uuid).listAll().then(dir => {
+    /*storageRef.child(this.uid).child(client.uuid).listAll().then(dir => {
       dir.items.forEach(fileRef => {
         storageRef.child(this.uid).child(client.uuid).child(fileRef.name).delete();
       });
     }).catch((err) => {
       this.handleError(err)
-    });   ;
+    });*/
 
     firebase.firestore().collection('users').doc(this.uid).collection('clients').get().then(function(docs) {
       docs.forEach(element => {
         if (element.data().uuid === client.uuid) {
-          this.db.collection('users').doc(this.uid).collection('clients').doc(element.id).delete().then(function() {
+          this.db.collection('users').doc(this.uid).collection('clients').doc(element.id).update({
+            deleted: true
+          }).then(function() {
             return true;
           }).catch(function(err) {
             return false;
@@ -357,13 +360,16 @@ async saveStylists(stylists) {
       apps.forEach(function(doc) {
         let obj = doc.data();
         obj.id = doc.id;
+        if (!obj.deleted)
         this.storage.appointments.push(obj);
       }.bind(this));
     })
   }
 
   async deleteAppointment(app) {
-    return this.db.collection('users').doc(this.uid).collection('appointments').doc(app.app.id).delete();
+    return this.db.collection('users').doc(this.uid).collection('appointments').doc(app.app.id).update({
+      deleted: true
+    });
   }
 
   async getAllServices() {
@@ -372,15 +378,20 @@ async saveStylists(stylists) {
       apps.forEach(function(doc) {
         let obj = doc.data();
         obj.id = doc.id;
+        if (!obj.deleted)
         this.storage.services.push(obj);
       }.bind(this));
     })
   }
 
   async addService(obj) {
-    this.db.collection('users').doc(this.uid).collection('services').doc(uuidv4()).set({
-      name: obj.name,
-      price: obj.price
+    return new Promise(async (resolve, reject) => {
+      let id = uuidv4();
+      this.db.collection('users').doc(this.uid).collection('services').doc(id).set({
+        name: obj.name,
+        price: obj.price
+      });
+      resolve(id);
     });
   }
 
@@ -392,7 +403,9 @@ async saveStylists(stylists) {
   }
 
   async deleteService(id) {
-    return this.db.collection('users').doc(this.uid).collection('services').doc(id).delete();
+    return this.db.collection('users').doc(this.uid).collection('services').doc(id).update({
+      deleted: true
+    });
   }
 
   async editClientVisit(client) {

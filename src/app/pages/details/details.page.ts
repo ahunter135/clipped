@@ -41,6 +41,7 @@ export class DetailsPage implements OnInit {
   countries = csc.getAllCountries();
   states;
   searching = false;
+  visits = [];
   constructor(private storage: StorageService, private camera: Camera, 
     private dbService: DbService, private popoverCtrl: PopoverController, public globalService: GlobalService, 
     private file: File, private crop: Crop, private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, 
@@ -94,6 +95,8 @@ export class DetailsPage implements OnInit {
 
   ionViewWillEnter() {
     this.client.visits.sort(this.sortByProperty("date"));
+    //this.client.visits.filter((item) => item.deleted == true);
+    this.visits = this.client.visits.filter((item) => item.deleted !== true);
   }
 
   getStates() {
@@ -187,6 +190,7 @@ export class DetailsPage implements OnInit {
     modal.onDidDismiss().then(() => {
       this.client = this.storage.data;
       this.client.visits.sort(this.sortByProperty("date"));
+      this.visits = this.client.visits.filter((item) => item.deleted !== true);
       this.storage.modalShown = false;
     })
     return await modal.present();

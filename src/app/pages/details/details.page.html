@@ -68,11 +68,11 @@
               border: solid #ffdac1;
               border-width: 1px;
               border-radius: 5px;
-            " [ngStyle]="{'height': client.visits == 0 ? '150px' : ''}" (click)="showVisits(null)">
+            " [ngStyle]="{'height': visits == 0 ? '150px' : ''}" (click)="showVisits(null)">
             <ion-icon name="add-circle-outline" size="large"
               style="display: block; margin: auto; height: 100%; color: #ffdac1"></ion-icon>
           </ion-col>
-          <ion-col sizeLg="4" sizeMd="4" sizeXs="6" *ngFor="let visit of client.visits" style="padding: 1px">
+          <ion-col sizeLg="4" sizeMd="4" sizeXs="6" *ngFor="let visit of visits" style="padding: 1px">
             <img *ngIf="visit.image" class="img-wrapper" src="{{visit.image}}" (click)="showVisits(visit)" />
             <img *ngIf="!visit.image" (click)="showVisits(visit)" class="img-wrapper"
               src="https://via.placeholder.com/1024x1024.jpg?text={{visit.date}}" />

@@ -34,6 +34,7 @@ export class AddAppointmentComponent implements OnInit {
 
   async ngOnInit() {
     this.stylists = <any>await this.db.getStylists();
+    await this.dbService.getAllServices();
     for (let i = 0; i < this.client.pets.length; i++) {
       if (this.client.pets[i].isActive || this.client.pets[i].isActive == undefined)
         this.pets.push(this.client.pets[i]);
@@ -55,11 +56,10 @@ export class AddAppointmentComponent implements OnInit {
       pet: this.pet,
       client: this.client.id,
       //stylist: this.stylist ? this.stylist : null,
-      service: {}
+      service: <any>{}
     }
     if (this.service == 0) {
-      await this.dbService.addService(this.customService);
-      obj.service = this.customService
+      obj.service = await this.dbService.addService(this.customService);
     } else obj.service = this.service
     
     this.db.addClientAppointment(obj);
