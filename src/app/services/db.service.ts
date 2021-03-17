@@ -64,7 +64,7 @@ export class DbService {
             frequency: "15",
             notifications: false,
             notificationsFrequency: "15",
-            ids: {}
+            id: {}
           },
           bypasspro: false,
           name: this.name ? this.name : ""
@@ -350,7 +350,11 @@ async saveStylists(stylists) {
       //stylist: obj.stylist ? obj.stylist : null,
       service: obj.service,
       notified: false,
-      notifiedUser: false
+      notifiedUser: false,
+      timezone: obj.timezone,
+      deleted: false,
+      cancelled: false,
+      confirmed: false
     });
   }
 

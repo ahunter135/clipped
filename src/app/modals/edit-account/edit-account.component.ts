@@ -46,19 +46,19 @@ export class EditAccountComponent implements OnInit {
   async changeEmail() {}
 
   async save() {
-    let ids = {
+    let id = {
       userId: 'string',
       pushToken: 'string'
     };
     if (this.platform.is('android') || this.platform.is('ios'))
-      ids = await this.onesignal.getIds();
+      id = await this.onesignal.getIds();
 
     this.dbService.saveAccountType(0, false, {
       on: false,
       frequency: "60",
       notifications: this.notifications,
       notificationsFrequency: this.notificationsFrequency,
-      id: ids
+      id: id
     });
   }
 

@@ -30,6 +30,7 @@ export class Tab4Page {
   footerState: IonPullUpFooterState;
   isPro = this.storage.proMode;
   currentFilter = 0;
+  ready = false;
   constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe,
     private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator, private alertController: AlertController,
     private router: Router) {
@@ -231,7 +232,7 @@ export class Tab4Page {
 
     let mapOptions: GoogleMapOptions = {
       camera: {
-        zoom: 5,
+        zoom: 15,
         target: latLng,
       },
       controls: {
@@ -244,6 +245,7 @@ export class Tab4Page {
 
     this.map.one(GoogleMapsEvent.MAP_READY).then(async () => {
       this.addMarkers(clients);
+      /*
       if (clients.length > 0) {
         let address = clients[0].location.address + " " + clients[0].location.zip;
         let results = await Geocoder.geocode( { 'address': address});
@@ -251,14 +253,12 @@ export class Tab4Page {
         let lat = results[0].position.lat;
         let lng = results[0].position.lng;
         let latLng = new LatLng(lat, lng);
-        this.map.animateCamera({
-          target: latLng,
-          zoom: 10
-        })
-      }
+         
+      }*/
     })
     
     this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
+      if (!this.ready) return;
       this.appointmentsShownOnMap = [];
       //Bouunds are set, see if any markers are here.
       for (let i = 0; i < this.markers.length; i++) {
@@ -276,9 +276,12 @@ export class Tab4Page {
 
   async addMarkers(clients) {
     this.appointmentsShownOnMap = [];
+    console.log(clients);
+    this.ready = false;
     for (let i = 0; i < clients.length; i++) {
       await this.addMarker(clients[i]);
     }
+    this.ready = true;
   }
 
   async addMarker(client){
@@ -309,11 +312,17 @@ export class Tab4Page {
       marker.set('pet', client.app.pet ? JSON.stringify(client.app.pet) : null);
       marker.set('latlng', latLng);
       this.markers.push(marker);
+      if (this.markers.length == 1) {
+        this.map.moveCamera({
+          target: marker.getPosition()
+        })
+      }
 
       let region = this.map.getVisibleRegion();
       if (region.contains(marker.getPosition())) {
         this.appointmentsShownOnMap.push(client)
       }
+      console.log(this.appointmentsShownOnMap);
       
       this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
 

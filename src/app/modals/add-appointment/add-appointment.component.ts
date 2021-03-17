@@ -1,7 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams, Platform } from '@ionic/angular';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
 
@@ -53,10 +53,13 @@ export class AddAppointmentComponent implements OnInit {
     }
     let obj = {
       date: appointmentDate,
+      timezone: moment.tz.guess(),
       pet: this.pet,
       client: this.client.id,
-      //stylist: this.stylist ? this.stylist : null,
-      service: <any>{}
+      service: <any>{},
+      deleted: false,
+      cancelled: false,
+      confirmed: false
     }
     if (this.service == 0) {
       obj.service = await this.dbService.addService(this.customService);
