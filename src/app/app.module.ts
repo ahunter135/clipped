@@ -42,6 +42,9 @@ import { PhonePipe } from './pipes/phone.pipe';
 import { ColorPickerComponent } from './modals/color-picker/color-picker.component';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { FilterPipe } from './pipes/filter.pipe';
+import { ExpandableComponent } from './components/expandable/expandable.component';
+import { PipesModule } from './pipes/pipes.module';
+import { ComponentsModule } from './components/components.module';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -56,11 +59,11 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 @NgModule({
-  declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent, PhonePipe, ColorPickerComponent],
+  declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent, ColorPickerComponent],
   entryComponents: [UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent, ColorPickerComponent],
   imports: [BrowserModule, IonicModule.forRoot({
     mode: 'ios'
-  }), AppRoutingModule, FormsModule, ColorSketchModule],
+  }), AppRoutingModule, FormsModule, ColorSketchModule, PipesModule, ComponentsModule],
   providers: [
     StatusBar,
     SplashScreen,
@@ -81,9 +84,6 @@ firebase.initializeApp(firebaseConfig);
     GooglePlus,
     GoogleMaps,
     AndroidPermissions,
-    ClientByIDPipe,
-    FilterPipe,
-    PhonePipe,
     DatePipe,
     CurrencyPipe,
     LaunchNavigator,

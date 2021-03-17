@@ -14,7 +14,9 @@ export class ViewAppointmentComponent implements OnInit {
     client: '',
     stylist: '',
     service: <any>{},
-    pet: ''
+    pet: '',
+    address: '',
+    address2: ''
   };
   constructor(public modalCtrl: ModalController, public navParams: NavParams, private storage: StorageService) {
     this.app = this.navParams.data.app;
@@ -27,7 +29,7 @@ export class ViewAppointmentComponent implements OnInit {
         break;
       }
     }
-    console.log(this.app.service);
+    console.log(this.app);
   }
 
 }

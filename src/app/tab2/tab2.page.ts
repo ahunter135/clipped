@@ -72,6 +72,12 @@ export class Tab2Page {
     for (let i = 0; i < this.temp.length; i++) {
       if (this.temp[i].name.toLowerCase().includes(term.toLowerCase())) {
         this.storage.clients.push(this.temp[i]);
+      } else {
+        for (let j = 0; j < this.temp[i].pets.length; j++) {
+          if (this.temp[i].pets[j].name.toLowerCase().includes(term.toLowerCase())) {
+            this.storage.clients.push(this.temp[i]);
+          }
+        }
       }
     }
   }

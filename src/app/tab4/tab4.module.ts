@@ -12,6 +12,8 @@ import { ViewAppointmentComponent } from '../modals/view-appointment/view-appoin
 import { SelectClientComponent } from '../modals/select-client/select-client.component';
 import { FilterPipe } from '../pipes/filter.pipe';
 import { CalendarModule } from 'ion2-calendar';
+import { ComponentsModule } from '../components/components.module';
+import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -20,9 +22,11 @@ import { CalendarModule } from 'ion2-calendar';
     FormsModule,
     Tab4PageRoutingModule,
     IonicPullupModule,
-    CalendarModule
+    CalendarModule,
+    ComponentsModule,
+    PipesModule
   ],
-  declarations: [Tab4Page, ClientByIDPipe, FilterPipe, ViewAppointmentComponent, SelectClientComponent],
+  declarations: [Tab4Page, ViewAppointmentComponent, SelectClientComponent],
   entryComponents: [ViewAppointmentComponent, SelectClientComponent]
 })
 export class Tab4PageModule {}

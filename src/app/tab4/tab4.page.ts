@@ -118,8 +118,8 @@ export class Tab4Page {
       
       if (this.currentFilter == 0) {
        // Today
-       if (moment(day).isSame(moment(), 'days')) {
-        dates.push(moment(day).format("MM/DD/YYYY"));
+       if (moment(day).isSame(moment(), 'days') && moment(day).isSameOrAfter(moment(), 'hours')) {
+          dates.push(moment(day).format("MM/DD/YYYY"));
        }
       } else if (this.currentFilter == 1) {
         // Tomorrow
@@ -134,8 +134,8 @@ export class Tab4Page {
         }
       } else if (this.currentFilter == 3) {
         // All Future
-        if (moment(day).isSameOrAfter(moment(), 'days'))
-        dates.push(moment(day).format("MM/DD/YYYY"));
+        if (moment(day).isSameOrAfter(moment(), 'days') && moment(day).isSameOrAfter(moment(), 'hours'))
+          dates.push(moment(day).format("MM/DD/YYYY"));
       }
     }
 
@@ -150,8 +150,8 @@ export class Tab4Page {
           let day = moment(appointments[j].date);
           let now = moment();
           if (this.currentFilter == 0) {
-            if (moment(day).isSame(now, 'days')) {
-              apps[i].apps.push(appointments[j]);
+            if (moment(day).isSame(now, 'days') && moment(day).isSameOrAfter(now, 'hours')) {
+                apps[i].apps.push(appointments[j]);
             }
           } else if (this.currentFilter == 1) {
             // Tomorrow
@@ -165,7 +165,7 @@ export class Tab4Page {
               apps[i].apps.push(appointments[j]);
             }
           } else if (this.currentFilter == 3) {
-            if (moment(day).isSameOrAfter(now, 'days')) 
+            if (moment(day).isSameOrAfter(now, 'days') && moment(day).isSameOrAfter(now, 'hours')) 
               apps[i].apps.push(appointments[j]);
           }
         }
@@ -175,7 +175,6 @@ export class Tab4Page {
     
     this.appointments = apps.sort(this.custom_sort);
     this.tempAppointments = this.appointments;
-
     if (!this.map)
       this.addMap();
    else {
@@ -276,7 +275,6 @@ export class Tab4Page {
 
   async addMarkers(clients) {
     this.appointmentsShownOnMap = [];
-    console.log(clients);
     this.ready = false;
     for (let i = 0; i < clients.length; i++) {
       await this.addMarker(clients[i]);
@@ -306,7 +304,7 @@ export class Tab4Page {
       icon: pinColor,
       visible: this.isLocationFree(latLng),
       title: this.clientByID.transform(client.client_id).toString(),
-      snippet: client.location.address + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
+      snippet: client.location.address + ", " + client.location.address2 + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
     }).then((marker:Marker) => {
       marker.set('client', client);
       marker.set('pet', client.app.pet ? JSON.stringify(client.app.pet) : null);
@@ -322,7 +320,6 @@ export class Tab4Page {
       if (region.contains(marker.getPosition())) {
         this.appointmentsShownOnMap.push(client)
       }
-      console.log(this.appointmentsShownOnMap);
       
       this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
 

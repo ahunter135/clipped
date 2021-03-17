@@ -11,7 +11,11 @@ export class ClientByIDPipe implements PipeTransform {
     for (let i = 0; i < this.storage.clients.length; i++) {
       if (this.storage.clients[i].id == value) {
         if (args[0] == 'img') return this.storage.clients[i].image;
+        else if (args[0] == 'address') return this.storage.clients[i].location.address;
+        else if (args[0] == 'address2') return this.storage.clients[i].location.address2;
         else return this.storage.clients[i].name
+
+        break;
       }
     }
     return null;

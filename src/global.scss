@@ -36,3 +36,13 @@
 ion-toolbar {
   color: black;
 }
+
+ion-calendar { 
+  .unavailableDay{ 
+    p { 
+      color: #f16a6a !important; 
+    } 
+  }
+}
+
+

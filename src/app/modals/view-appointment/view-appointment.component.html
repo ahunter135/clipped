@@ -26,7 +26,7 @@
     <ion-card-content>
       <h3>{{ app.service.name }} - {{ app.service.price }}</h3>
       <br />
-      {{ app.service.details }}
+      {{app.client | clientByID: 'address'}}, {{app.client | clientByID: 'address2'}}
     </ion-card-content>
   </ion-card>
 </ion-content>

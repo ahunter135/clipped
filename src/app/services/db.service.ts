@@ -365,7 +365,7 @@ async saveStylists(stylists) {
         let obj = doc.data();
         obj.id = doc.id;
         if (!obj.deleted)
-        this.storage.appointments.push(obj);
+          this.storage.appointments.push(obj);
       }.bind(this));
     })
   }

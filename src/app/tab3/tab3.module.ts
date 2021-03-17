@@ -10,6 +10,7 @@ import { EditAccountComponent } from '../modals/edit-account/edit-account.compon
 import { LottieModule } from 'ngx-lottie';
 
 import player from 'lottie-web';
+import { PipesModule } from '../pipes/pipes.module';
  
 // Note we need a separate function as it's required
 // by the AOT compiler.
@@ -22,7 +23,8 @@ export function playerFactory() {
     CommonModule,
     FormsModule,
     Tab3PageRoutingModule,
-    LottieModule.forRoot({ player: playerFactory })
+    LottieModule.forRoot({ player: playerFactory }),
+    PipesModule
   ],
   declarations: [Tab3Page],
   entryComponents: []
