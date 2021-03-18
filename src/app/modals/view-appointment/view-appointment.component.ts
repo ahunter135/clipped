@@ -8,7 +8,7 @@ import { StorageService } from 'src/app/services/storage.service';
   styleUrls: ['./view-appointment.component.scss'],
 })
 export class ViewAppointmentComponent implements OnInit {
-  app = {
+  app = <any>{
     summary: '',
     date: '',
     client: '',
@@ -29,7 +29,17 @@ export class ViewAppointmentComponent implements OnInit {
         break;
       }
     }
-    console.log(this.app);
+  }
+
+  edit() {
+    let appointmentObj = {
+      date: this.app.date,
+      pet: this.app.pet,
+      service: this.app.service.id,
+      client: this.app.client,
+      app: this.app
+    }
+    this.modalCtrl.dismiss(appointmentObj);
   }
 
 }

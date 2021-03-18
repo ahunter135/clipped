@@ -100,7 +100,8 @@ export class AddPage implements OnInit {
     let modal = await this.modalCtrl.create({
       component: PetsComponent,
       componentProps: {
-        pets: []
+        pets: [],
+        client: this.client
       }
     });
     modal.onDidDismiss().then((data) => {

@@ -13,6 +13,7 @@ export class ClientByIDPipe implements PipeTransform {
         if (args[0] == 'img') return this.storage.clients[i].image;
         else if (args[0] == 'address') return this.storage.clients[i].location.address;
         else if (args[0] == 'address2') return this.storage.clients[i].location.address2;
+        else if (args[0] == 'full') return this.storage.clients[i];
         else return this.storage.clients[i].name
 
         break;

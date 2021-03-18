@@ -6,13 +6,19 @@
       </ion-button>
     </ion-buttons>
     <ion-title>Appointment Details</ion-title>
+    <ion-buttons slot="end" color="dark">
+      <ion-button (click)="edit()" color="dark">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <img [src]="app.client | clientByID: 'img'" />
+      <img *ngIf="app.pet.image" [src]="app.pet.image" />
+      <img *ngIf="!app.pet.image" [src]="app.client | clientByID:'img'" />
       <ion-card-title>{{ app.client | clientByID }}</ion-card-title>
       <ion-card-subtitle>{{
         app.date | date: "MMM d, y, h:mm a"
@@ -21,7 +27,8 @@
         >Stylist: <span *ngIf="app.stylist">{{ app.stylist }}</span
         ><span *ngIf="!app.stylist">None</span>
       </ion-card-subtitle>-->
-      <ion-card-subtitle>Pet: {{ app.pet }} </ion-card-subtitle>
+      <ion-card-subtitle><span *ngIf="!app.pet.name">Pet: {{ app.pet }}</span><span *ngIf="app.pet.name">Pet:
+          {{ app.pet.name }}</span></ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <h3>{{ app.service.name }} - {{ app.service.price }}</h3>

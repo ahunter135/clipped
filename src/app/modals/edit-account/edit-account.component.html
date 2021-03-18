@@ -22,7 +22,11 @@
         <ion-label position="floating"> Email </ion-label>
         <ion-input placeholder="John@doe.com" [(ngModel)]="email" readonly></ion-input>
       </ion-item>
-
+      <ion-item>
+        <ion-label position="floating"> Service Area </ion-label>
+        <ion-input placeholder="37090" [(ngModel)]="dbService.serviceArea" type="number" (ionChange)="save()">
+        </ion-input>
+      </ion-item>
       <ion-item [disabled]="!isPro">
         <ion-label>Appointment Push Notifications</ion-label>
         <ion-toggle [(ngModel)]="notifications" (ionChange)="save()"></ion-toggle>

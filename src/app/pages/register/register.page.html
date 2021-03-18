@@ -1,6 +1,7 @@
 <ion-content>
   <span class="form">
     <h1>Create Account</h1>
+    <input type="text" placeholder="Full Name" [(ngModel)]="name" />
     <input type="email" placeholder="Email" [(ngModel)]="email" />
     <input type="password" placeholder="Password" [(ngModel)]="password" />
     <!--<br>
@@ -16,11 +17,7 @@
     <button (click)="login()">
       <span *ngIf="!loading">Create</span>
       <span *ngIf="loading">
-        <ion-spinner
-          color="secondary"
-          name="bubbles"
-          color="light"
-        ></ion-spinner>
+        <ion-spinner color="secondary" name="bubbles" color="light"></ion-spinner>
       </span>
     </button>
   </span>

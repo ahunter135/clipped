@@ -35,10 +35,7 @@
             </ion-item>
           </app-expandable>
         </ion-label>
-
         <br>
-
-
       </ion-item>
       <ion-item>
         <ion-label position="floating">Time of Appointment <span style="color: red">*</span></ion-label>
@@ -54,9 +51,9 @@
         </ion-select>
       </ion-item>-->
       <ion-item>
-        <ion-label>Pet <span style="color: red">*</span></ion-label>
-        <ion-select placeholder="Select One" [(ngModel)]="pet">
-          <ion-select-option *ngFor="let item of pets" value="{{ item.name }}">{{ item.name }}
+        <ion-label>Pets <span style="color: red">*</span></ion-label>
+        <ion-select placeholder="Select One" [(ngModel)]="pet" multiple="true">
+          <ion-select-option *ngFor="let item of pets" [value]="item">{{ item.name }}
           </ion-select-option>
         </ion-select>
       </ion-item>

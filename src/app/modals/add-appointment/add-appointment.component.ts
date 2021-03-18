@@ -21,7 +21,7 @@ export class AddAppointmentComponent implements OnInit {
   client;
   stylist;
   stylists = [];
-  pet;
+  pet = [];
   service;
   pets = [];
   calendarOptions: CalendarComponentOptions;
@@ -32,10 +32,13 @@ export class AddAppointmentComponent implements OnInit {
   };
   expanded = false;
   bookingsOnDay = [];
+  passedApp;
+  isEdit = false;
   constructor(public modalCtrl: ModalController, private navParams: NavParams, private db: DbService, public storage: StorageService, private platform: Platform,
     private currency: CurrencyPipe, private dbService: DbService) {
     this.client = this.navParams.data.client;
-
+    this.passedApp = this.navParams.data.passedApp;
+    this.isEdit = this.navParams.data.isEdit ? true : false;
   }
 
   async ngOnInit() {
@@ -45,7 +48,33 @@ export class AddAppointmentComponent implements OnInit {
       if (this.client.pets[i].isActive || this.client.pets[i].isActive == undefined)
         this.pets.push(this.client.pets[i]);
     }
-    this.pet = this.pets[0].name;
+    if (this.passedApp) {
+      this.storage.services.forEach(service => {
+        if (service.id == this.passedApp.service) {
+          this.service = service.id;
+        }
+      })
+
+      let obj = [];
+      for (let i = 0; i < this.pets.length; i++) {
+        if (this.passedApp.pet.name) {
+          if (this.passedApp.pet.name.includes(this.pets[i].name)) {
+            obj.push(this.pets[i]);
+          }
+        } else {
+          if (this.passedApp.pet.includes(this.pets[i].name)) {
+            obj.push(this.pets[i]);
+          }
+        }
+      }
+      this.pet = obj;
+
+      if (this.isEdit) {
+        this.app_date = moment(this.passedApp.date).format("MM-DD-YYYY");
+        this.app_time = this.passedApp.date;
+      }
+    } else
+      this.pet = [this.pets[0]];
     await this.dbService.getAllAppointments();
     this.appointments = this.storage.appointments;
     let config = [];
@@ -82,16 +111,31 @@ export class AddAppointmentComponent implements OnInit {
   }
 
   async submit() {
+    let petObjs = {
+      name: "",
+      image: false
+    };
+    for (let i = 0; i < this.pet.length; i++) {
+      for (let j = 0; j < this.pets.length; j++) {
+        if (this.pet[i].name == this.pets[j].name) {
+          petObjs.name += this.pets[j].name + ", ";
+          if (this.pets[j].image) petObjs.image = this.pets[j].image;
+          break;
+        }
+      }
+    }
+    petObjs.name = petObjs.name.substring(0, petObjs.name.length - 2);
+
     let chosenDate = moment(this.app_date).format("MM/DD/YYYY");
     let time = moment(this.app_time).format("hh:mm a");
     let appointmentDate = moment(chosenDate + " " + time).toISOString();
     if (!this.app_date || !this.app_time || !this.pet || !this.service) {
       return;
     }
-    let obj = {
+    let obj = <any>{
       date: appointmentDate,
       timezone: moment.tz.guess(),
-      pet: this.pet,
+      pet: petObjs,
       client: this.client.id,
       service: <any>{},
       deleted: false,
@@ -102,7 +146,11 @@ export class AddAppointmentComponent implements OnInit {
       obj.service = await this.dbService.addService(this.customService);
     } else obj.service = this.service
     
-    this.db.addClientAppointment(obj);
+    if (!this.isEdit) this.db.addClientAppointment(obj);
+    else { 
+      obj.app = this.passedApp.app;
+      this.db.editClientAppointment(obj);
+    }
     this.modalCtrl.dismiss();
   }
 

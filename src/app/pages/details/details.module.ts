@@ -18,6 +18,7 @@ import { ExpandableComponent } from 'src/app/components/expandable/expandable.co
 import { ClientByIDPipe } from 'src/app/pipes/client-by-id.pipe';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { ViewAppointmentsComponent } from 'src/app/modals/view-appointments/view-appointments.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     ComponentsModule,
     PipesModule
   ],
-  declarations: [PopoverComponent, VisitsComponent, CropImageComponent, TextTemplateComponent, AddAppointmentComponent],
-  entryComponents: [VisitsComponent, CropImageComponent, TextTemplateComponent, AddAppointmentComponent]
+  declarations: [PopoverComponent, VisitsComponent, CropImageComponent, TextTemplateComponent, AddAppointmentComponent, ViewAppointmentsComponent],
+  entryComponents: [VisitsComponent, CropImageComponent, TextTemplateComponent, AddAppointmentComponent, ViewAppointmentsComponent]
 })
 export class DetailsPageModule {}

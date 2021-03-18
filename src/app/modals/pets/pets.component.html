@@ -14,6 +14,14 @@
       <ion-card-subtitle>Pet Details</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img src="{{pet.image}}" *ngIf="pet.image" />
+          <img src="https://ui-avatars.com/api/?background=f3f3f3&name=" *ngIf="!pet.image" />
+        </ion-avatar>
+        <ion-button (click)="editProfileImg(index)" color="light" *ngIf="!loading">Edit Profile Image</ion-button>
+        <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+      </ion-item>
       <ion-item>
         <ion-label>Name</ion-label>
         <ion-input placeholder="Ralph" type="text" [(ngModel)]="pet.name" autocapitalize="on" autocomplete="name"
@@ -36,19 +44,29 @@
         <ion-label>Active</ion-label>
         <ion-checkbox slot="end" [(ngModel)]="pet.isActive"></ion-checkbox>
       </ion-item>
-      <br />
-      <ion-segment [(ngModel)]="pet.temperament">
-        <ion-segment-button value="0">
-          <ion-label>Gentle</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="1">
-          <ion-label>Mild</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="2">
-          <ion-label>Aggressive</ion-label>
-        </ion-segment-button>
-      </ion-segment>
-      <br />
+      <ion-item>
+        <ion-label position="floating">Birthday</ion-label>
+        <ion-datetime displayFormat="MMM DD YY" placeholder="Select Date" [(ngModel)]="pet.birthday"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">
+          Notes
+        </ion-label>
+        <ion-textarea autoGrow="true" autocapitalize="true" [(ngModel)]="pet.notes"></ion-textarea>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-segment [(ngModel)]="pet.temperament">
+          <ion-segment-button value="0">
+            <ion-label>Gentle</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="1">
+            <ion-label>Mild</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="2">
+            <ion-label>Aggressive</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-item>
       <ion-button expand="block" color="dark" (click)="remove(index)">Remove</ion-button>
     </ion-card-content>
   </ion-card>

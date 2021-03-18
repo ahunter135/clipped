@@ -16,6 +16,7 @@ import * as randomcolor from 'random-hex-color'
 import { PhonePipe } from 'src/app/pipes/phone.pipe';
 import { ColorPickerComponent } from 'src/app/modals/color-picker/color-picker.component';
 import { AddAppointmentComponent } from 'src/app/modals/add-appointment/add-appointment.component';
+import { ViewAppointmentsComponent } from 'src/app/modals/view-appointments/view-appointments.component';
 
 declare var google: any;
 @Component({
@@ -108,7 +109,8 @@ export class DetailsPage implements OnInit {
     let modal = await this.modalCtrl.create({
       component: PetsComponent,
       componentProps: {
-        pets: this.client.pets ? this.client.pets : []
+        pets: this.client.pets ? this.client.pets : [],
+        client: this.client
       }
     });
     modal.onDidDismiss().then((data) => {
@@ -249,17 +251,37 @@ export class DetailsPage implements OnInit {
     }
   }
 
-  async addAppointment() {
+  async addAppointment(passedApp) {
     this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: AddAppointmentComponent,
       componentProps: {
         client: this.client,
-        cameFromList: false
+        cameFromList: false,
+        passedApp: passedApp ? passedApp : null
       }
     })
     modal.onDidDismiss().then(() => {
+      this.dbService.getAllAppointments();
       this.storage.modalShown = false;
+    });
+
+    await modal.present();
+  }
+
+  async viewAppointments() {
+    this.storage.modalShown = true;
+    let modal = await this.modalCtrl.create({
+      component: ViewAppointmentsComponent,
+      componentProps: {
+        client: this.client
+      }
+    })
+    modal.onDidDismiss().then((data) => {
+      this.storage.modalShown = false;
+      if (data.data) {
+        this.addAppointment(data.data);
+      }
     });
 
     await modal.present();

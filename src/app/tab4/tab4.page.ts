@@ -10,6 +10,7 @@ import { GoogleMaps, GoogleMapsEvent, LatLng, MarkerOptions, Marker, GoogleMapsM
 import { DatePipe } from '@angular/common';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
 import { Router } from '@angular/router';
+import { AddAppointmentComponent } from '../modals/add-appointment/add-appointment.component';
 
 @Component({
   selector: 'app-tab4',
@@ -118,7 +119,7 @@ export class Tab4Page {
       
       if (this.currentFilter == 0) {
        // Today
-       if (moment(day).isSame(moment(), 'days') && moment(day).isSameOrAfter(moment(), 'hours')) {
+       if (moment(day).isSame(moment(), 'days') && moment(day).isSameOrAfter(moment(), 'hours') && moment(day).isSameOrAfter(moment(), 'minutes')) {
           dates.push(moment(day).format("MM/DD/YYYY"));
        }
       } else if (this.currentFilter == 1) {
@@ -134,7 +135,7 @@ export class Tab4Page {
         }
       } else if (this.currentFilter == 3) {
         // All Future
-        if (moment(day).isSameOrAfter(moment(), 'days') && moment(day).isSameOrAfter(moment(), 'hours'))
+        if (moment(day).isSameOrAfter(moment(), 'days') && moment(day).isSameOrAfter(moment(), 'hours') && moment(day).isSameOrAfter(moment(), 'minutes'))
           dates.push(moment(day).format("MM/DD/YYYY"));
       }
     }
@@ -150,7 +151,7 @@ export class Tab4Page {
           let day = moment(appointments[j].date);
           let now = moment();
           if (this.currentFilter == 0) {
-            if (moment(day).isSame(now, 'days') && moment(day).isSameOrAfter(now, 'hours')) {
+            if (moment(day).isSame(now, 'days') && moment(day).isSameOrAfter(now, 'hours') && moment(day).isSameOrAfter(now, 'minutes')) {
                 apps[i].apps.push(appointments[j]);
             }
           } else if (this.currentFilter == 1) {
@@ -165,7 +166,7 @@ export class Tab4Page {
               apps[i].apps.push(appointments[j]);
             }
           } else if (this.currentFilter == 3) {
-            if (moment(day).isSameOrAfter(now, 'days') && moment(day).isSameOrAfter(now, 'hours')) 
+            if (moment(day).isSameOrAfter(now, 'days') && moment(day).isSameOrAfter(now, 'hours') && moment(day).isSameOrAfter(now, 'minutes')) 
               apps[i].apps.push(appointments[j]);
           }
         }
@@ -174,6 +175,7 @@ export class Tab4Page {
 
     
     this.appointments = apps.sort(this.custom_sort);
+    console.log(this.appointments);
     this.tempAppointments = this.appointments;
     if (!this.map)
       this.addMap();
@@ -212,10 +214,34 @@ export class Tab4Page {
         app: item
       }
     })
-    modal.onDidDismiss().then(() => {
+    modal.onDidDismiss().then((data) => {
+      console.log(data.data);
+      if (data.data) {
+        this.editAppointment(data.data);
+      }
       this.storage.modalShown = false;
     })
-    return await modal.present();
+    await modal.present();
+  }
+
+  async editAppointment(item) {
+    console.log("HERE");
+    console.log(item);
+    this.storage.modalShown = true;
+    let modal = await this.modalCtrl.create({
+      component: AddAppointmentComponent,
+      componentProps: {
+        passedApp: item,
+        client: this.clientByID.transform(item.client, 'full'),
+        isEdit: true
+      }
+    })
+    modal.onDidDismiss().then(async () => {
+      await this.dbService.getAllAppointments();
+      await this.filterAppointments(this.storage.appointments);
+      this.storage.modalShown = false;
+    })
+    await modal.present();
   }
 
   async doRefresh(ev) {
@@ -226,12 +252,20 @@ export class Tab4Page {
 
   async addMap(){
     let clients = await this.getClientArrayFromAppointment();
-
-    let latLng = new LatLng(36.213089, -86.306480);
+    let latLng;
+    if (this.dbService.serviceArea) {
+      let results = await Geocoder.geocode( { 'address': this.dbService.serviceArea});
+      let lat = results[0].position.lat;
+      let lng = results[0].position.lng;
+      latLng = new LatLng(36.213089, -86.306480);
+    } else {
+      latLng = new LatLng(36.213089, -86.306480);
+    }
+    
 
     let mapOptions: GoogleMapOptions = {
       camera: {
-        zoom: 15,
+        zoom: 18,
         target: latLng,
       },
       controls: {
@@ -268,7 +302,7 @@ export class Tab4Page {
           this.appointmentsShownOnMap.push(client)
         }
       }
-      
+
       this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
     })
   }
@@ -312,6 +346,7 @@ export class Tab4Page {
       this.markers.push(marker);
       if (this.markers.length == 1) {
         this.map.moveCamera({
+          zoom: 18,
           target: marker.getPosition()
         })
       }
@@ -366,7 +401,11 @@ export class Tab4Page {
               app: client.app
             }
           });
-          modal.onDidDismiss().then(() => {
+          modal.onDidDismiss().then((data) => {
+            console.log(data.data);
+            if (data.data) {
+              this.editAppointment(data.data);
+            }
             this.storage.modalShown = false;
           })
           return await modal.present();

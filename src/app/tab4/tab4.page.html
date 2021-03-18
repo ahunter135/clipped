@@ -46,11 +46,13 @@
       </ion-item-divider>
       <ion-item *ngFor="let app of appointmentsShownOnMap" (click)="openSheet(app)">
         <ion-thumbnail slot="start">
-          <img [src]="app.client_id | clientByID:'img'" />
+          <img *ngIf="app.app.pet.image" [src]="app.app.pet.image" />
+          <img *ngIf="!app.app.pet.image" [src]="app.client_id | clientByID:'img'" />
         </ion-thumbnail>
         <ion-label>
           <h3>{{app.client_id | clientByID}}; {{app.location.address}}</h3>
-          <h5 *ngIf="app.app.pet">For {{app.app.pet}}</h5>
+          <h5 *ngIf="!app.app.pet.name">For {{app.app.pet}}</h5>
+          <h5 *ngIf="app.app.pet.name">For {{app.app.pet.name}}</h5>
           <!--<h5 *ngIf="app.app.stylist">Stylist: {{app.app.stylist}}</h5>-->
           <p>{{app.app.date | date: 'mediumDate'}}</p>
         </ion-label>

@@ -59,6 +59,9 @@ export class CameraService {
         handler: async () => {
           return new Promise(async (resolve, reject) => {
             this.actionSheet.dismiss();
+            if (flag == 'pets') {
+              this.globalService.publishData({key: 'pet-images', value: null, flag: flag});
+            } else
             this.globalService.publishData({key: 'images', value: null, flag: flag});
             resolve();
           })
@@ -93,13 +96,17 @@ export class CameraService {
             await this.dbService.uploadImage(img, client.uuid, flag);
             let images = <any>await this.dbService.getClientImages(client);
             console.log(images);
-            this.globalService.publishData({key: 'images', value: images, flag: flag});
-            resolve(true);
+            if (flag == 'pets') {
+              this.globalService.publishData({key: 'pet-images', value: images, flag: flag});
+              resolve(true);
+            } else {
+              this.globalService.publishData({key: 'images', value: images, flag: flag});
+              resolve(true);
+            }
           } else {
-            this.globalService.publishData({key: 'images', value: img, flag: flag});
-            resolve(true);
-          }
-          
+              this.globalService.publishData({key: 'images', value: img, flag: flag});
+              resolve(true);
+          } 
         });
         cropModal.present();
       }, (err) => {

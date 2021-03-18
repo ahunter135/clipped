@@ -20,6 +20,7 @@ export class DbService {
   accountType;
   reminders;
   bypassPro = false;
+  serviceArea;
   constructor(private storage: StorageService, private router: Router, private globalService: GlobalService) {}
 
   async setupDb() {
@@ -84,7 +85,8 @@ export class DbService {
             id: reminders.id
           },
           bypasspro: this.storage.proMode,
-          name: this.name
+          name: this.name,
+          serviceArea: this.serviceArea
         }).then(details => {
           this.accountType = account;
           resolve(true);
@@ -356,6 +358,22 @@ async saveStylists(stylists) {
       cancelled: false,
       confirmed: false
     });
+  }
+
+  async editClientAppointment(obj) {
+    this.db.collection('users').doc(this.uid).collection('appointments').doc(obj.app.id).update({
+      client: obj.client,
+      date: obj.date,
+      pet: obj.pet,
+      //stylist: obj.stylist ? obj.stylist : null,
+      service: obj.service,
+      notified: obj.app.notified,
+      notifiedUser: obj.app.notifiedUser,
+      timezone: obj.timezone,
+      deleted: obj.app.deleted,
+      cancelled: obj.app.cancelled,
+      confirmed: obj.app.confirmed
+    })
   }
 
   async getAllAppointments() {

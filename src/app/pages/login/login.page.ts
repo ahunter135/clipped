@@ -4,7 +4,7 @@ import { StorageService } from 'src/app/services/storage.service';
 import firebase from 'firebase';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { DbService } from 'src/app/services/db.service';
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController } from '@ionic/angular';
 import { SignInWithApple, AppleSignInResponse, AppleSignInErrorResponse, ASAuthorizationAppleIDRequest } from '@ionic-native/sign-in-with-apple/ngx';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
@@ -45,7 +45,7 @@ export class LoginPage implements OnInit {
       })
     }
   }
-  constructor(private router: Router, private storage: StorageService,private googlePlus: GooglePlus, private dbService: DbService, public platform: Platform, private signInWithApple: SignInWithApple) {
+  constructor(private router: Router, private storage: StorageService,private googlePlus: GooglePlus, private dbService: DbService, public platform: Platform, private signInWithApple: SignInWithApple, private toastController: ToastController) {
 
   }
 
@@ -124,6 +124,27 @@ export class LoginPage implements OnInit {
     try {
       firebase.auth().signInWithEmailAndPassword(this.email, this.password)
     .then(async response => {
+      if (!response.user.emailVerified) {
+        const toast = await this.toastController.create({
+          message: 'Please verify your email',
+          position: 'bottom',
+          duration: 8000,
+          buttons: [
+            {
+              side: 'end',
+              text: 'Verify',
+              handler: () => {
+                response.user.sendEmailVerification();
+                return;
+              }
+            }
+          ]
+        });
+        await toast.present();
+        this.loading = false;
+        return;
+      }
+      
       this.handleResponse(response);
     })
     .catch(error => {
