@@ -16,7 +16,7 @@ export class AddAppointmentComponent implements OnInit {
   today = moment().format("YYYY-MM-DD");
   min = moment().format("YYYY-MM-DD");
   type: 'string';
-  app_date = moment().format("MM-DD-YYYY");
+  app_date = moment().format("YYYY-MM-DD");
   app_time;
   client;
   stylist;
@@ -70,7 +70,7 @@ export class AddAppointmentComponent implements OnInit {
       this.pet = obj;
 
       if (this.isEdit) {
-        this.app_date = moment(this.passedApp.date).format("MM-DD-YYYY");
+        this.app_date = moment(this.passedApp.date).format("YYYY-MM-DD");
         this.app_time = this.passedApp.date;
       }
     } else
