@@ -87,7 +87,7 @@ export class DbService {
           },
           bypasspro: this.storage.proMode,
           name: this.name,
-          serviceArea: this.serviceArea
+          serviceArea: this.serviceArea ? this.serviceArea : ""
         }).then(details => {
           this.accountType = account;
           resolve(true);
