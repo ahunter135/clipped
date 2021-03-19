@@ -1,12 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { StorageService } from 'src/app/services/storage.service';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { DbService } from 'src/app/services/db.service';
 import { ActionSheetController, IonInput, ModalController, NavController, PopoverController } from '@ionic/angular';
 import { PopoverComponent } from './popover/popover.component';
 import { GlobalService } from 'src/app/services/global.service';
-import { File } from '@ionic-native/file/ngx';
-import { Crop } from '@ionic-native/crop/ngx';
 import * as moment from 'moment';
 import { VisitsComponent } from 'src/app/modals/visits/visits.component';
 import { CameraService } from 'src/app/services/camera.service';
@@ -17,6 +14,7 @@ import { PhonePipe } from 'src/app/pipes/phone.pipe';
 import { ColorPickerComponent } from 'src/app/modals/color-picker/color-picker.component';
 import { AddAppointmentComponent } from 'src/app/modals/add-appointment/add-appointment.component';
 import { ViewAppointmentsComponent } from 'src/app/modals/view-appointments/view-appointments.component';
+import { async } from '@angular/core/testing';
 
 declare var google: any;
 @Component({
@@ -43,14 +41,15 @@ export class DetailsPage implements OnInit {
   states;
   searching = false;
   visits = [];
-  constructor(private storage: StorageService, private camera: Camera, 
+  temp;
+  constructor(private storage: StorageService, 
     private dbService: DbService, private popoverCtrl: PopoverController, public globalService: GlobalService, 
-    private file: File, private crop: Crop, private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, 
+    private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, 
     public modalCtrl: ModalController, private cameraService: CameraService, private phone: PhonePipe) { }
 
   async ngOnInit() {
-    this.client = this.storage.data;
-
+    this.client = Object.assign({}, await this.storage.getData());
+    this.temp = JSON.parse(JSON.stringify(this.client));
     if (!this.client.color) {
       this.client.color = randomcolor();
       this.save();
@@ -100,6 +99,10 @@ export class DetailsPage implements OnInit {
     this.visits = this.client.visits.filter((item) => item.deleted !== true);
   }
 
+  async ionViewWillLeave() {
+    await this.dbService.getClients();
+  }
+
   getStates() {
     this.states = csc.getStatesOfCountry(this.client.location.country);
   }
@@ -115,9 +118,12 @@ export class DetailsPage implements OnInit {
     });
     modal.onDidDismiss().then((data) => {
       if (data.data) {
-        console.log(data.data);
         this.client.pets = data.data;
         this.save();
+        this.temp = JSON.parse(JSON.stringify(this.client));
+      } else {
+        // did not hit save, so overwrite changes
+        this.client.pets = this.temp.pets;
       }
       this.storage.modalShown = false;
     });
@@ -189,8 +195,8 @@ export class DetailsPage implements OnInit {
         editing: visit == null
       }
     })
-    modal.onDidDismiss().then(() => {
-      this.client = this.storage.data;
+    modal.onDidDismiss().then(async() => {
+      this.client = await this.storage.getData();
       this.client.visits.sort(this.sortByProperty("date"));
       this.visits = this.client.visits.filter((item) => item.deleted !== true);
       this.storage.modalShown = false;

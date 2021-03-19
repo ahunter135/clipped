@@ -76,7 +76,7 @@ export class Tab1Page {
           }
         }
       })
-      console.log(loggedIn);
+      this.dbService.photoURL = loggedIn.photoURL ? loggedIn.photoURL : null;
       this.dbService.uid = loggedIn.uid;
       this.dbService.email = loggedIn.email;
       await this.storage.setupIAP();

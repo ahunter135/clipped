@@ -12,17 +12,17 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class PetsComponent implements OnInit {
   client;
-  pets = [];
+  petsList = [];
   loading = false;
   selectedPetIndex;
   constructor(public modalCtrl: ModalController, private navParams: NavParams, private alertCtrl: AlertController, private cameraService: CameraService, private globalService: GlobalService, private dbService: DbService) { }
 
   ngOnInit() {
-    this.client = this.navParams.data.client;
-    this.pets = this.navParams.data.pets;
-    for (let i = 0; i < this.pets.length; i++) {
-      if (this.pets[i].isActive == undefined) {
-        this.pets[i].isActive = true;
+    this.client = Object.assign({}, this.navParams.data.client);
+    this.petsList = Object.assign([], this.navParams.data.pets);
+    for (let i = 0; i < this.petsList.length; i++) {
+      if (this.petsList[i].isActive == undefined) {
+        this.petsList[i].isActive = true;
       }
     }
 
@@ -33,7 +33,7 @@ export class PetsComponent implements OnInit {
           return;
         }
         let images = <any>await this.dbService.getClientProfileImages(this.client);
-        this.pets[this.selectedPetIndex].image = images[images.length - 1];
+        this.petsList[this.selectedPetIndex].image = images[images.length - 1];
         this.loading = false;
       }
     });
@@ -41,17 +41,21 @@ export class PetsComponent implements OnInit {
 
   async addPet() {
     let pet = new Pet();
-    this.pets.push(pet);
+    this.petsList.push(pet);
   }
 
-  async submit() {
-    this.modalCtrl.dismiss(this.pets);
+  async dismiss() {
+    this.modalCtrl.dismiss();
+  }
+
+  async save() {
+    this.modalCtrl.dismiss(this.petsList);
   }
 
   async remove(i) {
     let res = await this.presentAlertConfirm("Are you sure you want to remove this pet?");
     if (res) {
-      this.pets.splice(i, 1);
+      this.petsList.splice(i, 1);
     }
   }
 

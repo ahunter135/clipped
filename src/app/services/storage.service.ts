@@ -10,7 +10,7 @@ const { Storage } = Plugins;
 })
 export class StorageService {
 
-  data = null;
+  private data = null;
   cameFrom = "";
   security = "";
   clients = [];

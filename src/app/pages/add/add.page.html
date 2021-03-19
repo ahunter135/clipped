@@ -10,6 +10,14 @@
 <ion-content>
   <ion-card>
     <ion-list>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img src="{{client.image}}" *ngIf="client.image">
+          <img src="https://ui-avatars.com/api/?background=f3f3f3&name=" *ngIf="!client.image" />
+        </ion-avatar>
+        <ion-button (click)="editProfileImg()" color="light" *ngIf="!loading">Edit Profile Image</ion-button>
+        <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+      </ion-item>
       <ion-item>
         <ion-label position="floating">Name</ion-label>
         <ion-input placeholder="John Doe" type="text" [(ngModel)]="client.name" autocapitalize="on" autocomplete="name"

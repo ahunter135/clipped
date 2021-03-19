@@ -13,6 +13,7 @@ export class DbService {
   uid;
   email;
   name;
+  photoURL;
   db;
   loader;
   proLimit = 25;
@@ -140,17 +141,19 @@ export class DbService {
   }
 
   async addClient(client) {
-    let image = "https://ui-avatars.com/api/?background=f3f3f3&name="+client.name;//await this.getAvatar(client);
-    client.uuid = uuidv4();
+    let image = "";
+    if (!client.image) {
+      image = "https://ui-avatars.com/api/?background=f3f3f3&name="+client.name;//await this.getAvatar(client);
+    }
     //let ref = this.uploadImage(image, client.uuid);
     let clientRef = this.db.collection('users').doc(this.uid).collection('clients');
     for (let i = 0; i < client.pets.length; i++) {
       client.pets[i] = Object.assign({}, client.pets[i]);
     }
-    return await clientRef.doc(uuidv4()).set({
+    return await clientRef.doc(client.uuid).set({
       name: client.name ? client.name : null,
       visits: client.visits,
-      image: image,
+      image: client.image ? client.image : image,
       uuid: client.uuid,
       phone_number: client.phone_number ? client.phone_number : null,
       pets: client.pets ? client.pets : [],

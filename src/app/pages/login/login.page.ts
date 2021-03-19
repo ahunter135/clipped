@@ -87,6 +87,7 @@ export class LoginPage implements OnInit {
     // Call the sign in with our created credentials
     firebase.auth().signInWithCredential(credential).then(async response => {
       this.dbService.uid = response.user.uid;
+      this.dbService.name = response.user.displayName;
         await this.dbService.setupDb();
         await this.dbService.saveAccountType(0, true, false);
         this.handleResponse(response);
@@ -105,6 +106,7 @@ export class LoginPage implements OnInit {
 
       firebase.auth().signInWithCredential(credential).then(async response => {
         this.dbService.uid = response.user.uid;
+        this.dbService.name = response.user.displayName;
         await this.dbService.setupDb();
         await this.dbService.saveAccountType(0, true, false);
         this.handleResponse(response);

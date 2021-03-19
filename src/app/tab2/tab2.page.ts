@@ -25,7 +25,7 @@ export class Tab2Page {
   }
 
   async ionViewDidEnter() {
-    await this.dbService.getClients();
+    
     for (let i = 0; i < this.storage.clients.length; i++) {
       this.storage.clients[i].visits.sort(this.sortByProperty("date"));
     }
@@ -57,7 +57,7 @@ export class Tab2Page {
   }
 
   goToDetails(client) {
-    this.storage.data = client;
+    this.storage.setData(client);
     this.router.navigate(['/tabs/tab2/details']); 
   }
 

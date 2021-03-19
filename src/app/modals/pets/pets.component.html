@@ -1,15 +1,20 @@
 <ion-header>
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start" color="dark">
-      <ion-button (click)="modalCtrl.dismiss(pets)" color="dark">
+      <ion-button (click)="dismiss()" color="dark">
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Pets</ion-title>
+    <ion-buttons slot="end" color="dark">
+      <ion-button (click)="save()" color="dark">
+        Save
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-card *ngFor="let pet of pets; let index = index">
+  <ion-card *ngFor="let pet of petsList; let index = index">
     <ion-card-header>
       <ion-card-subtitle>Pet Details</ion-card-subtitle>
     </ion-card-header>
@@ -19,8 +24,20 @@
           <img src="{{pet.image}}" *ngIf="pet.image" />
           <img src="https://ui-avatars.com/api/?background=f3f3f3&name=" *ngIf="!pet.image" />
         </ion-avatar>
-        <ion-button (click)="editProfileImg(index)" color="light" *ngIf="!loading">Edit Profile Image</ion-button>
-        <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-button (click)="editProfileImg(index)" color="light" *ngIf="!loading" expand="block">Edit Profile
+                Image</ion-button>
+              <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-button (click)="remove(index)" expand="block" color="danger">Remove</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-item>
       <ion-item>
         <ion-label>Name</ion-label>
@@ -67,7 +84,6 @@
           </ion-segment-button>
         </ion-segment>
       </ion-item>
-      <ion-button expand="block" color="dark" (click)="remove(index)">Remove</ion-button>
     </ion-card-content>
   </ion-card>
   <ion-icon name="add-circle" style="

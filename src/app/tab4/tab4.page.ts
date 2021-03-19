@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ActionSheetController, AlertController, ModalController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
 import * as moment from 'moment';
@@ -32,9 +32,10 @@ export class Tab4Page {
   isPro = this.storage.proMode;
   currentFilter = 0;
   ready = false;
+  loader;
   constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe,
     private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator, private alertController: AlertController,
-    private router: Router) {
+    private router: Router, private loadingController: LoadingController) {
   }
 
   async ngOnInit() {
@@ -57,7 +58,7 @@ export class Tab4Page {
         text: 'Today',
         handler: async () => {
           this.currentFilter = 0;
-          await this.filterAppointments(this.storage.appointments);
+          this.filterAppointments(this.storage.appointments);
           return true;
         }
       },
@@ -65,7 +66,7 @@ export class Tab4Page {
         text: 'Tomorrow',
         handler:async  () => {
           this.currentFilter = 1;
-          await this.filterAppointments(this.storage.appointments);
+          this.filterAppointments(this.storage.appointments);
           return true;
         }
       }, 
@@ -73,7 +74,7 @@ export class Tab4Page {
         text: 'Last 7 Days',
         handler: async () => {
           this.currentFilter = 2;
-          await this.filterAppointments(this.storage.appointments);
+           this.filterAppointments(this.storage.appointments);
           return true;
         }
       },
@@ -81,7 +82,7 @@ export class Tab4Page {
         text: 'All Upcoming',
         handler: async () => {
           this.currentFilter = 3;
-          await this.filterAppointments(this.storage.appointments);
+           this.filterAppointments(this.storage.appointments);
           return true;
         }
       },
@@ -112,7 +113,8 @@ export class Tab4Page {
     await this.addMarkers(clients);
   }
 
-  filterAppointments(appointments) {
+  async filterAppointments(appointments) {
+    await this.presentLoading();
     let dates = [];
     for (let i = 0; i < appointments.length; i++) {
       let day = moment(appointments[i].date).format("MM/DD/YYYY hh:mm a");
@@ -178,10 +180,18 @@ export class Tab4Page {
     console.log(this.appointments);
     this.tempAppointments = this.appointments;
     if (!this.map)
-      this.addMap();
+      await this.addMap();
    else {
-      this.updateApps();
+      await this.updateApps();
     }
+    this.loader.dismiss();
+  }
+
+  async presentLoading() {
+    this.loader = await this.loadingController.create({
+      message: 'Please wait...',
+    });
+    await this.loader.present();
   }
 
   filterByStylist() {
@@ -277,7 +287,7 @@ export class Tab4Page {
     this.map = GoogleMaps.create(this.mapElement.nativeElement, mapOptions);
 
     this.map.one(GoogleMapsEvent.MAP_READY).then(async () => {
-      this.addMarkers(clients);
+      await this.addMarkers(clients);
       /*
       if (clients.length > 0) {
         let address = clients[0].location.address + " " + clients[0].location.zip;
