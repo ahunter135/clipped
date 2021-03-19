@@ -177,7 +177,7 @@ export class Tab4Page {
 
     
     this.appointments = apps.sort(this.custom_sort);
-    console.log(this.appointments);
+
     this.tempAppointments = this.appointments;
     if (!this.map)
       await this.addMap();

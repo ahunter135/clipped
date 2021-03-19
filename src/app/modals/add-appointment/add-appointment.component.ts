@@ -87,6 +87,7 @@ export class AddAppointmentComponent implements OnInit {
 
       if (date.isSame(this.app_date, 'days')) {
         this.bookingsOnDay.push(this.appointments[i]);
+        console.log(this.appointments[i]);
       }
     }
 
@@ -106,6 +107,7 @@ export class AddAppointmentComponent implements OnInit {
       let date = moment(this.appointments[i].date);
       if (date.isSame(moment(this.app_date), 'days')) {
         this.bookingsOnDay.push(this.appointments[i]);
+        console.log(this.appointments[i]);
       }
     }
   }

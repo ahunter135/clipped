@@ -414,7 +414,8 @@ async saveStylists(stylists) {
       let id = uuidv4();
       this.db.collection('users').doc(this.uid).collection('services').doc(id).set({
         name: obj.name,
-        price: obj.price
+        price: obj.price,
+        time: obj.time ? obj.time : null
       });
       resolve(id);
     });
@@ -423,7 +424,8 @@ async saveStylists(stylists) {
   async editService(obj) {
     this.db.collection('users').doc(this.uid).collection('services').doc(obj.id).update({
       name: obj.name,
-      price: obj.price
+      price: obj.price,
+      time: obj.time ? obj.time : null
     });
   }
 

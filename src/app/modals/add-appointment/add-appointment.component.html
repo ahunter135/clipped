@@ -31,7 +31,9 @@
 
           <app-expandable expandHeight="100px" [expanded]="expanded">
             <ion-item *ngFor="let booking of bookingsOnDay;">
-              {{booking.client | clientByID}} - {{booking.date | date: 'shortTime'}}
+              <ion-label style="font-size: 13px;">{{booking.client | clientByID}} - {{booking.date | date: 'shortTime'}}
+              </ion-label>
+              <ion-note style="font-size: 13px;">{{booking.service | service:'timeEstimate'}}</ion-note>
             </ion-item>
           </app-expandable>
         </ion-label>

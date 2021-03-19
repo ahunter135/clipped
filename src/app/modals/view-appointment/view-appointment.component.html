@@ -32,6 +32,7 @@
     </ion-card-header>
     <ion-card-content>
       <h3>{{ app.service.name }} - {{ app.service.price }}</h3>
+      <h6 *ngIf="app.service.time">{{app.service.time.hours.text}} {{app.service.time.minutes.text}}</h6>
       <br />
       {{app.client | clientByID: 'address'}}, {{app.client | clientByID: 'address2'}}
     </ion-card-content>

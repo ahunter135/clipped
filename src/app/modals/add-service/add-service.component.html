@@ -35,6 +35,10 @@
           (ionFocus)="erasePrice()">
         </ion-input>
       </ion-item>
+      <ion-item lines="none" (click)="openPicker(2, 5)">
+        <ion-label>Time Estimate</ion-label>
+        <ion-note slot="end">{{chosenTime}}</ion-note>
+      </ion-item>
       <br />
       <ion-button expand="block" color="dark" (click)="save()">Save</ion-button>
     </ion-card-content>

@@ -38,6 +38,10 @@
         <ion-label position="floating">Price</ion-label>
         <ion-input type="text" [(ngModel)]="item.price" readonly></ion-input>
       </ion-item>
+      <ion-item lines="none">
+        <ion-label>Time Estimate</ion-label>
+        <ion-note slot="end" *ngIf="item.time">{{item.time.hours.text}} {{item.time.minutes.text}}</ion-note>
+      </ion-item>
       <!--<ion-item lines="none">
         <ion-label position="floating">Details</ion-label>
         <ion-input type="text" [(ngModel)]="item.details" readonly></ion-input>

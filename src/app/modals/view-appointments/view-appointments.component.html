@@ -22,11 +22,12 @@
         <h5 *ngIf="app.pet.name">For {{app.pet.name}}</h5>
         <h5 *ngIf="!app.pet.name">For {{app.pet}}</h5>
         <span *ngIf="app.service">
-          <p>{{app.service | service}} - {{app.service | service:'price'}}</p>
+          <p>{{app.service | service}} - {{app.service | service:'price'}} - {{app.service | service:'timeEstimate'}}
+          </p>
           <p>{{app.date | date: 'mediumDate'}}</p>
         </span>
       </ion-label>
-      <ion-chip [ngStyle]="{'background': client.color}" (click)="bookAgain(app)">
+      <ion-chip [ngStyle]="{'background': client.color}" style="font-size: 11px" (click)="bookAgain(app)">
         <ion-label color="dark">Rebook</ion-label>
       </ion-chip>
     </ion-item>

@@ -30,7 +30,6 @@ export class ServicesPage implements OnInit {
     })
 
     modal.onDidDismiss().then(async (data) => {
-      await this.dbService.getAllServices();
       this.storage.modalShown = false;
     })
 
