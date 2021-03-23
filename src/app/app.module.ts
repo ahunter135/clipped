@@ -41,6 +41,7 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { PipesModule } from './pipes/pipes.module';
 import { ComponentsModule } from './components/components.module';
 import { Calendar } from '@ionic-native/calendar/ngx';
+import { Contacts } from '@ionic-native/contacts/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -86,6 +87,7 @@ firebase.initializeApp(firebaseConfig);
     SignInWithApple,
     SocialSharing,
     Calendar,
+    Contacts,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

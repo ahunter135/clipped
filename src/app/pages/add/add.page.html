@@ -4,6 +4,9 @@
       <ion-back-button (click)="goBack()"></ion-back-button>
     </ion-buttons>
     <ion-title>Add Client</ion-title>
+    <ion-buttons slot="end" color="dark" (click)="importFromContacts()">
+      <ion-icon slot="icon-only" name="people-outline"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -12,38 +15,77 @@
     <ion-list>
       <ion-item lines="none">
         <ion-avatar slot="start">
-          <img src="{{client.image}}" *ngIf="client.image">
-          <img src="https://ui-avatars.com/api/?background=f3f3f3&name=" *ngIf="!client.image" />
+          <img src="{{client.image}}" *ngIf="client.image" />
+          <img
+            src="https://ui-avatars.com/api/?background=f3f3f3&name="
+            *ngIf="!client.image"
+          />
         </ion-avatar>
-        <ion-button (click)="editProfileImg()" color="light" *ngIf="!loading">Edit Profile Image</ion-button>
-        <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+        <ion-button (click)="editProfileImg()" color="light" *ngIf="!loading"
+          >Edit Profile Image</ion-button
+        >
+        <ion-progress-bar
+          *ngIf="loading"
+          type="indeterminate"
+        ></ion-progress-bar>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Name</ion-label>
-        <ion-input placeholder="John Doe" type="text" [(ngModel)]="client.name" autocapitalize="on" autocomplete="name"
-          autocorrection="on"></ion-input>
+        <ion-input
+          placeholder="John Doe"
+          type="text"
+          [(ngModel)]="client.name"
+          autocapitalize="on"
+          autocomplete="name"
+          autocorrection="on"
+        ></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Contact #</ion-label>
-        <ion-input placeholder="123-456-7890" type="tel" [(ngModel)]="client.phone_number" autocapitalize="on"
-          autocomplete="name" autocorrection="on" (ionBlur)="formatPhone()"></ion-input>
+        <ion-input
+          placeholder="123-456-7890"
+          type="tel"
+          [(ngModel)]="client.phone_number"
+          autocapitalize="on"
+          autocomplete="name"
+          autocorrection="on"
+          (ionBlur)="formatPhone()"
+        ></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="floating">Email</ion-label>
-        <ion-input placeholder="john@gmail.com" type="email" [(ngModel)]="client.email" autocomplete="email">
+        <ion-input
+          placeholder="john@gmail.com"
+          type="email"
+          [(ngModel)]="client.email"
+          autocomplete="email"
+        >
         </ion-input>
       </ion-item>
       <ion-item>
-        <input id="pac-input" class="controls" type="text" placeholder="Search Address" [(ngModel)]="client.address"
-          style="border: none; width: 100%; background-color: #ffffff" />
+        <input
+          id="pac-input"
+          class="controls"
+          type="text"
+          placeholder="Search Address"
+          [(ngModel)]="client.address"
+          style="border: none; width: 100%; background-color: #ffffff"
+        />
       </ion-item>
       <ion-item>
         <ion-label position="floating">Address 2</ion-label>
-        <ion-input placeholder="Apt B4" type="text" autocapitalize="on" [(ngModel)]="client.address2">
+        <ion-input
+          placeholder="Apt B4"
+          type="text"
+          autocapitalize="on"
+          [(ngModel)]="client.address2"
+        >
         </ion-input>
       </ion-item>
       <ion-item button (click)="addPets()">
-        <ion-label>Pets <span *ngIf="client.pets">({{client.pets.length}})</span><span *ngIf="!client.pets">(0)</span>
+        <ion-label
+          >Pets <span *ngIf="client.pets">({{client.pets.length}})</span
+          ><span *ngIf="!client.pets">(0)</span>
         </ion-label>
       </ion-item>
       <ion-item button (click)="openColorPicker()">

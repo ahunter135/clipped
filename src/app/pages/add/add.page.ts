@@ -11,6 +11,7 @@ import { ColorPickerComponent } from 'src/app/modals/color-picker/color-picker.c
 import { v4 as uuidv4 } from 'uuid';
 import { CameraService } from 'src/app/services/camera.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { Contacts } from '@ionic-native/contacts/ngx';
 
 declare var google: any;
 @Component({
@@ -35,7 +36,7 @@ export class AddPage implements OnInit {
   searching = false;
   constructor(private dbService: DbService, public storage: StorageService, 
     private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, private camera: Camera, private cameraService: CameraService,
-    private modalCtrl: ModalController, private phone: PhonePipe, private globalService: GlobalService) { }
+    private modalCtrl: ModalController, private phone: PhonePipe, private globalService: GlobalService, private contacts: Contacts) { }
 
   async ngOnInit() {
     this.client.last_visit = this.today;
@@ -71,6 +72,15 @@ export class AddPage implements OnInit {
   async goBack() {
     await this.dbService.getClients();
     this.navCtrl.pop();
+  }
+
+  async importFromContacts() {
+    let result = await this.contacts.pickContact();
+    console.log(result);
+    this.client.name = result.name.formatted;
+    this.client.phone_number = result.phoneNumbers[0].value;
+    this.client.email = result.emails[0].value;
+    this.client.address = result.addresses[0].streetAddress + " " + result.addresses[0].region + ", " + result.addresses[0].postalCode;
   }
 
   getStates() {

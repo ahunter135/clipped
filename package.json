@@ -27,6 +27,7 @@
     "@ionic-native/base64": "^5.30.0",
     "@ionic-native/calendar": "^5.31.1",
     "@ionic-native/camera": "^5.30.0",
+    "@ionic-native/contacts": "^5.31.1",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/crop": "^5.30.0",
     "@ionic-native/file": "^5.30.0",
@@ -54,6 +55,7 @@
     "cordova-ios": "^5.1.1",
     "cordova-plugin-aes256-encryption": "^2.0.1",
     "cordova-plugin-calendar": "^5.1.5",
+    "cordova-plugin-contacts": "^3.0.1",
     "cordova-plugin-googlemaps": "^2.7.1",
     "cordova-plugin-googlemaps-sdk": "git+https://github.com/mapsplugin/cordova-plugin-googlemaps-sdk.git",
     "cordova-plugin-sign-in-with-apple": "^0.1.2",
@@ -185,7 +187,8 @@
       "cordova-plugin-calendar": {
         "CALENDAR_USAGE_DESCRIPTION": " ",
         "CONTACTS_USAGE_DESCRIPTION": " "
-      }
+      },
+      "cordova-plugin-contacts": {}
     },
     "platforms": [
       "ios",
