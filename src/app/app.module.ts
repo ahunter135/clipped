@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -15,7 +15,6 @@ import { File } from '@ionic-native/file/ngx';
 import { Crop } from '@ionic-native/crop/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { UpgradeComponent } from './modals/upgrade/upgrade.component';
-//import { Instagram } from '@ionic-native/instagram/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { SMS } from '@ionic-native/sms/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
@@ -26,7 +25,6 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { LaunchReview } from '@ionic-native/launch-review/ngx';
 import { AddStylistComponent } from './modals/add-stylist/add-stylist.component';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
-import { ClientByIDPipe } from './pipes/client-by-id.pipe';
 import { GoogleMaps } from '@ionic-native/google-maps/ngx';
 import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
 import { PetsComponent } from './modals/pets/pets.component';
@@ -38,13 +36,11 @@ import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 import { AddressListComponent } from './pages/add/address-list/address-list.component';
 import { EditAccountComponent } from './modals/edit-account/edit-account.component';
 import { ColorSketchModule } from 'ngx-color/sketch';
-import { PhonePipe } from './pipes/phone.pipe';
 import { ColorPickerComponent } from './modals/color-picker/color-picker.component';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-import { FilterPipe } from './pipes/filter.pipe';
-import { ExpandableComponent } from './components/expandable/expandable.component';
 import { PipesModule } from './pipes/pipes.module';
 import { ComponentsModule } from './components/components.module';
+import { Calendar } from '@ionic-native/calendar/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -89,6 +85,7 @@ firebase.initializeApp(firebaseConfig);
     LaunchNavigator,
     SignInWithApple,
     SocialSharing,
+    Calendar,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

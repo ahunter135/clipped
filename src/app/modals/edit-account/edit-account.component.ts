@@ -18,7 +18,7 @@ export class EditAccountComponent implements OnInit {
   account = <any>{};
   remindersOn = false;
   reminderFrequency = "15";
-  isPro = this.storage.proMode;
+  isPro = this.storage.proMode || this.dbService.bypassPro;
   notifications = false;
   notificationsFrequency = "15";
   constructor(public dbService: DbService, public modalCtrl: ModalController, private navCtrl: NavController,

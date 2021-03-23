@@ -1,10 +1,12 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams, Platform } from '@ionic/angular';
+import { ModalController, NavParams, PickerController, Platform } from '@ionic/angular';
 import { CalendarComponentOptions } from 'ion2-calendar';
 import * as moment from 'moment-timezone';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { Calendar } from '@ionic-native/calendar/ngx';
+import { ServicePipe } from 'src/app/pipes/service.pipe';
 
 @Component({
   selector: 'app-add-appointment',
@@ -28,14 +30,38 @@ export class AddAppointmentComponent implements OnInit {
   appointments = [];
   customService = <any>{
     price: '$0.00',
-    name: ''
+    name: '',
+    time: {}
   };
+  export = false;
   expanded = false;
   bookingsOnDay = [];
   passedApp;
+  proMode = this.storage.proMode || this.dbService.bypassPro;
   isEdit = false;
+  multiColumnOptions = [
+    [
+      {text:'0 Hours',
+      value: 0},
+      {text: '1 Hour',
+      value: 1},
+      {text: '2 Hours',
+      value: 2}
+    ],
+    [
+      {text: '0 Minutes',
+      value: 0},
+      {text: '15 Minutes',
+      value: 15},
+      {text: '30 Minutes',
+      value: 30},
+      {text: '45 Minutes',
+      value: 45},
+    ]
+  ]
+  chosenTime;
   constructor(public modalCtrl: ModalController, private navParams: NavParams, private db: DbService, public storage: StorageService, private platform: Platform,
-    private currency: CurrencyPipe, private dbService: DbService) {
+    private currency: CurrencyPipe, private dbService: DbService, private calendar: Calendar, private servicePipe: ServicePipe, private pickerController: PickerController) {
     this.client = this.navParams.data.client;
     this.passedApp = this.navParams.data.passedApp;
     this.isEdit = this.navParams.data.isEdit ? true : false;
@@ -49,11 +75,22 @@ export class AddAppointmentComponent implements OnInit {
         this.pets.push(this.client.pets[i]);
     }
     if (this.passedApp) {
-      this.storage.services.forEach(service => {
-        if (service.id == this.passedApp.service) {
-          this.service = service.id;
+      if (Array.isArray(this.passedApp.service)) {
+        this.service = [];
+        for (let i = 0; i < this.storage.services.length; i++) {
+          for (let j = 0; j < this.passedApp.service.length; j++) {
+            if (this.passedApp.service[j] == this.storage.services[i].id) {
+              this.service.push(this.passedApp.service[j]);
+            }
+          }
         }
-      })
+      } else {
+        this.storage.services.forEach(service => {
+          if (service.id == this.passedApp.service) {
+            this.service = service.id;
+          }
+        })
+      } 
 
       let obj = [];
       for (let i = 0; i < this.pets.length; i++) {
@@ -87,7 +124,6 @@ export class AddAppointmentComponent implements OnInit {
 
       if (date.isSame(this.app_date, 'days')) {
         this.bookingsOnDay.push(this.appointments[i]);
-        console.log(this.appointments[i]);
       }
     }
 
@@ -107,7 +143,6 @@ export class AddAppointmentComponent implements OnInit {
       let date = moment(this.appointments[i].date);
       if (date.isSame(moment(this.app_date), 'days')) {
         this.bookingsOnDay.push(this.appointments[i]);
-        console.log(this.appointments[i]);
       }
     }
   }
@@ -153,7 +188,104 @@ export class AddAppointmentComponent implements OnInit {
       obj.app = this.passedApp.app;
       this.db.editClientAppointment(obj);
     }
+
+    if (this.export) {
+      await this.exportToCalendar(obj);
+    }
     this.modalCtrl.dismiss();
+  }
+
+  async exportToCalendar(object) {
+    let cals = await this.calendar.listCalendars();
+
+    let found = false;
+    for (let i = 0; i < cals.length; i++) {
+      if (cals[i].name == 'Clipped') {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      await this.calendar.createCalendar({
+        calendarName: 'Clipped',
+        calendarColor: '#ffdac1'
+      });
+    }
+
+    let temp = <string>this.servicePipe.transform(object.service, 'timeEstimate');
+    let hours = temp.split("H")[0];
+    let minutes = temp.split("M")[0];
+    minutes = minutes.split("H ")[1];
+
+    let endDate = moment(object.date).add(hours, 'hours').add(minutes, 'minutes').toDate();
+    let startDate = moment(object.date).toDate();
+   
+    await this.calendar.createEvent(
+      "Appointment for " + this.client.name + " & " + object.pet.name,
+      this.client.location.address,
+      "", startDate, endDate
+    )
+
+    return;
+  }
+
+  async openPicker(numColumns = 1, numOptions = 5, columnOptions = this.multiColumnOptions){
+    const picker = await this.pickerController.create({
+      columns: this.getColumns(numColumns, numOptions, columnOptions),
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirm',
+          handler: (value) => {
+
+            this.customService.time = {
+              hours: {
+                value: value.col0.value,
+                text: value.col0.text
+              },
+              minutes: {
+                value: value.col1.value,
+                text: value.col1.text
+              }
+            }
+            this.chosenTime = value.col0.text + " " + value.col1.text;
+          }
+        }
+      ]
+    });
+
+    await picker.present();
+  }
+
+ getColumns(numColumns, numOptions, columnOptions) {
+    let columns = [];
+    for (let i = 0; i < numColumns; i++) {
+      columns.push({
+        name: `col${i}`,
+        options: this.getColumnOptions(i, numOptions, columnOptions)
+      });
+    }
+
+    return columns;
+  }
+
+ getColumnOptions(columnIndex, numOptions, columnOptions) {
+    let options = [];
+    for (let i = 0; i < numOptions; i++) {
+      if (columnOptions[columnIndex][i % numOptions]) {
+        options.push({
+          text: columnOptions[columnIndex][i % numOptions].text,
+          value: columnOptions[columnIndex][i % numOptions].value
+        })
+      }
+      
+    }
+
+    return options;
   }
 
   formatPrice(ev) {
