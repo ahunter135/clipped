@@ -44,11 +44,11 @@
         <ion-toggle [(ngModel)]="remindersOn" (ionChange)="save()"></ion-toggle>
       </ion-item>
       <ion-item *ngIf="remindersOn" [disabled]="!isPro">
-        <ion-label>Minutes Before Appointment</ion-label>
+        <ion-label>Time Before Appointment</ion-label>
         <ion-select [(ngModel)]="reminderFrequency" (ionChange)="save()">
-          <ion-select-option value="15">15</ion-select-option>
-          <ion-select-option value="30">30</ion-select-option>
-          <ion-select-option value="60">60</ion-select-option>
+          <ion-select-option value="1">1 Day</ion-select-option>
+          <ion-select-option value="3">3 Days</ion-select-option>
+          <ion-select-option value="7">7 Days</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-card-content>

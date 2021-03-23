@@ -37,7 +37,7 @@ export class ViewAppointmentsComponent implements OnInit {
   }
 
   custom_sort(a, b) {
-    return new Date(a.date).getTime() - new Date(b.date).getTime();
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
   }
 
 }
