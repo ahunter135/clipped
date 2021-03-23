@@ -359,7 +359,8 @@ async saveStylists(stylists) {
       timezone: obj.timezone,
       deleted: false,
       cancelled: false,
-      confirmed: false
+      confirmed: false,
+      calendarEventId: obj.calendarEventId ? obj.calendarEventId : null
     });
   }
 
@@ -375,7 +376,8 @@ async saveStylists(stylists) {
       timezone: obj.timezone,
       deleted: obj.app.deleted,
       cancelled: obj.app.cancelled,
-      confirmed: obj.app.confirmed
+      confirmed: obj.app.confirmed,
+      calendarEventId: obj.calendarEventId ? obj.calendarEventId : null
     })
   }
 

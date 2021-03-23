@@ -183,15 +183,18 @@ export class AddAppointmentComponent implements OnInit {
       obj.service = await this.dbService.addService(this.customService);
     } else obj.service = this.service
     
+    if (this.export) {
+     let id = await this.exportToCalendar(obj);
+      obj.calendarEventId = id;
+    }
+
     if (!this.isEdit) this.db.addClientAppointment(obj);
     else { 
       obj.app = this.passedApp.app;
       this.db.editClientAppointment(obj);
     }
 
-    if (this.export) {
-      await this.exportToCalendar(obj);
-    }
+    
     this.modalCtrl.dismiss();
   }
 
@@ -205,6 +208,9 @@ export class AddAppointmentComponent implements OnInit {
         break;
       }
     }
+    if (this.isEdit) {
+      await this.calendar.deleteEventById(object.app.calendarEventId);
+    }
 
     if (!found) {
       await this.calendar.createCalendar({
@@ -212,7 +218,10 @@ export class AddAppointmentComponent implements OnInit {
         calendarColor: '#ffdac1'
       });
     }
-
+    let calOptions = <any>{};
+    if (this.platform.is('android')) {
+      calOptions.calendarId = cals[cals.length -1].id
+    }
     let temp = <string>this.servicePipe.transform(object.service, 'timeEstimate');
     let hours = temp.split("H")[0];
     let minutes = temp.split("M")[0];
@@ -220,14 +229,14 @@ export class AddAppointmentComponent implements OnInit {
 
     let endDate = moment(object.date).add(hours, 'hours').add(minutes, 'minutes').toDate();
     let startDate = moment(object.date).toDate();
-   
-    await this.calendar.createEvent(
-      "Appointment for " + this.client.name + " & " + object.pet.name,
-      this.client.location.address,
-      "", startDate, endDate
-    )
 
-    return;
+    let response = await this.calendar.createEventWithOptions(
+        "Appointment for " + this.client.name + " & " + object.pet.name,
+        this.client.location.address,
+        "", startDate, endDate, calOptions
+      )    
+      console.log(response);
+    return response;
   }
 
   async openPicker(numColumns = 1, numOptions = 5, columnOptions = this.multiColumnOptions){
