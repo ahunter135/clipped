@@ -185,8 +185,8 @@
         "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
       },
       "cordova-plugin-calendar": {
-        "CALENDAR_USAGE_DESCRIPTION": " ",
-        "CONTACTS_USAGE_DESCRIPTION": " "
+        "CALENDAR_USAGE_DESCRIPTION": "This app requires calendar access to function properly.",
+        "CONTACTS_USAGE_DESCRIPTION": "This app requires contacts access to function properly."
       },
       "cordova-plugin-contacts": {}
     },

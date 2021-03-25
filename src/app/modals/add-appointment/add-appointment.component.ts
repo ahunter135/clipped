@@ -183,14 +183,22 @@ export class AddAppointmentComponent implements OnInit {
       obj.service = await this.dbService.addService(this.customService);
     } else obj.service = this.service
     
-    if (this.export) {
-     let id = await this.exportToCalendar(obj);
+    if (this.isEdit) {
+      obj.app = this.passedApp.app;
+    }
+
+    if (obj.app) {
+      if (obj.app.calendarEventId) {
+        let id = await this.exportToCalendar(obj);
+        obj.calendarEventId = id;
+      }
+    } else if (this.export) {
+      let id = await this.exportToCalendar(obj);
       obj.calendarEventId = id;
     }
 
     if (!this.isEdit) this.db.addClientAppointment(obj);
     else { 
-      obj.app = this.passedApp.app;
       this.db.editClientAppointment(obj);
     }
 
@@ -209,7 +217,7 @@ export class AddAppointmentComponent implements OnInit {
       }
     }
     if (this.isEdit) {
-      await this.calendar.deleteEventById(object.app.calendarEventId);
+      this.calendar.deleteEventById(object.app.calendarEventId);
     }
 
     if (!found) {
@@ -226,16 +234,13 @@ export class AddAppointmentComponent implements OnInit {
     let hours = temp.split("H")[0];
     let minutes = temp.split("M")[0];
     minutes = minutes.split("H ")[1];
-
     let endDate = moment(object.date).add(hours, 'hours').add(minutes, 'minutes').toDate();
     let startDate = moment(object.date).toDate();
-
     let response = await this.calendar.createEventWithOptions(
         "Appointment for " + this.client.name + " & " + object.pet.name,
         this.client.location.address,
         "", startDate, endDate, calOptions
       )    
-      console.log(response);
     return response;
   }
 

@@ -12,6 +12,7 @@ import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-na
 import { Router } from '@angular/router';
 import { AddAppointmentComponent } from '../modals/add-appointment/add-appointment.component';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Calendar } from '@ionic-native/calendar/ngx';
 
 @Component({
   selector: 'app-tab4',
@@ -36,7 +37,7 @@ export class Tab4Page {
   loader;
   constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe,
     private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator, private alertController: AlertController,
-    private router: Router, private loadingController: LoadingController, private iab: InAppBrowser) {
+    private router: Router, private loadingController: LoadingController, private iab: InAppBrowser, private calendar: Calendar) {
   }
 
   async ngOnInit() {
@@ -463,6 +464,9 @@ export class Tab4Page {
         handler: async () => {
           this.presentAlertConfirm("Are you sure you want to delete this appointment?").then(async (res) => {
             if (res) {
+              console.log(client);
+              if (client.app.calendarEventId)
+                this.calendar.deleteEventById(client.app.calendarEventId);
               await this.dbService.deleteAppointment(client);
               await this.dbService.getAllAppointments();
               await this.filterAppointments(this.storage.appointments);
