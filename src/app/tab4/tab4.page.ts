@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
 import { Router } from '@angular/router';
 import { AddAppointmentComponent } from '../modals/add-appointment/add-appointment.component';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-tab4',
@@ -35,7 +36,7 @@ export class Tab4Page {
   loader;
   constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe,
     private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator, private alertController: AlertController,
-    private router: Router, private loadingController: LoadingController) {
+    private router: Router, private loadingController: LoadingController, private iab: InAppBrowser) {
   }
 
   async ngOnInit() {
@@ -45,6 +46,7 @@ export class Tab4Page {
     await this.dbService.getAllAppointments();
     await this.filterAppointments(this.storage.appointments);
     this.stylists = <any>await this.dbService.getStylists();
+    this.isPro = this.storage.proMode;
   }
 
   ionViewDidEnter() {
@@ -225,7 +227,6 @@ export class Tab4Page {
       }
     })
     modal.onDidDismiss().then((data) => {
-      console.log(data.data);
       if (data.data) {
         this.editAppointment(data.data);
       }
@@ -235,8 +236,6 @@ export class Tab4Page {
   }
 
   async editAppointment(item) {
-    console.log("HERE");
-    console.log(item);
     this.storage.modalShown = true;
     let modal = await this.modalCtrl.create({
       component: AddAppointmentComponent,
@@ -263,27 +262,50 @@ export class Tab4Page {
   async addMap(){
     let clients = await this.getClientArrayFromAppointment();
     let latLng;
+    let mapOptions: GoogleMapOptions = {};
     if (this.dbService.serviceArea) {
       let results = await Geocoder.geocode( { 'address': this.dbService.serviceArea});
-      let lat = results[0].position.lat;
-      let lng = results[0].position.lng;
-      latLng = new LatLng(36.213089, -86.306480);
+      if (results[0].position) {
+        let lat = results[0].position.lat;
+        let lng = results[0].position.lng;
+        latLng = new LatLng(lat, lng);
+        mapOptions = {
+          camera: {
+            zoom: 17,
+            target: latLng,
+          },
+          controls: {
+            mapToolbar: false
+          },
+          mapType: GoogleMapsMapTypeId.ROADMAP
+        }
+      } else {
+        mapOptions = {
+          camera: {
+            zoom: 8,
+            target: latLng,
+          },
+          controls: {
+            mapToolbar: false
+          },
+          mapType: GoogleMapsMapTypeId.ROADMAP
+        }
+        latLng = new LatLng(36.213089, -86.306480);
+      }
     } else {
       latLng = new LatLng(36.213089, -86.306480);
+      mapOptions = {
+        camera: {
+          zoom: 8,
+          target: latLng,
+        },
+        controls: {
+          mapToolbar: false
+        },
+        mapType: GoogleMapsMapTypeId.ROADMAP
+      }
     }
     
-
-    let mapOptions: GoogleMapOptions = {
-      camera: {
-        zoom: 18,
-        target: latLng,
-      },
-      controls: {
-        mapToolbar: false
-      },
-      mapType: GoogleMapsMapTypeId.ROADMAP
-    }
-
     this.map = GoogleMaps.create(this.mapElement.nativeElement, mapOptions);
 
     this.map.one(GoogleMapsEvent.MAP_READY).then(async () => {
@@ -348,7 +370,7 @@ export class Tab4Page {
       icon: pinColor,
       visible: this.isLocationFree(latLng),
       title: this.clientByID.transform(client.client_id).toString(),
-      snippet: client.location.address + ", " + client.location.address2 + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
+      snippet: client.location.address + (client.location.address2 ? (", " +  client.location.address2) : "") + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
     }).then((marker:Marker) => {
       marker.set('client', client);
       marker.set('pet', client.app.pet ? JSON.stringify(client.app.pet) : null);
@@ -356,7 +378,7 @@ export class Tab4Page {
       this.markers.push(marker);
       if (this.markers.length == 1) {
         this.map.moveCamera({
-          zoom: 18,
+          zoom: 17,
           target: marker.getPosition()
         })
       }
@@ -412,13 +434,26 @@ export class Tab4Page {
             }
           });
           modal.onDidDismiss().then((data) => {
-            console.log(data.data);
             if (data.data) {
               this.editAppointment(data.data);
             }
             this.storage.modalShown = false;
           })
           return await modal.present();
+        }
+      }, 
+      {
+        text: 'Call',
+        icon: this.isPro ? 'call' : 'lock-closed-outline',
+        handler:async  () => {
+            if (!this.isPro) {
+              await this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
+              return;
+            }
+            let res = await this.presentAlertConfirm("Are you sure you would like to call this client?");
+            if (res)
+              this.iab.create('tel:'+ this.clientByID.transform(client.client_id, 'phone') , '_system');
+          
         }
       }, 
       {

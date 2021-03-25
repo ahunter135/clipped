@@ -55,6 +55,15 @@
           <h5 *ngIf="app.app.pet.name">For {{app.app.pet.name}}</h5>
           <!--<h5 *ngIf="app.app.stylist">Stylist: {{app.app.stylist}}</h5>-->
           <p>{{app.app.date | date: 'mediumDate'}}</p>
+          <h6 *ngIf="app.app.cancelled && false">
+            <ion-icon name="close-circle-outline"></ion-icon> Cancelled
+          </h6>
+          <h6 *ngIf="app.app.confirmed && false">
+            <ion-icon name="checkmark-circle-outline"></ion-icon> Confirmed
+          </h6>
+          <h6 *ngIf="!app.app.cancelled && !app.app.confirmed && app.app.notified && false">No Response from
+            Confirmation</h6>
+          <h6 *ngIf="!app.app.notified && false">Not Notified</h6>
         </ion-label>
         <ion-chip [ngStyle]="{'background': app.color}">
           <ion-label color="dark">{{app.app.date | date:'shortTime'}}</ion-label>

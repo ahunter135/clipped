@@ -122,7 +122,7 @@ export class AddAppointmentComponent implements OnInit {
         cssClass: 'unavailableDay'
       });
 
-      if (date.isSame(this.app_date, 'days')) {
+      if (moment(date.format("MM/DD/YYYY")).isSame(moment(this.app_date).format('MM/DD/YYYY'))) {
         this.bookingsOnDay.push(this.appointments[i]);
       }
     }
@@ -141,7 +141,7 @@ export class AddAppointmentComponent implements OnInit {
     this.bookingsOnDay = [];
     for (let i = 0; i < this.appointments.length; i++) {
       let date = moment(this.appointments[i].date);
-      if (date.isSame(moment(this.app_date), 'days')) {
+      if (moment(date.format("MM/DD/YYYY")).isSame(moment(this.app_date).format('MM/DD/YYYY'))) {
         this.bookingsOnDay.push(this.appointments[i]);
       }
     }

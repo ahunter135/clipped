@@ -17,10 +17,10 @@ export class EditAccountComponent implements OnInit {
   email = this.dbService.email;
   account = <any>{};
   remindersOn = false;
-  reminderFrequency = "15";
+  reminderFrequency = "1";
   isPro = this.storage.proMode || this.dbService.bypassPro;
   notifications = false;
-  notificationsFrequency = "15";
+  notificationsFrequency = "1";
   constructor(public dbService: DbService, public modalCtrl: ModalController, private navCtrl: NavController,
     private alertController: AlertController, private storage: StorageService, private onesignal: OneSignal,
     private platform: Platform) { }
@@ -54,8 +54,8 @@ export class EditAccountComponent implements OnInit {
       id = await this.onesignal.getIds();
 
     this.dbService.saveAccountType(0, false, {
-      on: false,
-      frequency: "60",
+      on: this.remindersOn,
+      frequency: this.reminderFrequency,
       notifications: this.notifications,
       notificationsFrequency: this.notificationsFrequency,
       id: id

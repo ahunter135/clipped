@@ -20,6 +20,7 @@ export class ViewAppointmentComponent implements OnInit {
   };
   constructor(public modalCtrl: ModalController, public navParams: NavParams, private storage: StorageService) {
     this.app = this.navParams.data.app;
+    console.log(this.app);
   }
 
   ngOnInit() {

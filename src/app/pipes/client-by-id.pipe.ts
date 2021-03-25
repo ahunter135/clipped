@@ -14,6 +14,7 @@ export class ClientByIDPipe implements PipeTransform {
         else if (args[0] == 'address') return this.storage.clients[i].location.address;
         else if (args[0] == 'address2') return this.storage.clients[i].location.address2;
         else if (args[0] == 'full') return this.storage.clients[i];
+        else if (args[0] == 'phone') return this.storage.clients[i].phone_number;
         else return this.storage.clients[i].name
 
         break;
