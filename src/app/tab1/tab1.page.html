@@ -46,7 +46,7 @@
     </ion-item>-->
   </ion-card>
 
-  <ion-card [hidden]="proMode || dbService.bypassPro">
+  <ion-card [hidden]="storage.proMode || dbService.bypassPro">
     <ion-item button detail (click)="upgrade()">
       <ion-icon color="dark" name="pricetag-outline" slot="start"></ion-icon>Upgrade to Pro
     </ion-item>

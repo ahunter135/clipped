@@ -40,7 +40,6 @@ export class DbService {
           this.userLimit = details.data().limit;
           this.bypassPro = details.data().bypasspro ? details.data().bypasspro : false;
           this.storage.setItem({key: 'pro', value: this.bypassPro});
-          this.storage.proMode = this.bypassPro;
           this.globalService.publishData({key: 'pro', value: this.bypassPro});
           this.reminders = details.data().reminders ? details.data().reminders : {on: false, frequency: "15"};
           this.name = details.data().name ? details.data().name : "";

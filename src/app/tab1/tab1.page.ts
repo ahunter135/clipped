@@ -63,19 +63,6 @@ export class Tab1Page {
           replaceUrl: true
         }); 
       }
-      this.globalService.getObservable().subscribe(async (data) => {
-        if (data.key === 'pro') {
-          this.proMode = data.value;
-          //this.dbService.updateAccountPro(this.proMode);
-          if (!this.adsShowing && !this.proMode && !this.dbService.bypassPro) {
-            //showads
-            //this.setupAds(true);
-          } else if (this.proMode) {
-            //hideads
-           // this.setupAds(false);
-          }
-        }
-      })
       this.dbService.photoURL = loggedIn.photoURL ? loggedIn.photoURL : null;
       this.dbService.uid = loggedIn.uid;
       this.dbService.email = loggedIn.email;
