@@ -66,7 +66,7 @@ export class Tab1Page {
       this.globalService.getObservable().subscribe(async (data) => {
         if (data.key === 'pro') {
           this.proMode = data.value;
-          this.dbService.updateAccountPro(this.proMode);
+          //this.dbService.updateAccountPro(this.proMode);
           if (!this.adsShowing && !this.proMode && !this.dbService.bypassPro) {
             //showads
             //this.setupAds(true);
