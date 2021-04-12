@@ -78,7 +78,6 @@ export class StorageService {
       products = ["com.clipped.annually", "com.clipped.monthly", "com.clipped.semiannual"];
     }
     this.iap.getProducts(products).then(async (products) => {
-      console.log(products);
       this.products = products;
         // TODO check if receipt is good enough
         this.iap.restorePurchases().then((receipt) => {
