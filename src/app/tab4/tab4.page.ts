@@ -82,16 +82,25 @@ export class Tab4Page {
       {
         text: 'Choose A Date',
         handler: async () => {
-          //;
-          //this.filterAppointments(this.storage.appointments);
+          await this.presentLoading();
+          let config = [];
+          for (let i = 0; i < this.storage.appointments.length; i++) {
+            let date = moment(this.storage.appointments[i].date);
+            config.push({
+              date: date.toDate(),
+              cssClass: 'unavailableDay'
+            });
+          }
+          actionSheet.dismiss();
           const options: CalendarModalOptions = {
             title: 'Custom Filter',
             color: 'tertiary',
-            cssClass: "calendar-week-title",
-            from: moment().subtract(15, 'years').toDate(),
             defaultDate: moment().toDate(),
             defaultScrollTo: moment().toDate(),
-            to: moment().add(15, 'years').toDate()
+            canBackwardsSelected: true,
+            closeLabel: 'Close',
+            doneLabel: 'Done',
+            daysConfig: config
           };
           const myCalendar = await this.modalCtrl.create({
             component: CalendarModal,
@@ -99,13 +108,18 @@ export class Tab4Page {
           });
        
           myCalendar.present();
-       
-          const event: any = await myCalendar.onDidDismiss();
-          const date: CalendarResult = event.data.string;
-          console.log(date);
-          this.currentFilter = 2;
-          this.customFilterDate = date;
-          this.filterAppointments(this.storage.appointments)
+          this.loader.dismiss();
+          myCalendar.onDidDismiss().then((event) => {
+            if (event.data) {
+              const date: CalendarResult = event.data.string;
+
+              this.currentFilter = 2;
+              this.customFilterDate = date;
+              this.filterAppointments(this.storage.appointments)
+            }
+            
+          });
+          
           return true;
         }
       },
@@ -145,7 +159,7 @@ export class Tab4Page {
   }
 
   async filterAppointments(appointments) {
-    //await this.presentLoading();
+    await this.presentLoading();
     let dates = [];
     for (let i = 0; i < appointments.length; i++) {
       let day = moment(appointments[i].date).format("MM/DD/YYYY hh:mm a");
@@ -494,9 +508,17 @@ export class Tab4Page {
           this.presentAlertConfirm("Are you sure you want to delete this appointment?").then(async (res) => {
             if (res) {
               console.log(client);
-              if (client.app.calendarEventId)
-                this.calendar.deleteEventById(client.app.calendarEventId);
-              await this.dbService.deleteAppointment(client);
+              if (client.app.calendarEventId) this.calendar.deleteEventById(client.app.calendarEventId);
+              if (client.app.isReoccurring) {
+                let res = await this.presentAlertConfirm("This appointment is reoccurring. Would you like to delete all future appointments as well?");
+                if (res) {
+                  await this.dbService.deleteAppointmentandRecurrences(client.app);
+                } else {
+                  await this.dbService.deleteAppointment(client);
+                }
+              } else {
+                await this.dbService.deleteAppointment(client);
+              }
               await this.dbService.getAllAppointments();
               await this.filterAppointments(this.storage.appointments);
             }

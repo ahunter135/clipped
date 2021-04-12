@@ -1,4 +1,3 @@
-import { AdMob } from '@admob-plus/ionic/ngx';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController, NavController, Platform } from '@ionic/angular';
@@ -27,10 +26,8 @@ export class Tab3Page {
 
   }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, private modalCtrl: ModalController, private alertController: AlertController,
-    private admob: AdMob, private platform: Platform, private navCtrl: NavController) {
-      document.addEventListener('admob.rewarded.close', async () => {
-        await this.rewarded.load();
-      })
+     private platform: Platform, private navCtrl: NavController) {
+
   }
 
   async ionViewDidEnter() {
@@ -68,10 +65,7 @@ export class Tab3Page {
   }
 
   async addToLimit() {
-    document.addEventListener('admob.rewarded.reward', async () => {
-      // They watched ad, give them prize
-      await this.dbService.upgradeClientLimit();
-    });
+    
     let res = await this.presentAlertConfirm("I know nobody likes Ads. But if you watch this one, we'll increase your client limit by 5! Isn't that great?!");
     if (res) {
       //show ad

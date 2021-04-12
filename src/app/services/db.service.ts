@@ -361,6 +361,7 @@ async saveStylists(stylists) {
       isReoccurring: obj.isReoccurring,
       reoccurringFrequency: obj.reoccurringFrequency ? obj.reoccurringFrequency : null,
       reoccurringEndDate: obj.reoccurringEndDate ? obj.reoccurringEndDate : null,
+      reoccurrinceID: obj.reoccurrinceID ? obj.reoccurrinceID : null,
       calendarEventId: obj.calendarEventId ? obj.calendarEventId : null
     });
   }
@@ -380,6 +381,7 @@ async saveStylists(stylists) {
       isReoccurring: obj.isReoccurring,
       reocurringEndDate: obj.reoccurringEndDate,
       reoccurringFrequency: obj.reoccurringFrequency,
+      reoccurrinceID: obj.reoccurrinceID ? obj.reoccurrinceID : null,
       calendarEventId: obj.calendarEventId ? obj.calendarEventId : null
     })
   }
@@ -403,6 +405,7 @@ async saveStylists(stylists) {
         isReoccurring: obj.isReoccurring,
         reoccurringFrequency: obj.reoccurringFrequency ? obj.reoccurringFrequency : null,
         reoccurringEndDate: obj.reoccurringEndDate ? obj.reoccurringEndDate : null,
+        reoccurrinceID: obj.reoccurrinceID ? obj.reoccurrinceID : null,
         calendarEventId: obj.calendarEventId ? obj.calendarEventId : null
       });
 
@@ -437,6 +440,20 @@ async saveStylists(stylists) {
     return this.db.collection('users').doc(this.uid).collection('appointments').doc(app.app.id).update({
       deleted: true
     });
+  }
+
+  async deleteAppointmentandRecurrences(app) {
+    return this.db.collection('users').doc(this.uid).collection('appointments').where("isReoccurring", '==', true).get().then((apps) => {
+      apps.forEach(function(doc) {
+        let obj = doc.data();
+        obj.id = doc.id;
+        if (obj.reoccurrinceID == app.reoccurrinceID) {
+          this.db.collection('users').doc(this.uid).collection('appointments').doc(obj.id).update({
+            deleted: true
+          })
+        }
+      }.bind(this))
+    })
   }
 
   async getAllServices() {

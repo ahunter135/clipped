@@ -20,7 +20,6 @@ import { SMS } from '@ionic-native/sms/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import firebase from 'firebase';
-import { AdMob } from '@admob-plus/ionic/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { LaunchReview } from '@ionic-native/launch-review/ngx';
 import { AddStylistComponent } from './modals/add-stylist/add-stylist.component';
@@ -75,7 +74,6 @@ firebase.initializeApp(firebaseConfig);
     LaunchReview,
     SMS,
     InAppBrowser,
-    AdMob,
     OneSignal,
     Keyboard,
     GooglePlus,

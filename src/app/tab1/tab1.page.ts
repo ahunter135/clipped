@@ -5,7 +5,6 @@ import { StorageService } from '../services/storage.service';
 import { GlobalService } from '../services/global.service';
 import { ModalController, NavController, Platform } from '@ionic/angular';
 import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
-import { AdMob } from '@admob-plus/ionic/ngx';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component';
@@ -30,7 +29,7 @@ export class Tab1Page {
     
   }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, public globalService: GlobalService,
-    public modalCtrl: ModalController, private admob: AdMob, private platform: Platform, private navCtrl: NavController) {}
+    public modalCtrl: ModalController, private platform: Platform, private navCtrl: NavController) {}
 
   ngOnInit() {
     this.platform.backButton.subscribeWithPriority(998, () => {
@@ -108,11 +107,7 @@ export class Tab1Page {
 
   async setupAds(flag) {
     if (flag) {
-      await this.admob.start();
 
-      this.banner = new this.admob.BannerAd({
-        adUnitId: this.platform.is('ios') ? 'ca-app-pub-8417638044172769/3111976784' : 'ca-app-pub-8417638044172769/9819843609',
-      });
       if (!this.adsShowing) {
         this.adsShowing = true;
         //if (!this.proMode)

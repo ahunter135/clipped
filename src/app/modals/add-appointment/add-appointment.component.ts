@@ -7,6 +7,7 @@ import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { ServicePipe } from 'src/app/pipes/service.pipe';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-add-appointment',
@@ -184,7 +185,8 @@ export class AddAppointmentComponent implements OnInit {
       pet: petObjs,
       client: this.client.id,
       service: <any>{},
-      isReoccurring: this.isReoccurring, 
+      isReoccurring: this.isReoccurring,
+      reoccurrinceID: this.isReoccurring ? uuidv4() : null,
       reoccurringEndDate: moment(chosenDate + " " + time).toISOString(),
       reoccurringFrequency: this.reoccurringFrequency,
       deleted: false,
@@ -256,7 +258,7 @@ export class AddAppointmentComponent implements OnInit {
 
       let time = moment(this.app_time).format("hh:mm a");
       let chosenDate = moment(this.reoccurringEndDate).format("MM/DD/YYYY");
-      
+
       calOptions.recurrenceEndDate = moment(chosenDate + " " + time).toDate();
     }
     
