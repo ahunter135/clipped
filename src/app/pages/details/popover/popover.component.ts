@@ -69,7 +69,7 @@ export class PopoverComponent implements OnInit {
       await this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
       return;
     }
-    let res = await this.presentAlertConfirm("Are you sure you would like to call this client?");
+    let res = await this.presentAlertConfirm("Are you sure you would like to call " + this.client.phone_number);
     if (res)
       this.iab.create('tel:'+ this.client.phone_number , '_system');
       this.dismissPopover.dismiss();

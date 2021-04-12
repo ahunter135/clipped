@@ -45,4 +45,17 @@ ion-calendar {
   }
 }
 
+ion-calendar-modal {
+  .week-title {
+    color: #000 !important;
+  }
+  .days-btn.on-selected {
+      background-color: #ffdac1 !important;
+      p {
+        color: black !important;
+        font-weight: bold;
+      }
+  }
+}
+
 

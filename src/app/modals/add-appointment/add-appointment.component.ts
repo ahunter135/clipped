@@ -14,7 +14,7 @@ import { ServicePipe } from 'src/app/pipes/service.pipe';
   styleUrls: ['./add-appointment.component.scss'],
 })
 export class AddAppointmentComponent implements OnInit {
-  max = moment().add(2, 'y').format("YYYY-MM-DD");
+  max = moment().add(4, 'y').format("YYYY-MM-DD");
   today = moment().format("YYYY-MM-DD");
   min = moment().format("YYYY-MM-DD");
   type: 'string';
@@ -39,6 +39,9 @@ export class AddAppointmentComponent implements OnInit {
   passedApp;
   proMode = this.storage.proMode || this.dbService.bypassPro;
   isEdit = false;
+  isReoccurring = false;
+  reoccurringFrequency;
+  reoccurringEndDate;
   multiColumnOptions = [
     [
       {text:'0 Hours',
@@ -169,12 +172,21 @@ export class AddAppointmentComponent implements OnInit {
     if (!this.app_date || !this.app_time || !this.pet || !this.service) {
       return;
     }
+    if (this.isReoccurring) {
+      if (!this.reoccurringEndDate || !this.reoccurringFrequency) {
+        return;
+      }
+      chosenDate = moment(this.reoccurringEndDate).format("MM/DD/YYYY");
+    }
     let obj = <any>{
       date: appointmentDate,
       timezone: moment.tz.guess(),
       pet: petObjs,
       client: this.client.id,
       service: <any>{},
+      isReoccurring: this.isReoccurring, 
+      reoccurringEndDate: moment(chosenDate + " " + time).toISOString(),
+      reoccurringFrequency: this.reoccurringFrequency,
       deleted: false,
       cancelled: false,
       confirmed: false
@@ -197,8 +209,11 @@ export class AddAppointmentComponent implements OnInit {
       obj.calendarEventId = id;
     }
 
-    if (!this.isEdit) this.db.addClientAppointment(obj);
-    else { 
+    if (!this.isEdit) {
+      if (!this.isReoccurring)
+        this.db.addClientAppointment(obj);
+      else this.db.addClientReoccurringAppointments(obj);
+    } else { 
       this.db.editClientAppointment(obj);
     }
 
@@ -230,6 +245,21 @@ export class AddAppointmentComponent implements OnInit {
     if (this.platform.is('android')) {
       calOptions.calendarId = cals[cals.length -1].id
     }
+
+    if (this.isReoccurring) {
+      if (this.reoccurringFrequency == 0)
+        calOptions.recurrence = "weekly";
+      else if (this.reoccurringFrequency == 1) 
+        calOptions.recurrence = "monthly";
+      else if (this.reoccurringFrequency == 3) 
+        calOptions.recurrence = "yearly"; 
+
+      let time = moment(this.app_time).format("hh:mm a");
+      let chosenDate = moment(this.reoccurringEndDate).format("MM/DD/YYYY");
+      
+      calOptions.recurrenceEndDate = moment(chosenDate + " " + time).toDate();
+    }
+    
     let temp = <string>this.servicePipe.transform(object.service, 'timeEstimate');
     let hours = temp.split("H")[0];
     let minutes = temp.split("M")[0];

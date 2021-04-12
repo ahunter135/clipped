@@ -13,7 +13,12 @@ import { Router } from '@angular/router';
 import { AddAppointmentComponent } from '../modals/add-appointment/add-appointment.component';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { Calendar } from '@ionic-native/calendar/ngx';
-
+import {
+  CalendarModal,
+  CalendarModalOptions,
+  DayConfig,
+  CalendarResult
+} from 'ion2-calendar';
 @Component({
   selector: 'app-tab4',
   templateUrl: 'tab4.page.html',
@@ -35,6 +40,7 @@ export class Tab4Page {
   currentFilter = 0;
   ready = false;
   loader;
+  customFilterDate;
   constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe,
     private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator, private alertController: AlertController,
     private router: Router, private loadingController: LoadingController, private iab: InAppBrowser, private calendar: Calendar) {
@@ -74,10 +80,32 @@ export class Tab4Page {
         }
       }, 
       {
-        text: 'Last 7 Days',
+        text: 'Choose A Date',
         handler: async () => {
+          //;
+          //this.filterAppointments(this.storage.appointments);
+          const options: CalendarModalOptions = {
+            title: 'Custom Filter',
+            color: 'tertiary',
+            cssClass: "calendar-week-title",
+            from: moment().subtract(15, 'years').toDate(),
+            defaultDate: moment().toDate(),
+            defaultScrollTo: moment().toDate(),
+            to: moment().add(15, 'years').toDate()
+          };
+          const myCalendar = await this.modalCtrl.create({
+            component: CalendarModal,
+            componentProps: {options}
+          });
+       
+          myCalendar.present();
+       
+          const event: any = await myCalendar.onDidDismiss();
+          const date: CalendarResult = event.data.string;
+          console.log(date);
           this.currentFilter = 2;
-           this.filterAppointments(this.storage.appointments);
+          this.customFilterDate = date;
+          this.filterAppointments(this.storage.appointments)
           return true;
         }
       },
@@ -85,7 +113,7 @@ export class Tab4Page {
         text: 'All Upcoming',
         handler: async () => {
           this.currentFilter = 3;
-           this.filterAppointments(this.storage.appointments);
+          this.filterAppointments(this.storage.appointments);
           return true;
         }
       },
@@ -117,7 +145,7 @@ export class Tab4Page {
   }
 
   async filterAppointments(appointments) {
-    await this.presentLoading();
+    //await this.presentLoading();
     let dates = [];
     for (let i = 0; i < appointments.length; i++) {
       let day = moment(appointments[i].date).format("MM/DD/YYYY hh:mm a");
@@ -134,8 +162,8 @@ export class Tab4Page {
           dates.push(moment(day).format("MM/DD/YYYY"));
         }
       } else if (this.currentFilter == 2) {
-        //Last 7 Days
-        if (moment(day).isBetween(moment().subtract(7, 'days'), moment())) {
+        // Custom Filter Date
+        if (moment(day).isSame(moment(this.customFilterDate), 'day')) {
           dates.push(moment(day).format("MM/DD/YYYY"));
         }
       } else if (this.currentFilter == 3) {
@@ -166,8 +194,8 @@ export class Tab4Page {
               apps[i].apps.push(appointments[j]);
             }
           } else if (this.currentFilter == 2) {
-            //Last 7 Days
-            if (moment(day).isBetween(moment().subtract(7, 'days'), moment())) {
+            //Custom Filter Date
+            if (moment(day).isSame(moment(this.customFilterDate), 'day')) {
               apps[i].apps.push(appointments[j]);
             }
           } else if (this.currentFilter == 3) {
@@ -447,13 +475,14 @@ export class Tab4Page {
         text: 'Call',
         icon: this.isPro ? 'call' : 'lock-closed-outline',
         handler:async  () => {
+          let phone = this.clientByID.transform(client.client_id, 'phone');
             if (!this.isPro) {
               await this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
               return;
             }
-            let res = await this.presentAlertConfirm("Are you sure you would like to call this client?");
+            let res = await this.presentAlertConfirm("Are you sure you would like to call " + phone);
             if (res)
-              this.iab.create('tel:'+ this.clientByID.transform(client.client_id, 'phone') , '_system');
+              this.iab.create('tel:'+  phone, '_system');
           
         }
       }, 

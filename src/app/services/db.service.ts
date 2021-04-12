@@ -351,7 +351,6 @@ async saveStylists(stylists) {
       client: obj.client,
       date: obj.date,
       pet: obj.pet,
-      //stylist: obj.stylist ? obj.stylist : null,
       service: obj.service,
       notified: false,
       notifiedUser: false,
@@ -359,6 +358,9 @@ async saveStylists(stylists) {
       deleted: false,
       cancelled: false,
       confirmed: false,
+      isReoccurring: obj.isReoccurring,
+      reoccurringFrequency: obj.reoccurringFrequency ? obj.reoccurringFrequency : null,
+      reoccurringEndDate: obj.reoccurringEndDate ? obj.reoccurringEndDate : null,
       calendarEventId: obj.calendarEventId ? obj.calendarEventId : null
     });
   }
@@ -368,7 +370,6 @@ async saveStylists(stylists) {
       client: obj.client,
       date: obj.date,
       pet: obj.pet,
-      //stylist: obj.stylist ? obj.stylist : null,
       service: obj.service,
       notified: obj.app.notified,
       notifiedUser: obj.app.notifiedUser,
@@ -376,8 +377,48 @@ async saveStylists(stylists) {
       deleted: obj.app.deleted,
       cancelled: obj.app.cancelled,
       confirmed: obj.app.confirmed,
+      isReoccurring: obj.isReoccurring,
+      reocurringEndDate: obj.reoccurringEndDate,
+      reoccurringFrequency: obj.reoccurringFrequency,
       calendarEventId: obj.calendarEventId ? obj.calendarEventId : null
     })
+  }
+
+  async addClientReoccurringAppointments(obj) {
+    if (moment(obj.date).isSameOrBefore(moment(obj.reoccurringEndDate), 'month')) {
+      let appointmentDate = moment(obj.date);
+
+      let appDate = moment(appointmentDate).toISOString();
+      this.db.collection('users').doc(this.uid).collection('appointments').doc(uuidv4()).set({
+        client: obj.client,
+        date: appDate,
+        pet: obj.pet,
+        service: obj.service,
+        notified: false,
+        notifiedUser: false,
+        timezone: obj.timezone,
+        deleted: false,
+        cancelled: false,
+        confirmed: false,
+        isReoccurring: obj.isReoccurring,
+        reoccurringFrequency: obj.reoccurringFrequency ? obj.reoccurringFrequency : null,
+        reoccurringEndDate: obj.reoccurringEndDate ? obj.reoccurringEndDate : null,
+        calendarEventId: obj.calendarEventId ? obj.calendarEventId : null
+      });
+
+      if (obj.reoccurringFrequency == 0) {
+        appointmentDate = moment(appointmentDate).add(1, 'week');
+      } else if (obj.reoccurringFrequency == 1) {
+        appointmentDate = moment(appointmentDate).add(1, 'month');
+      } else if (obj.reoccurringFrequency == 2) {
+        appointmentDate = moment(appointmentDate).add(3, 'month');
+      } else if (obj.reoccurringFrequency == 3) {
+        appointmentDate = moment(appointmentDate).add(1, 'year');
+      }
+
+      obj.date = appointmentDate.toISOString();
+      this.addClientReoccurringAppointments(obj);
+    } else return;
   }
 
   async getAllAppointments() {

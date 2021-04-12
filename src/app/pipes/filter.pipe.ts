@@ -11,7 +11,7 @@ export class FilterPipe implements PipeTransform {
     } else if (value == 1) {
       return "Tomorrow"
     } else if (value == 2) {
-      return "Last 7 Days"
+      return "Custom Filter"
     } else if (value == 3) {
       return "All Upcoming"
     }
