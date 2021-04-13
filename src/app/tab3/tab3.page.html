@@ -31,6 +31,9 @@
       <ion-item detail button href="mailto:ashley@getclipped.app">
         <ion-label>Contact Us </ion-label>
       </ion-item>
+      <ion-item>
+        <ion-label>App Version: {{version}}</ion-label>
+      </ion-item>
       <ion-item button detail (click)="upgrade()" *ngIf="!storage.proMode && !dbService.bypassPro">
         <ion-icon name="pricetag-outline" slot="start"></ion-icon>Upgrade to Pro
       </ion-item>

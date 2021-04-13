@@ -24,6 +24,7 @@
     "@capacitor/core": "^2.4.2",
     "@ionic-native/aes-256": "^5.29.0",
     "@ionic-native/android-permissions": "^5.30.0",
+    "@ionic-native/app-version": "^5.32.0",
     "@ionic-native/base64": "^5.30.0",
     "@ionic-native/calendar": "^5.31.1",
     "@ionic-native/camera": "^5.30.0",
@@ -99,6 +100,7 @@
     "cordova-plugin-android-permissions": "^1.1.2",
     "cordova-plugin-androidx": "^3.0.0",
     "cordova-plugin-androidx-adapter": "^1.1.3",
+    "cordova-plugin-app-version": "^0.1.12",
     "cordova-plugin-camera": "^5.0.1",
     "cordova-plugin-crop": "^0.4.0",
     "cordova-plugin-device": "^2.0.2",
@@ -183,7 +185,8 @@
         "CALENDAR_USAGE_DESCRIPTION": "This app requires calendar access to function properly.",
         "CONTACTS_USAGE_DESCRIPTION": "This app requires contacts access to function properly."
       },
-      "cordova-plugin-contacts": {}
+      "cordova-plugin-contacts": {},
+      "cordova-plugin-app-version": {}
     },
     "platforms": [
       "ios",

@@ -9,6 +9,8 @@ import * as introjs from 'intro.js';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component';
+import { AppVersion } from '@ionic-native/app-version/ngx';
+
 @Component({
   selector: 'app-tab3',
   templateUrl: 'tab3.page.html',
@@ -17,6 +19,7 @@ import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component
 export class Tab3Page {
   darkMode;
   rewarded;
+  version = "";
   options: AnimationOptions = {
     path: '/assets/animations/settings.json',
   };
@@ -26,12 +29,13 @@ export class Tab3Page {
 
   }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, private modalCtrl: ModalController, private alertController: AlertController,
-     private platform: Platform, private navCtrl: NavController) {
+     private platform: Platform, private navCtrl: NavController, public appVersion: AppVersion) {
 
   }
 
   async ionViewDidEnter() {
     this.darkMode = await this.storage.getItem("darkMode") ? await this.storage.getItem("darkMode") : false;
+    this.version = await this.appVersion.getVersionNumber();
   }
 
   logout() {

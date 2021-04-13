@@ -41,6 +41,7 @@ import { PipesModule } from './pipes/pipes.module';
 import { ComponentsModule } from './components/components.module';
 import { Calendar } from '@ionic-native/calendar/ngx';
 import { Contacts } from '@ionic-native/contacts/ngx';
+import { AppVersion } from '@ionic-native/app-version/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -85,6 +86,7 @@ firebase.initializeApp(firebaseConfig);
     SignInWithApple,
     SocialSharing,
     Calendar,
+    AppVersion,
     Contacts,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
