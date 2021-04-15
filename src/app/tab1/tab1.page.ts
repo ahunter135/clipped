@@ -17,7 +17,6 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
 export class Tab1Page {
   
   numClients = 0;
-  proMode = false;
   adsShowing = false;
   banner;
 

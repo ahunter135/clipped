@@ -49,7 +49,7 @@
       </ion-item>
       <ion-item *ngIf="!isEdit">
         <ion-label>Reoccurring Appointment?</ion-label>
-        <ion-toggle [disabled]="!proMode" [(ngModel)]="isReoccurring"></ion-toggle>
+        <ion-toggle [disabled]="!storage.proMode && !dbService.bypassPro" [(ngModel)]="isReoccurring"></ion-toggle>
       </ion-item>
       <ion-item *ngIf="isReoccurring && !isEdit">
         <ion-label>Frequency <span style="color: red">*</span></ion-label>
@@ -97,7 +97,7 @@
       </ion-item>
       <ion-item *ngIf="!isEdit">
         <ion-label>Export to Calendar</ion-label>
-        <ion-toggle [disabled]="!proMode" [(ngModel)]="export"></ion-toggle>
+        <ion-toggle [disabled]="!storage.proMode && !dbService.bypassPro" [(ngModel)]="export"></ion-toggle>
       </ion-item>
       <br />
       <ion-button expand="block" color="dark" (click)="submit()">

@@ -84,7 +84,7 @@ export class DbService {
             notificationsFrequency: reminders.notificationsFrequency,
             id: reminders.id
           },
-          bypasspro: this.storage.proMode,
+          bypasspro: this.bypassPro,
           name: this.name,
           serviceArea: this.serviceArea ? this.serviceArea : ""
         }).then(details => {
@@ -97,7 +97,7 @@ export class DbService {
   }
 
   async getClients() {
-    this.storage.clients = [];
+    let temp = [];
     return new Promise( (resolve, reject) => {
       let clientRef = this.db.collection('users').doc(this.uid).collection('clients');
       clientRef.orderBy("name").get().then((clients) =>{
@@ -105,8 +105,9 @@ export class DbService {
           let obj = doc.data();
           obj.id = doc.id;
           if (!obj.deleted)
-          this.storage.clients.push(obj);
+          temp.push(obj);
         }.bind(this));
+        this.storage.clients = temp;
         resolve(this.storage.clients);
       }).catch((err) => {
         this.handleError(err)

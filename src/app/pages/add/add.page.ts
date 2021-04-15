@@ -70,7 +70,6 @@ export class AddPage implements OnInit {
   }
 
   async goBack() {
-    await this.dbService.getClients();
     this.navCtrl.pop();
   }
 
@@ -106,6 +105,7 @@ export class AddPage implements OnInit {
       return;
     }
     await this.dbService.addClient(this.client);
+    await this.dbService.getClients();
     this.loading = false;
     this.goBack();
   }

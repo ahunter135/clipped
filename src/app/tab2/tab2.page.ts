@@ -12,20 +12,18 @@ import * as moment from 'moment';
 export class Tab2Page {
   searchterm = "";
   clients = [];
-  proMode = this.storage.proMode;
   temp = this.storage.clients;
   constructor(public storage: StorageService, private router: Router, public globalService: GlobalService, public dbService: DbService) {}
 
   ngOnInit() {
     this.globalService.getObservable().subscribe(async (data) => {
       if (data.key === 'pro') {
-        this.proMode = data.value;
+        //this.proMode = data.value;
       }
     })
   }
 
   async ionViewDidEnter() {
-    
     for (let i = 0; i < this.storage.clients.length; i++) {
       this.storage.clients[i].visits.sort(this.sortByProperty("date"));
     }

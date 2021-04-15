@@ -38,7 +38,6 @@ export class AddAppointmentComponent implements OnInit {
   expanded = false;
   bookingsOnDay = [];
   passedApp;
-  proMode = this.storage.proMode || this.dbService.bypassPro;
   isEdit = false;
   isReoccurring = false;
   reoccurringFrequency;
@@ -65,7 +64,7 @@ export class AddAppointmentComponent implements OnInit {
   ]
   chosenTime;
   constructor(public modalCtrl: ModalController, private navParams: NavParams, private db: DbService, public storage: StorageService, private platform: Platform,
-    private currency: CurrencyPipe, private dbService: DbService, private calendar: Calendar, private servicePipe: ServicePipe, private pickerController: PickerController) {
+    private currency: CurrencyPipe, public dbService: DbService, private calendar: Calendar, private servicePipe: ServicePipe, private pickerController: PickerController) {
     this.client = this.navParams.data.client;
     this.passedApp = this.navParams.data.passedApp;
     this.isEdit = this.navParams.data.isEdit ? true : false;

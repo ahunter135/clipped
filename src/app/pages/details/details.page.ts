@@ -30,7 +30,6 @@ export class DetailsPage implements OnInit {
   clientImages = <any>[];
   popover;
   max = moment().format("YYYY-MM-DD");
-  proMode = this.storage.proMode;
   last_visit;
   actionSheet;
   loading = false;
@@ -61,7 +60,7 @@ export class DetailsPage implements OnInit {
 
     this.subscription = this.globalService.getObservable().subscribe(async (data) => {
       if (data.key === 'pro') {
-        this.proMode = data.value;
+        //this.proMode = data.value;
       }else if (data.key === 'images') {
         if (data.flag) {
           if (!data.value) {

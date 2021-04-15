@@ -36,7 +36,6 @@ export class Tab4Page {
   appointmentsShownOnMap = [];
   markers = [];
   footerState: IonPullUpFooterState;
-  isPro = this.storage.proMode;
   currentFilter = 0;
   ready = false;
   loader;
@@ -53,7 +52,7 @@ export class Tab4Page {
     await this.dbService.getAllAppointments();
     await this.filterAppointments(this.storage.appointments);
     this.stylists = <any>await this.dbService.getStylists();
-    this.isPro = this.storage.proMode;
+    //this.isPro = this.storage.proMode;
   }
 
   ionViewDidEnter() {
@@ -454,9 +453,9 @@ export class Tab4Page {
       cssClass: 'my-custom-class',
       buttons: [{
         text: 'Navigate To',
-        icon: this.isPro ? 'navigate' : 'lock-closed-outline',
+        icon: (this.storage.proMode || this.dbService.bypassPro) ? 'navigate' : 'lock-closed-outline',
         handler: () => {
-          if (!this.isPro) {
+          if (!this.storage.proMode && !this.dbService.bypassPro) {
             this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
             return;
           }
@@ -487,10 +486,10 @@ export class Tab4Page {
       }, 
       {
         text: 'Call',
-        icon: this.isPro ? 'call' : 'lock-closed-outline',
+        icon: (this.storage.proMode || this.dbService.bypassPro) ? 'call' : 'lock-closed-outline',
         handler:async  () => {
           let phone = this.clientByID.transform(client.client_id, 'phone');
-            if (!this.isPro) {
+            if (!this.storage.proMode && !this.dbService.bypassPro) {
               await this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
               return;
             }

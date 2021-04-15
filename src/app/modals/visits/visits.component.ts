@@ -25,7 +25,6 @@ export class VisitsComponent implements OnInit {
   max = moment().format("YYYY-MM-DD");
   today = moment().format("YYYY-MM-DD");
   last_visit;
-  proMode = this.storage.proMode || this.dbService.bypassPro;
   actionSheet;
   isEditing = false;
   visit = <any>{};
@@ -112,7 +111,7 @@ export class VisitsComponent implements OnInit {
 
   async share() {
     let file = <any>await this.downloadFile(this.visit.image);
-    if (!this.proMode) {
+    if (!this.storage.proMode || !this.dbService.bypassPro) {
       file = await this.file.readAsDataURL(this.file.dataDirectory, "temp.png");
       let blobFile = await this.dataURItoBlob(file);
       file = <any>await this.addImageWatermark(blobFile);

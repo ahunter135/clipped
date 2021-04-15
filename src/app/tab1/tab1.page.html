@@ -28,7 +28,7 @@
   <ion-card data-hint="These options are where you will manage your clients!" data-hintposition="top-right"
     data-step="1">
     <ion-item [routerLink]="['/tabs/tab1/add']"
-      [hidden]="numClients >= (dbService.userLimit ? dbService.userLimit : dbService.proLimit) && !proMode">
+      [hidden]="numClients >= (dbService.userLimit ? dbService.userLimit : dbService.proLimit) && (!storage.proMode || !dbService.bypassPro)">
       <ion-icon color="dark" name="add" slot="start"></ion-icon>
       <ion-label>Add New Client</ion-label>
     </ion-item>

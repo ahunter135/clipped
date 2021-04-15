@@ -23,8 +23,7 @@ export class PopoverComponent implements OnInit {
   visit;
   showInsta = false;
   inDetails = false;
-  isPro = false;
-  constructor(private dbService: DbService, private storage: StorageService, public navParams: NavParams,
+  constructor(public dbService: DbService, public storage: StorageService, public navParams: NavParams,
     private fileTransfer: FileTransfer, private file: File, private base64: Base64, private iab: InAppBrowser,
     private alertController: AlertController, private modalCtrl: ModalController) {
     this.client = this.navParams.data.client;
@@ -32,7 +31,6 @@ export class PopoverComponent implements OnInit {
     this.text = this.navParams.data.text;
     this.visit = this.navParams.data.visit ? this.navParams.data.visit : null;
     this.inDetails = this.navParams.data.inDetails ? this.navParams.data.inDetails : false
-    this.isPro = this.storage.proMode || this.dbService.bypassPro;
     if (this.visit) {
       if (this.visit.image) {
         this.showInsta = true;
@@ -45,7 +43,7 @@ export class PopoverComponent implements OnInit {
   }
 
   async sendSMS() {
-    if (!this.isPro) {
+    if (!this.storage.proMode && !this.dbService.bypassPro) {
       await this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
       return;
     }
@@ -65,7 +63,7 @@ export class PopoverComponent implements OnInit {
   }
 
   async call() {
-    if (!this.isPro) {
+    if (!this.storage.proMode && !this.dbService.bypassPro) {
       await this.presentAlertNotice("You will need to upgrade to Pro to use this feature!");
       return;
     }

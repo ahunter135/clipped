@@ -18,17 +18,16 @@ export class EditAccountComponent implements OnInit {
   account = <any>{};
   remindersOn = false;
   reminderFrequency = "1";
-  isPro = this.storage.proMode || this.dbService.bypassPro;
   notifications = false;
   notificationsFrequency = "1";
   constructor(public dbService: DbService, public modalCtrl: ModalController, private navCtrl: NavController,
-    private alertController: AlertController, private storage: StorageService, private onesignal: OneSignal,
+    private alertController: AlertController, public storage: StorageService, private onesignal: OneSignal,
     private platform: Platform) { }
 
   async ngOnInit() {
     let type = this.dbService.accountType ? this.dbService.accountType : <any>await this.dbService.getAccountType();
     this.reminderFrequency = this.dbService.reminders.frequency;
-    this.remindersOn = false;//this.isPro ? this.dbService.reminders.on : false;
+    this.remindersOn = false;
     this.notifications = this.dbService.reminders.notifications ? this.dbService.reminders.notifications : false;
     this.notificationsFrequency = this.dbService.reminders.notificationsFrequency ? this.dbService.reminders.notificationsFrequency : '15';
     if (type) this.account = type;
