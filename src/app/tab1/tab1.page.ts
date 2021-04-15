@@ -8,6 +8,7 @@ import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -29,7 +30,7 @@ export class Tab1Page {
     
   }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, public globalService: GlobalService,
-    public modalCtrl: ModalController, private platform: Platform, private navCtrl: NavController) {}
+    public modalCtrl: ModalController, private platform: Platform, private navCtrl: NavController, private onesignal: OneSignal) {}
 
   ngOnInit() {
     this.platform.backButton.subscribeWithPriority(998, () => {
@@ -76,14 +77,8 @@ export class Tab1Page {
   }
 
   async upgrade() {
-    this.storage.modalShown = true;
-    let modal = await this.modalCtrl.create({
-      component: UpgradeComponent
-    });
-    modal.onDidDismiss().then(() => {
-      this.storage.modalShown = false;
-    })
-    return await modal.present();
+    this.onesignal.addTrigger("timeToUpgrade", true);
+    this.onesignal.removeTriggerForKey("timeToUpgrade");
   }
 
   async editStylists() {

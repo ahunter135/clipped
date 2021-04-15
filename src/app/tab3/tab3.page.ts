@@ -10,6 +10,7 @@ import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component';
 import { AppVersion } from '@ionic-native/app-version/ngx';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 @Component({
   selector: 'app-tab3',
@@ -29,7 +30,7 @@ export class Tab3Page {
 
   }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, private modalCtrl: ModalController, private alertController: AlertController,
-     private platform: Platform, private navCtrl: NavController, public appVersion: AppVersion) {
+     private platform: Platform, private navCtrl: NavController, public appVersion: AppVersion, private onesignal: OneSignal) {
 
   }
 
@@ -57,15 +58,8 @@ export class Tab3Page {
   }
 
   async upgrade() {
-    this.storage.modalShown = true;
-    let modal = await this.modalCtrl.create({
-      component: UpgradeComponent
-    });
-    modal.onDidDismiss().then(() => {
-      this.storage.modalShown = false;
-    })
-    return await modal.present();
-    //let proRecipt = await this.storage.upgradeToPro();
+    this.onesignal.addTrigger("timeToUpgrade", true);
+    this.onesignal.removeTriggerForKey("timeToUpgrade");
   }
 
   async addToLimit() {

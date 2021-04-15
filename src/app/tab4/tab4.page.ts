@@ -314,7 +314,7 @@ export class Tab4Page {
         latLng = new LatLng(lat, lng);
         mapOptions = {
           camera: {
-            zoom: 17,
+            zoom: 13,
             target: latLng,
           },
           controls: {
@@ -421,7 +421,7 @@ export class Tab4Page {
       this.markers.push(marker);
       if (this.markers.length == 1) {
         this.map.moveCamera({
-          zoom: 17,
+          zoom: 13,
           target: marker.getPosition()
         })
       }

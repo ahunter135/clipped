@@ -10,6 +10,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-segment (ionChange)="getApps()" [(ngModel)]="currentView">
+    <ion-segment-button value="0">
+      <ion-label>Past</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="1">
+      <ion-label>Current</ion-label>
+    </ion-segment-button>
+  </ion-segment>
   <ion-list>
     <ion-item *ngFor="let app of appointments">
       <ion-thumbnail slot="start">

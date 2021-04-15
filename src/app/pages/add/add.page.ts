@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController, NavController, PopoverController } from '@ionic/angular';
+import { ActionSheetController, ModalController, NavController, PopoverController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -36,7 +36,7 @@ export class AddPage implements OnInit {
   searching = false;
   constructor(private dbService: DbService, public storage: StorageService, 
     private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, private camera: Camera, private cameraService: CameraService,
-    private modalCtrl: ModalController, private phone: PhonePipe, private globalService: GlobalService, private contacts: Contacts) { }
+    private modalCtrl: ModalController, private phone: PhonePipe, private globalService: GlobalService, private contacts: Contacts, private toastCtrl: ToastController) { }
 
   async ngOnInit() {
     this.client.last_visit = this.today;
@@ -96,6 +96,14 @@ export class AddPage implements OnInit {
     else this.loading = true;
     this.client.visits = [];
     if (!this.client.pets) this.client.pets = [];
+    if (!this.client.name || !this.client.address) {
+      let t = await this.toastCtrl.create({
+        message: "Please make sure client name and address are completed!",
+        duration: 2000
+      })
+      await t.present();
+      return;
+    }
     await this.dbService.addClient(this.client);
     this.loading = false;
     this.goBack();
