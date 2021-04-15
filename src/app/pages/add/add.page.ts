@@ -102,6 +102,7 @@ export class AddPage implements OnInit {
         duration: 2000
       })
       await t.present();
+      this.loading = false;
       return;
     }
     await this.dbService.addClient(this.client);
