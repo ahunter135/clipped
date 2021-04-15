@@ -78,7 +78,6 @@ export class Tab1Page {
 
   async upgrade() {
     this.onesignal.addTrigger("timeToUpgrade", true);
-    this.onesignal.removeTriggerForKey("timeToUpgrade");
   }
 
   async editStylists() {

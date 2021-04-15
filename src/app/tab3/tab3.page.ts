@@ -59,7 +59,6 @@ export class Tab3Page {
 
   async upgrade() {
     this.onesignal.addTrigger("timeToUpgrade", true);
-    this.onesignal.removeTriggerForKey("timeToUpgrade");
   }
 
   async addToLimit() {
