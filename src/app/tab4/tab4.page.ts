@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ActionSheetController, AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
 import * as moment from 'moment';
@@ -42,7 +42,7 @@ export class Tab4Page {
   customFilterDate;
   constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe,
     private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator, private alertController: AlertController,
-    private router: Router, private loadingController: LoadingController, private iab: InAppBrowser, private calendar: Calendar) {
+    private router: Router, private loadingController: LoadingController, private iab: InAppBrowser, private calendar: Calendar, private toastCtrl: ToastController) {
   }
 
   async ngOnInit() {
@@ -313,7 +313,7 @@ export class Tab4Page {
         latLng = new LatLng(lat, lng);
         mapOptions = {
           camera: {
-            zoom: 13,
+            zoom: 10,
             target: latLng,
           },
           controls: {
@@ -324,7 +324,7 @@ export class Tab4Page {
       } else {
         mapOptions = {
           camera: {
-            zoom: 8,
+            zoom: 10,
             target: latLng,
           },
           controls: {
@@ -338,7 +338,7 @@ export class Tab4Page {
       latLng = new LatLng(36.213089, -86.306480);
       mapOptions = {
         camera: {
-          zoom: 8,
+          zoom: 10,
           target: latLng,
         },
         controls: {
@@ -352,16 +352,6 @@ export class Tab4Page {
 
     this.map.one(GoogleMapsEvent.MAP_READY).then(async () => {
       await this.addMarkers(clients);
-      /*
-      if (clients.length > 0) {
-        let address = clients[0].location.address + " " + clients[0].location.zip;
-        let results = await Geocoder.geocode( { 'address': address});
-  
-        let lat = results[0].position.lat;
-        let lng = results[0].position.lng;
-        let latLng = new LatLng(lat, lng);
-         
-      }*/
     })
     
     this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
@@ -391,51 +381,73 @@ export class Tab4Page {
   }
 
   async addMarker(client){
-    let address = client.location.address + " " + client.location.zip;
-    let results = await Geocoder.geocode( { 'address': address});
-    let lat = results[0].position.lat;
-    let lng = results[0].position.lng;
-
-    let latLng = new LatLng(lat, lng);
-
-    let pinColor;
-    for (let i = 0; i < this.storage.clients.length; i++) {
-      if (this.storage.clients[i].id == client.client_id) {
-        pinColor = this.storage.clients[i].color ? this.storage.clients[i].color : 'red';
-        client.color = pinColor;
-        break;
+    if (client.location && client.location.address && client.location.zip) {
+      let address = client.location.address + " " + client.location.zip;
+      let results = await Geocoder.geocode( { 'address': address});
+      let lat, lng;
+      if (results[0]) {
+        lat = results[0].position.lat;
+        lng = results[0].position.lng;
+      } else {
+        return;
       }
-    }
-    this.map.addMarker({
-      position: latLng,
-      animation: GoogleMapsAnimation.DROP,
-      icon: pinColor,
-      visible: this.isLocationFree(latLng),
-      title: this.clientByID.transform(client.client_id).toString(),
-      snippet: client.location.address + (client.location.address2 ? (", " +  client.location.address2) : "") + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
-    }).then((marker:Marker) => {
-      marker.set('client', client);
-      marker.set('pet', client.app.pet ? JSON.stringify(client.app.pet) : null);
-      marker.set('latlng', latLng);
-      this.markers.push(marker);
-      if (this.markers.length == 1) {
-        this.map.moveCamera({
-          zoom: 13,
-          target: marker.getPosition()
+      let latLng = new LatLng(lat, lng);
+
+      let pinColor;
+      for (let i = 0; i < this.storage.clients.length; i++) {
+        if (this.storage.clients[i].id == client.client_id) {
+          pinColor = this.storage.clients[i].color ? this.storage.clients[i].color : 'red';
+          client.color = pinColor;
+          break;
+        }
+      }
+      this.map.addMarker({
+        position: latLng,
+        animation: GoogleMapsAnimation.DROP,
+        icon: pinColor,
+        visible: this.isLocationFree(latLng),
+        title: this.clientByID.transform(client.client_id).toString(),
+        snippet: client.location.address + (client.location.address2 ? (", " +  client.location.address2) : "") + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
+      }).then((marker:Marker) => {
+        marker.set('client', client);
+        marker.set('pet', client.app.pet ? JSON.stringify(client.app.pet) : null);
+        marker.set('latlng', latLng);
+        this.markers.push(marker);
+        if (this.markers.length == 1) {
+          this.map.animateCamera({
+            zoom: 10,
+            target: marker.getPosition()
+          })
+        }
+
+        let region = this.map.getVisibleRegion();
+        if (region.contains(marker.getPosition())) {
+          this.appointmentsShownOnMap.push(client)
+        }
+        
+        this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
+
+        marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+          this.openSheet(marker.get('client'));
         })
-      }
-
-      let region = this.map.getVisibleRegion();
-      if (region.contains(marker.getPosition())) {
-        this.appointmentsShownOnMap.push(client)
-      }
-      
-      this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
-
-      marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-        this.openSheet(marker.get('client'));
       })
-    })
+    } else {
+      let toast = await this.toastCtrl.create({
+        message: "If your client does not have an address, their appointment will not show up here. Be sure each client has an address!",
+        duration: 7500,
+        buttons: [
+          {
+            text: 'Close',
+            role: 'cancel',
+            handler: () => {
+              console.log('Cancel clicked');
+            }
+          }
+        ]
+      })
+
+      toast.present();
+    };
   }
 
   isLocationFree(search) {
