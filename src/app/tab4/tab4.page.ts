@@ -357,14 +357,14 @@ export class Tab4Page {
     this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
       if (!this.ready) return;
       this.appointmentsShownOnMap = [];
-      //Bouunds are set, see if any markers are here.
+      //Bounds are set, see if any markers are here.
       for (let i = 0; i < this.markers.length; i++) {
-        let region = this.map.getVisibleRegion();
-        if (region.contains(this.markers[i].getPosition())) {
+        //let region = this.map.getVisibleRegion();
+        //if (region.contains(this.markers[i].getPosition())) {
           let client = this.markers[i].get('client');
 
           this.appointmentsShownOnMap.push(client)
-        }
+       // }
       }
 
       this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
@@ -381,7 +381,7 @@ export class Tab4Page {
   }
 
   async addMarker(client){
-    if (client.location && client.location.address && client.location.zip) {
+    if (client.location && client.location.address) {
       let address = client.location.address + " " + client.location.zip;
       let results = await Geocoder.geocode( { 'address': address});
       let lat, lng;
@@ -420,10 +420,10 @@ export class Tab4Page {
           })
         }
 
-        let region = this.map.getVisibleRegion();
-        if (region.contains(marker.getPosition())) {
+        //let region = this.map.getVisibleRegion();
+        //if (region.contains(marker.getPosition())) {
           this.appointmentsShownOnMap.push(client)
-        }
+        //}
         
         this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
 
