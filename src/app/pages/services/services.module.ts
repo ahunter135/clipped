@@ -10,13 +10,12 @@ import { ServicesPage } from './services.page';
 import { AddServiceComponent } from 'src/app/modals/add-service/add-service.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ServicesPageRoutingModule
-  ],
-  declarations: [ServicesPage, AddServiceComponent],
-  entryComponents: [AddServiceComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        ServicesPageRoutingModule
+    ],
+    declarations: [ServicesPage, AddServiceComponent]
 })
 export class ServicesPageModule {}

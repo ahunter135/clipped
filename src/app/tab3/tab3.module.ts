@@ -18,15 +18,14 @@ export function playerFactory() {
   return player;
 }
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    Tab3PageRoutingModule,
-    LottieModule.forRoot({ player: playerFactory }),
-    PipesModule
-  ],
-  declarations: [Tab3Page],
-  entryComponents: []
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
+        Tab3PageRoutingModule,
+        LottieModule.forRoot({ player: playerFactory }),
+        PipesModule
+    ],
+    declarations: [Tab3Page]
 })
 export class Tab3PageModule {}

@@ -16,17 +16,16 @@ import { ComponentsModule } from '../components/components.module';
 import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    Tab4PageRoutingModule,
-    IonicPullupModule,
-    CalendarModule,
-    ComponentsModule,
-    PipesModule
-  ],
-  declarations: [Tab4Page, ViewAppointmentComponent, SelectClientComponent],
-  entryComponents: [ViewAppointmentComponent, SelectClientComponent]
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
+        Tab4PageRoutingModule,
+        IonicPullupModule,
+        CalendarModule,
+        ComponentsModule,
+        PipesModule
+    ],
+    declarations: [Tab4Page, ViewAppointmentComponent, SelectClientComponent]
 })
 export class Tab4PageModule {}

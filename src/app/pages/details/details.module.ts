@@ -21,17 +21,16 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 import { ViewAppointmentsComponent } from 'src/app/modals/view-appointments/view-appointments.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    DetailsPageRoutingModule,
-    ImageCropperModule,
-    CalendarModule,
-    ComponentsModule,
-    PipesModule
-  ],
-  declarations: [PopoverComponent, VisitsComponent, CropImageComponent, TextTemplateComponent, AddAppointmentComponent, ViewAppointmentsComponent],
-  entryComponents: [VisitsComponent, CropImageComponent, TextTemplateComponent, AddAppointmentComponent, ViewAppointmentsComponent]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        DetailsPageRoutingModule,
+        ImageCropperModule,
+        CalendarModule,
+        ComponentsModule,
+        PipesModule
+    ],
+    declarations: [PopoverComponent, VisitsComponent, CropImageComponent, TextTemplateComponent, AddAppointmentComponent, ViewAppointmentsComponent]
 })
 export class DetailsPageModule {}

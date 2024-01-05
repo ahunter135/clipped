@@ -56,40 +56,39 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 @NgModule({
-  declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent, ColorPickerComponent],
-  entryComponents: [UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent, ColorPickerComponent],
-  imports: [BrowserModule, IonicModule.forRoot({
-    mode: 'ios'
-  }), AppRoutingModule, FormsModule, ColorSketchModule, PipesModule, ComponentsModule],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    LottieSplashScreen,
-    InAppPurchase,
-    Camera,
-    File,
-    Crop,
-    Base64,
-    //Instagram,
-    FileTransfer,
-    LaunchReview,
-    SMS,
-    InAppBrowser,
-    OneSignal,
-    Keyboard,
-    GooglePlus,
-    GoogleMaps,
-    AndroidPermissions,
-    DatePipe,
-    CurrencyPipe,
-    LaunchNavigator,
-    SignInWithApple,
-    SocialSharing,
-    Calendar,
-    AppVersion,
-    Contacts,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent, ColorPickerComponent],
+    imports: [BrowserModule, IonicModule.forRoot({
+            mode: 'ios'
+        }), AppRoutingModule, FormsModule, ColorSketchModule, PipesModule, ComponentsModule],
+    providers: [
+        StatusBar,
+        SplashScreen,
+        LottieSplashScreen,
+        InAppPurchase,
+        Camera,
+        File,
+        Crop,
+        Base64,
+        //Instagram,
+        FileTransfer,
+        LaunchReview,
+        SMS,
+        InAppBrowser,
+        OneSignal,
+        Keyboard,
+        GooglePlus,
+        GoogleMaps,
+        AndroidPermissions,
+        DatePipe,
+        CurrencyPipe,
+        LaunchNavigator,
+        SignInWithApple,
+        SocialSharing,
+        Calendar,
+        AppVersion,
+        Contacts,
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
