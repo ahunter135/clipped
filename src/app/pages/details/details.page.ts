@@ -14,7 +14,7 @@ import { PhonePipe } from 'src/app/pipes/phone.pipe';
 import { ColorPickerComponent } from 'src/app/modals/color-picker/color-picker.component';
 import { AddAppointmentComponent } from 'src/app/modals/add-appointment/add-appointment.component';
 import { ViewAppointmentsComponent } from 'src/app/modals/view-appointments/view-appointments.component';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 declare var google: any;
 @Component({

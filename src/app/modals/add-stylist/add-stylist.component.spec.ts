@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { AddStylistComponent } from './add-stylist.component';
@@ -7,7 +7,7 @@ describe('AddStylistComponent', () => {
   let component: AddStylistComponent;
   let fixture: ComponentFixture<AddStylistComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AddStylistComponent ],
       imports: [IonicModule.forRoot()]

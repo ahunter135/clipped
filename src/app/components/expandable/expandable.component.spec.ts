@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { ExpandableComponent } from './expandable.component';
@@ -7,7 +7,7 @@ describe('ExpandableComponent', () => {
   let component: ExpandableComponent;
   let fixture: ComponentFixture<ExpandableComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ExpandableComponent ],
       imports: [IonicModule.forRoot()]
