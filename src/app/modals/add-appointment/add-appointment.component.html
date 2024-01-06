@@ -44,7 +44,7 @@
       </ion-item>
       <ion-item>
         <ion-label position="floating">Time of Appointment <span style="color: red">*</span></ion-label>
-        <ion-datetime displayFormat="hh:mm a" [(ngModel)]="app_time" minuteValues="0, 15, 30, 45">
+        <ion-datetime presentation="time" [(ngModel)]="app_time" minuteValues="0, 15, 30, 45">
         </ion-datetime>
       </ion-item>
       <ion-item *ngIf="!isEdit">
@@ -62,7 +62,7 @@
       </ion-item>
       <ion-item *ngIf="isReoccurring && !isEdit">
         <ion-label>Date of Last Appointment <span style="color: red">*</span></ion-label>
-        <ion-datetime displayFormat="MMM DD YYYY" min="{{min}}" max="{{max}}" [(ngModel)]="reoccurringEndDate">
+        <ion-datetime presentation="date" min="{{min}}" max="{{max}}" [(ngModel)]="reoccurringEndDate">
         </ion-datetime>
       </ion-item>
       <ion-item>

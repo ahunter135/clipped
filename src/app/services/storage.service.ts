@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Plugins } from '@capacitor/core';
+// import { Plugins } from '@capacitor/core';
 import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
 import { isPlatform, ModalController, Platform } from '@ionic/angular';
 import { GlobalService } from './global.service';
+import { Preferences } from '@capacitor/preferences';
 
-const { Storage } = Plugins;
 @Injectable({
   providedIn: 'root'
 })
@@ -21,32 +21,32 @@ export class StorageService {
   services = [];
   modalShown = false;
   constructor(private iap: InAppPurchase, public globalService: GlobalService, private modalCtrl: ModalController, private platform: Platform) {
-    //Storage.clear();
+    //Preferences.clear();
   }
 
   async setItem(obj) {
-    await Storage.set(obj);
+    await Preferences.set(obj);
   }
 
   async getItem(key) {
-    const ret = await Storage.get({ key: key });
+    const ret = await Preferences.get({ key: key });
     const obj = JSON.parse(ret.value);
 
     return obj
   }
 
   async removeItem(key) {
-    await Storage.remove({ key: key });
+    await Preferences.remove({ key: key });
   }
 
   async getKeys() {
-    const { keys } = await Storage.keys();
+    const { keys } = await Preferences.keys();
 
     return keys
   }
 
   async clearStorage() {
-    await Storage.clear();
+    await Preferences.clear();
   }
 
   async setData(data) {
