@@ -40,7 +40,6 @@ import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { PipesModule } from './pipes/pipes.module';
 import { ComponentsModule } from './components/components.module';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
-// import { Contacts } from '@ionic-native/contacts/ngx';
 import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
 
 var firebaseConfig = {
@@ -86,7 +85,6 @@ firebase.initializeApp(firebaseConfig);
         SocialSharing,
         Calendar,
         AppVersion,
-        // Contacts,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     ],
     bootstrap: [AppComponent]

@@ -11,7 +11,8 @@ import { ColorPickerComponent } from 'src/app/modals/color-picker/color-picker.c
 import { v4 as uuidv4 } from 'uuid';
 import { CameraService } from 'src/app/services/camera.service';
 import { GlobalService } from 'src/app/services/global.service';
-import { Contacts } from '@ionic-native/contacts/ngx';
+// import { Contacts } from '@awesome-cordova-plugins/contacts/ngx';
+import { Contacts } from '@capacitor-community/contacts';
 
 declare var google: any;
 @Component({
@@ -36,7 +37,7 @@ export class AddPage implements OnInit {
   searching = false;
   constructor(private dbService: DbService, public storage: StorageService, 
     private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, private camera: Camera, private cameraService: CameraService,
-    private modalCtrl: ModalController, private phone: PhonePipe, private globalService: GlobalService, private contacts: Contacts, private toastCtrl: ToastController) { }
+    private modalCtrl: ModalController, private phone: PhonePipe, private globalService: GlobalService, private contacts: typeof Contacts, private toastCtrl: ToastController) { }
 
   async ngOnInit() {
     this.client.last_visit = this.today;
@@ -74,12 +75,42 @@ export class AddPage implements OnInit {
   }
 
   async importFromContacts() {
-    let result = await this.contacts.pickContact();
-    console.log(result);
-    this.client.name = result.name.formatted;
-    this.client.phone_number = result.phoneNumbers[0].value;
-    this.client.email = result.emails[0].value;
-    this.client.address = result.addresses[0].streetAddress + " " + result.addresses[0].region + ", " + result.addresses[0].postalCode;
+    try {
+      const permissions = await this.contacts.checkPermissions();
+      if (permissions.contacts === 'denied') {
+        const permission = await this.contacts.requestPermissions();
+        if (permission.contacts === 'denied') {
+          return;
+        }
+      }
+
+      let results = await this.contacts.pickContact(
+        {
+          projection: {
+            name: true,
+            phones: true,
+            emails: true,
+            postalAddresses: true,
+          }
+        }
+      );
+
+      console.log(results);
+
+      this.client.name = results.contact.name.display;
+      this.client.phone_number = results.contact.phones[0].number;
+      this.client.email = results.contact.emails[0].address;
+      this.client.address = results.contact.postalAddresses[0].street + " " + results.contact.postalAddresses[0].city + ", " + results.contact.postalAddresses[0].region + " " + results.contact.postalAddresses[0].postcode;
+      
+    } catch (error) {
+      console.log(error);
+    }
+    // let result = await this.contacts.pickContact();
+    // console.log(result);
+    // this.client.name = result.name.formatted;
+    // this.client.phone_number = result.phoneNumbers[0].value;
+    // this.client.email = result.emails[0].value;
+    // this.client.address = result.addresses[0].streetAddress + " " + result.addresses[0].region + ", " + result.addresses[0].postalCode;
   }
 
   getStates() {
