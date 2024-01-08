@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
 import { AlertController, ModalController, NavController, Platform } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';

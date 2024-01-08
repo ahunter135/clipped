@@ -3,45 +3,45 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
+import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
+import { Keyboard } from '@awesome-cordova-plugins/keyboard/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
-import { Camera } from '@ionic-native/camera/ngx';
-import { File } from '@ionic-native/file/ngx';
+import { Camera } from '@awesome-cordova-plugins/camera/ngx';
+import { File } from '@awesome-cordova-plugins/file/ngx';
 import { Crop } from '@ionic-native/crop/ngx';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { UpgradeComponent } from './modals/upgrade/upgrade.component';
-import { FileTransfer } from '@ionic-native/file-transfer/ngx';
-import { SMS } from '@ionic-native/sms/ngx';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { FileTransfer } from '@awesome-cordova-plugins/file-transfer/ngx';
+import { SMS } from '@awesome-cordova-plugins/sms/ngx';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import firebase from 'firebase';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
-import { LaunchReview } from '@ionic-native/launch-review/ngx';
+import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
+import { LaunchReview } from '@awesome-cordova-plugins/launch-review/ngx';
 import { AddStylistComponent } from './modals/add-stylist/add-stylist.component';
-import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { GooglePlus } from '@awesome-cordova-plugins/google-plus/ngx';
 import { GoogleMaps } from '@ionic-native/google-maps/ngx';
-import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
+import { SignInWithApple } from '@awesome-cordova-plugins/sign-in-with-apple/ngx';
 import { PetsComponent } from './modals/pets/pets.component';
 import { FormsModule } from '@angular/forms';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
+import { LaunchNavigator } from '@awesome-cordova-plugins/launch-navigator/ngx';
 import { GuideComponent } from './modals/guide/guide.component';
-import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
+import { LottieSplashScreen } from '@awesome-cordova-plugins/lottie-splash-screen/ngx';
 import { AddressListComponent } from './pages/add/address-list/address-list.component';
 import { EditAccountComponent } from './modals/edit-account/edit-account.component';
 import { ColorSketchModule } from 'ngx-color/sketch';
 import { ColorPickerComponent } from './modals/color-picker/color-picker.component';
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { PipesModule } from './pipes/pipes.module';
 import { ComponentsModule } from './components/components.module';
-import { Calendar } from '@ionic-native/calendar/ngx';
-import { Contacts } from '@ionic-native/contacts/ngx';
-import { AppVersion } from '@ionic-native/app-version/ngx';
+import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
+// import { Contacts } from '@ionic-native/contacts/ngx';
+import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -86,7 +86,7 @@ firebase.initializeApp(firebaseConfig);
         SocialSharing,
         Calendar,
         AppVersion,
-        Contacts,
+        // Contacts,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     ],
     bootstrap: [AppComponent]

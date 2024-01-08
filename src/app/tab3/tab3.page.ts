@@ -9,8 +9,8 @@ import * as introjs from 'intro.js';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component';
-import { AppVersion } from '@ionic-native/app-version/ngx';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
+import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
 
 @Component({
   selector: 'app-tab3',

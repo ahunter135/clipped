@@ -8,11 +8,11 @@ import { IonPullUpFooterState } from 'ionic-pullup';
 import { ClientByIDPipe } from '../pipes/client-by-id.pipe';
 import { GoogleMaps, GoogleMapsEvent, LatLng, MarkerOptions, Marker, GoogleMapsMapTypeId, Geocoder, GoogleMapsAnimation, HtmlInfoWindow, GoogleMapOptions, GoogleMap } from "@ionic-native/google-maps";
 import { DatePipe } from '@angular/common';
-import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator/ngx';
+import { LaunchNavigator, LaunchNavigatorOptions } from '@awesome-cordova-plugins/launch-navigator/ngx';
 import { Router } from '@angular/router';
 import { AddAppointmentComponent } from '../modals/add-appointment/add-appointment.component';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { Calendar } from '@ionic-native/calendar/ngx';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
 import {
   CalendarModal,
   CalendarModalOptions,

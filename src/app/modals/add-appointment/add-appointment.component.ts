@@ -5,7 +5,7 @@ import { CalendarComponentOptions } from 'ion2-calendar';
 import * as moment from 'moment-timezone';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { Calendar } from '@ionic-native/calendar/ngx';
+import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
 import { ServicePipe } from 'src/app/pipes/service.pipe';
 import { v4 as uuidv4 } from 'uuid';
 

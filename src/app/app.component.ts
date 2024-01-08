@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 import { ModalController, NavController, Platform, isPlatform } from '@ionic/angular';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 import { StorageService } from './services/storage.service';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
-import { LaunchReview } from '@ionic-native/launch-review/ngx';
+import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
+import { LaunchReview } from '@awesome-cordova-plugins/launch-review/ngx';
 import * as introjs from 'intro.js';
 
 @Component({

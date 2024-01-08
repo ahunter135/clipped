@@ -8,7 +8,7 @@ import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',

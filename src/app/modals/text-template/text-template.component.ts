@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-import { SMS } from '@ionic-native/sms/ngx';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+import { SMS } from '@awesome-cordova-plugins/sms/ngx';
 import { AlertController, ModalController, NavParams, Platform } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 

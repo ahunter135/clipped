@@ -3,7 +3,7 @@ import { ActionSheetController, ModalController, NavController, PopoverControlle
 import * as moment from 'moment';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import csc from 'country-state-city'
 import { PetsComponent } from 'src/app/modals/pets/pets.component';
 import { PhonePipe } from 'src/app/pipes/phone.pipe';

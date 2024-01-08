@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 // import { rejects } from 'assert';
 import { CropImageComponent } from '../modals/crop-image/crop-image.component';

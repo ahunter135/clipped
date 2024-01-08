@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import { Crop } from '@ionic-native/crop/ngx';
-import { File } from '@ionic-native/file/ngx';
+import { File } from '@awesome-cordova-plugins/file/ngx';
 import { ActionSheetController, ModalController, NavParams, PopoverController } from '@ionic/angular';
 import * as moment from 'moment';
 import { PopoverComponent } from 'src/app/pages/details/popover/popover.component';
@@ -11,8 +11,8 @@ import { GlobalService } from 'src/app/services/global.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { v4 as uuidv4 } from 'uuid';
 import { CropImageComponent } from '../crop-image/crop-image.component';
-import { SocialSharing } from '@ionic-native/social-sharing/ngx';
-import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
+import { FileTransfer } from '@awesome-cordova-plugins/file-transfer/ngx';
 import * as watermark from 'watermarkjs';
 
 @Component({
