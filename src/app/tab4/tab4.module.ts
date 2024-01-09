@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Tab4Page } from './tab4.page';
-import { IonicPullupModule } from 'ionic-pullup';
+// import { IonicPullupModule } from 'ionic-pullup';
 
 import { Tab4PageRoutingModule } from './tab4-routing.module';
 import { ClientByIDPipe } from '../pipes/client-by-id.pipe';
@@ -21,7 +21,7 @@ import { PipesModule } from '../pipes/pipes.module';
         CommonModule,
         FormsModule,
         Tab4PageRoutingModule,
-        IonicPullupModule,
+        // IonicPullupModule,
         CalendarModule,
         ComponentsModule,
         PipesModule

@@ -28,9 +28,14 @@
       </ion-select>
     </ion-item>
   </ion-toolbar>-->
-  <div #map id="map"></div>
+  <div id="map-container">
+    <capacitor-google-map #map></capacitor-google-map>
+  </div>
 </ion-content>
-<lib-ionic-pullup (onExpand)="footerExpanded()" (onCollapse)="footerCollapsed()" [(state)]="footerState"
+
+<!-- REPLACE IONIC PULLUP WITH SHEET MODAL -->
+
+<!-- <lib-ionic-pullup (onExpand)="footerExpanded()" (onCollapse)="footerCollapsed()" [(state)]="footerState"
   [toolbarTopMargin]="275" [minBottomVisible]="50">
   <ion-toolbar color="tertiary" (click)="toggleFooter()" #ionDragFooter>
     <ion-title>
@@ -53,7 +58,7 @@
           <h3>{{app.client_id | clientByID}}; {{app.location.address}}</h3>
           <h5 *ngIf="!app.app.pet.name">For {{app.app.pet}}</h5>
           <h5 *ngIf="app.app.pet.name">For {{app.app.pet.name}}</h5>
-          <!--<h5 *ngIf="app.app.stylist">Stylist: {{app.app.stylist}}</h5>-->
+          <!--<h5 *ngIf="app.app.stylist">Stylist: {{app.app.stylist}}</h5>
           <p>{{app.app.date | date: 'mediumDate'}}</p>
           <h6 *ngIf="app.app.cancelled && false">
             <ion-icon name="close-circle-outline"></ion-icon> Cancelled
@@ -71,4 +76,4 @@
       </ion-item>
     </ion-list>
   </ion-content>
-</lib-ionic-pullup>
+</lib-ionic-pullup> -->

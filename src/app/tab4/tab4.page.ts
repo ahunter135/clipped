@@ -4,9 +4,9 @@ import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
 import * as moment from 'moment';
 import { ViewAppointmentComponent } from '../modals/view-appointment/view-appointment.component';
-import { IonPullUpFooterState } from 'ionic-pullup';
+// import { IonPullUpFooterState } from 'ionic-pullup';
 import { ClientByIDPipe } from '../pipes/client-by-id.pipe';
-import { GoogleMaps, GoogleMapsEvent, LatLng, MarkerOptions, Marker, GoogleMapsMapTypeId, Geocoder, GoogleMapsAnimation, HtmlInfoWindow, GoogleMapOptions, GoogleMap } from "@ionic-native/google-maps";
+// import { GoogleMaps, GoogleMapsEvent, LatLng, MarkerOptions, Marker, GoogleMapsMapTypeId, Geocoder, GoogleMapsAnimation, HtmlInfoWindow, GoogleMapOptions, GoogleMap } from "@ionic-native/google-maps";
 import { DatePipe } from '@angular/common';
 import { LaunchNavigator, LaunchNavigatorOptions } from '@awesome-cordova-plugins/launch-navigator/ngx';
 import { Router } from '@angular/router';
@@ -19,6 +19,8 @@ import {
   DayConfig,
   CalendarResult
 } from 'ion2-calendar';
+import { GoogleMap } from '@capacitor/google-maps';
+
 @Component({
   selector: 'app-tab4',
   templateUrl: 'tab4.page.html',
@@ -30,16 +32,17 @@ export class Tab4Page {
   tempAppointments;
   stylists = [];
   filterBy;
-  @ViewChild('map') mapElement: ElementRef;
+  @ViewChild('map') mapElement: ElementRef<HTMLElement>;
   map: GoogleMap;
   view = 'list';
   appointmentsShownOnMap = [];
   markers = [];
-  footerState: IonPullUpFooterState;
+  // footerState: IonPullUpFooterState;
   currentFilter = 0;
   ready = false;
   loader;
   customFilterDate;
+  geocoder = new google.maps.Geocoder();
   constructor(public storage: StorageService, public dbService: DbService, private modalCtrl: ModalController, private clientByID: ClientByIDPipe,
     private datePipe: DatePipe, private actionSheetCtrl: ActionSheetController, private launchNav: LaunchNavigator, private alertController: AlertController,
     private router: Router, private loadingController: LoadingController, private iab: InAppBrowser, private calendar: Calendar, private toastCtrl: ToastController) {
@@ -149,7 +152,7 @@ export class Tab4Page {
   async updateApps() {
     this.appointmentsShownOnMap = [];
     this.markers = [];
-    this.map.clear();
+    this.map.destroy();
     //await this.dbService.getAllAppointments();
     //await this.filterAppointments(this.storage.appointments);
 
@@ -303,77 +306,138 @@ export class Tab4Page {
 
   async addMap(){
     let clients = await this.getClientArrayFromAppointment();
-    let latLng;
-    let mapOptions: GoogleMapOptions = {};
-    if (this.dbService.serviceArea) {
-      let results = await Geocoder.geocode( { 'address': this.dbService.serviceArea});
-      if (results[0].position) {
-        let lat = results[0].position.lat;
-        let lng = results[0].position.lng;
-        latLng = new LatLng(lat, lng);
-        mapOptions = {
-          camera: {
-            zoom: 10,
-            target: latLng,
-          },
-          controls: {
-            mapToolbar: false
-          },
-          mapType: GoogleMapsMapTypeId.ROADMAP
-        }
+    let lat = 36.213089;
+    let lng = -86.306480;
+
+    //test data
+    this.dbService.serviceArea = '18 Julianna Dr. 42261'
+
+    await this.geocoder.geocode( { 'address': this.dbService.serviceArea}, function(results, status) {
+      if (status == 'OK') {
+        lat = results[0].geometry.location.lat();
+        lng = results[0].geometry.location.lng();
       } else {
-        mapOptions = {
-          camera: {
-            zoom: 10,
-            target: latLng,
-          },
-          controls: {
-            mapToolbar: false
-          },
-          mapType: GoogleMapsMapTypeId.ROADMAP
-        }
-        latLng = new LatLng(36.213089, -86.306480);
+        console.log('Geocode was not successful for the following reason: ' + status);
       }
-    } else {
-      latLng = new LatLng(36.213089, -86.306480);
-      mapOptions = {
-        camera: {
-          zoom: 10,
-          target: latLng,
+    });
+
+    const apiKey = 'AIzaSyAuEOgKmk4Xr1YYqwriKqdtDqd7QJTnd8k';
+
+    this.map = await GoogleMap.create({
+      id: 'my-map', // Unique identifier for this map instance
+      element: this.mapElement.nativeElement, // reference to the capacitor-google-map element
+      apiKey: apiKey, // Your Google Maps API Key
+      config: {
+        fullscreenControl: false,
+        zoomControl: false,
+        center: {
+          // The initial position to be rendered by the map
+          lat,
+          lng,
         },
-        controls: {
-          mapToolbar: false
-        },
-        mapType: GoogleMapsMapTypeId.ROADMAP
-      }
-    }
+        zoom: 10, // The initial zoom level to be rendered by the map
+        
+      },
+    });
+
+    await this.addMarkers(clients);
+
+
+
+    // let mapOptions: GoogleMapOptions = {};
+    // if (this.dbService.serviceArea) {
+    //   let results = await Geocoder.geocode( { 'address': this.dbService.serviceArea});
+    //   if (results[0].position) {
+    //     let lat = results[0].position.lat;
+    //     let lng = results[0].position.lng;
+    //     latLng = new LatLng(lat, lng);
+    //     mapOptions = {
+    //       camera: {
+    //         zoom: 10,
+    //         target: latLng,
+    //       },
+    //       controls: {
+    //         mapToolbar: false
+    //       },
+    //       mapType: GoogleMapsMapTypeId.ROADMAP
+    //     }
+    //   } else {
+    //     mapOptions = {
+    //       camera: {
+    //         zoom: 10,
+    //         target: latLng,
+    //       },
+    //       controls: {
+    //         mapToolbar: false
+    //       },
+    //       mapType: GoogleMapsMapTypeId.ROADMAP
+    //     }
+    //     latLng = new LatLng(36.213089, -86.306480);
+    //   }
+    // } else {
+    //   latLng = new LatLng(36.213089, -86.306480);
+    //   mapOptions = {
+    //     camera: {
+    //       zoom: 10,
+    //       target: latLng,
+    //     },
+    //     controls: {
+    //       mapToolbar: false
+    //     },
+    //     mapType: GoogleMapsMapTypeId.ROADMAP
+    //   }
+    // }
     
-    this.map = GoogleMaps.create(this.mapElement.nativeElement, mapOptions);
+    // this.map = GoogleMaps.create(this.mapElement.nativeElement, mapOptions);
 
-    this.map.one(GoogleMapsEvent.MAP_READY).then(async () => {
-      await this.addMarkers(clients);
-    })
+    // this.map.one(GoogleMapsEvent.MAP_READY).then(async () => {
+    //   await this.addMarkers(clients);
+    // })
     
-    this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
-      if (!this.ready) return;
-      this.appointmentsShownOnMap = [];
-      //Bounds are set, see if any markers are here.
-      for (let i = 0; i < this.markers.length; i++) {
-        //let region = this.map.getVisibleRegion();
-        //if (region.contains(this.markers[i].getPosition())) {
-          let client = this.markers[i].get('client');
+    // this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe(() => {
+    //   if (!this.ready) return;
+    //   this.appointmentsShownOnMap = [];
+    //   //Bounds are set, see if any markers are here.
+    //   for (let i = 0; i < this.markers.length; i++) {
+    //     //let region = this.map.getVisibleRegion();
+    //     //if (region.contains(this.markers[i].getPosition())) {
+    //       let client = this.markers[i].get('client');
 
-          this.appointmentsShownOnMap.push(client)
-       // }
-      }
+    //       this.appointmentsShownOnMap.push(client)
+    //    // }
+    //   }
 
-      this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
-    })
+    //   this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
+    // })
   }
 
   async addMarkers(clients) {
     this.appointmentsShownOnMap = [];
     this.ready = false;
+    
+    // test data for clients
+    clients = [ {
+      location: {
+        address: "17 Julianna Dr.",
+        city: "Morgantown",
+        state: "KY",
+        zip: "42261"
+      }, 
+      client_id: "1234",
+      app: {
+        date: new Date(),
+        pet: {
+          name: "Test",
+          breed: "Test",
+          color: "Test",
+          weight: "Test",
+          notes: "Test"
+        }
+      },
+      color: { r: 255, g: 255, b: 0, a: 1}
+    },]
+
+    console.log(clients)
     for (let i = 0; i < clients.length; i++) {
       await this.addMarker(clients[i]);
     }
@@ -381,56 +445,87 @@ export class Tab4Page {
   }
 
   async addMarker(client){
+    let lat, lng;
     if (client.location && client.location.address) {
-      let address = client.location.address + " " + client.location.zip;
-      let results = await Geocoder.geocode( { 'address': address});
-      let lat, lng;
-      if (results[0]) {
-        lat = results[0].position.lat;
-        lng = results[0].position.lng;
-      } else {
-        return;
-      }
-      let latLng = new LatLng(lat, lng);
-
-      let pinColor;
-      for (let i = 0; i < this.storage.clients.length; i++) {
-        if (this.storage.clients[i].id == client.client_id) {
-          pinColor = this.storage.clients[i].color ? this.storage.clients[i].color : 'red';
-          client.color = pinColor;
-          break;
+      await this.geocoder.geocode( { 'address': client.location.address + ' ' + client.location.zip }, function(results, status) {
+        console.log(results)
+        console.log(status)
+        if (status == 'OK') {
+          lat = results[0].geometry.location.lat();
+          lng = results[0].geometry.location.lng();
+        } else {
+          console.log('Geocode was not successful for the following reason: ' + status);
         }
-      }
-      this.map.addMarker({
-        position: latLng,
-        animation: GoogleMapsAnimation.DROP,
-        icon: pinColor,
-        visible: this.isLocationFree(latLng),
-        title: this.clientByID.transform(client.client_id).toString(),
-        snippet: client.location.address + (client.location.address2 ? (", " +  client.location.address2) : "") + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
-      }).then((marker:Marker) => {
-        marker.set('client', client);
-        marker.set('pet', client.app.pet ? JSON.stringify(client.app.pet) : null);
-        marker.set('latlng', latLng);
-        this.markers.push(marker);
-        if (this.markers.length == 1) {
-          this.map.animateCamera({
-            zoom: 10,
-            target: marker.getPosition()
-          })
-        }
+      });
 
-        //let region = this.map.getVisibleRegion();
-        //if (region.contains(marker.getPosition())) {
-          this.appointmentsShownOnMap.push(client)
-        //}
+      client.color = this.storage.clients.find(c => c.id === client.client_id)?.color || 'red';
+
+      client.testColor = { r: 255, g: 255, b: 0, a: 1}
+
+      // actual title should be this.clientByID.transform(client.client_id).toString()
+      let markerId = await this.map.addMarker({
+        title: 'test',
+        tintColor: client.testColor,
+        coordinate: {
+          lat,
+          lng
+        },
+        snippet: 'test'
+        // snippet: client.location.address + (client.location.address2 ? (", " +  client.location.address2) : "") + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
+      }) as any;
+
+      this.appointmentsShownOnMap.push(client);
+
+
+      // let address = client.location.address + " " + client.location.zip;
+      // let results = await Geocoder.geocode( { 'address': address});
+      // let lat, lng;
+      // if (results[0]) {
+      //   lat = results[0].position.lat;
+      //   lng = results[0].position.lng;
+      // } else {
+      //   return;
+      // }
+      // let latLng = new LatLng(lat, lng);
+
+      // let pinColor;
+      // for (let i = 0; i < this.storage.clients.length; i++) {
+      //   if (this.storage.clients[i].id == client.client_id) {
+      //     pinColor = this.storage.clients[i].color ? this.storage.clients[i].color : 'red';
+      //     client.color = pinColor;
+      //     break;
+      //   }
+      // }
+      // this.map.addMarker({
+      //   position: latLng,
+      //   animation: GoogleMapsAnimation.DROP,
+      //   icon: pinColor,
+      //   visible: this.isLocationFree(latLng),
+      //   title: this.clientByID.transform(client.client_id).toString(),
+      //   snippet: client.location.address + (client.location.address2 ? (", " +  client.location.address2) : "") + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
+      // }).then((marker:Marker) => {
+      //   marker.set('client', client);
+      //   marker.set('pet', client.app.pet ? JSON.stringify(client.app.pet) : null);
+      //   marker.set('latlng', latLng);
+      //   this.markers.push(marker);
+      //   if (this.markers.length == 1) {
+      //     this.map.animateCamera({
+      //       zoom: 10,
+      //       target: marker.getPosition()
+      //     })
+      //   }
+
+      //   //let region = this.map.getVisibleRegion();
+      //   //if (region.contains(marker.getPosition())) {
+      //     this.appointmentsShownOnMap.push(client)
+      //   //}
         
-        this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
+      //   this.appointmentsShownOnMap = this.appointmentsShownOnMap.sort(this.custom_sort_map);
 
-        marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
-          this.openSheet(marker.get('client'));
-        })
-      })
+      //   marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
+      //     this.openSheet(marker.get('client'));
+      //   })
+      // })
     } else {
       let toast = await this.toastCtrl.create({
         message: "If your client does not have an address, their appointment will not show up here. Be sure each client has an address!",
@@ -629,8 +724,8 @@ export class Tab4Page {
     console.log('Footer collapsed!');
   }
 
-  toggleFooter() {
-    this.footerState = this.footerState == IonPullUpFooterState.Collapsed ? IonPullUpFooterState.Expanded : IonPullUpFooterState.Collapsed;
-  }
+  // toggleFooter() {
+  //   this.footerState = this.footerState == IonPullUpFooterState.Collapsed ? IonPullUpFooterState.Expanded : IonPullUpFooterState.Collapsed;
+  // }
   
 }
