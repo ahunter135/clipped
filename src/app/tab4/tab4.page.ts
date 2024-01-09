@@ -739,5 +739,12 @@ export class Tab4Page {
   // toggleFooter() {
   //   this.footerState = this.footerState == IonPullUpFooterState.Collapsed ? IonPullUpFooterState.Expanded : IonPullUpFooterState.Collapsed;
   // }
+
+  async toggleFooter() {
+    if (await this.modal.getCurrentBreakpoint() == 0.115)
+      this.modal.setCurrentBreakpoint(0.7);
+    else
+      this.modal.setCurrentBreakpoint(0.115);
+  }
   
 }
