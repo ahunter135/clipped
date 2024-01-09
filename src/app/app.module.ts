@@ -5,7 +5,6 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
 import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
-import { Keyboard } from '@awesome-cordova-plugins/keyboard/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,7 +23,6 @@ import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
 import { LaunchReview } from '@awesome-cordova-plugins/launch-review/ngx';
 import { AddStylistComponent } from './modals/add-stylist/add-stylist.component';
 import { GooglePlus } from '@awesome-cordova-plugins/google-plus/ngx';
-// import { GoogleMaps } from '@ionic-native/google-maps/ngx';
 import { SignInWithApple } from '@awesome-cordova-plugins/sign-in-with-apple/ngx';
 import { PetsComponent } from './modals/pets/pets.component';
 import { FormsModule } from '@angular/forms';
@@ -74,9 +72,7 @@ firebase.initializeApp(firebaseConfig);
         SMS,
         InAppBrowser,
         OneSignal,
-        Keyboard,
         GooglePlus,
-        // GoogleMaps,
         AndroidPermissions,
         DatePipe,
         CurrencyPipe,

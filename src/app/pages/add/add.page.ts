@@ -37,7 +37,7 @@ export class AddPage implements OnInit {
   searching = false;
   constructor(private dbService: DbService, public storage: StorageService, 
     private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, private camera: Camera, private cameraService: CameraService,
-    private modalCtrl: ModalController, private phone: PhonePipe, private globalService: GlobalService, private contacts: typeof Contacts, private toastCtrl: ToastController) { }
+    private modalCtrl: ModalController, private phone: PhonePipe, private globalService: GlobalService, private toastCtrl: ToastController) { }
 
   async ngOnInit() {
     this.client.last_visit = this.today;
@@ -76,15 +76,15 @@ export class AddPage implements OnInit {
 
   async importFromContacts() {
     try {
-      const permissions = await this.contacts.checkPermissions();
+      const permissions = await Contacts.checkPermissions();
       if (permissions.contacts === 'denied') {
-        const permission = await this.contacts.requestPermissions();
+        const permission = await Contacts.requestPermissions();
         if (permission.contacts === 'denied') {
           return;
         }
       }
 
-      let results = await this.contacts.pickContact(
+      let results = await Contacts.pickContact(
         {
           projection: {
             name: true,
