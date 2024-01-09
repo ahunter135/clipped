@@ -31,49 +31,58 @@
   <div id="map-container">
     <capacitor-google-map #map></capacitor-google-map>
   </div>
+
+  <!-- not sure how to prevent modal from going all the way down for a split sec when user drags to bottom. Heres my temp solution -->
+  <pre class="cool-art-could-hide-here_my-brains-fried-rn-so-im-doing-this" style="font-size: 8px; display:flex; justify-content:center; font-weight:900">
+    / \__
+   (    @\___
+    /         O
+   /   (_____/
+   /_____/   U
+   </pre>
 </ion-content>
 
-<!-- REPLACE IONIC PULLUP WITH SHEET MODAL -->
-
-<!-- <lib-ionic-pullup (onExpand)="footerExpanded()" (onCollapse)="footerCollapsed()" [(state)]="footerState"
-  [toolbarTopMargin]="275" [minBottomVisible]="50">
-  <ion-toolbar color="tertiary" (click)="toggleFooter()" #ionDragFooter>
-    <ion-title>
-      <ion-icon name="menu"></ion-icon>
-    </ion-title>
-  </ion-toolbar>
-  <ion-content>
-    <ion-list>
-      <ion-item-divider>
-        <ion-label>
-          {{currentFilter | filter}}
-        </ion-label>
-      </ion-item-divider>
-      <ion-item *ngFor="let app of appointmentsShownOnMap" (click)="openSheet(app)">
-        <ion-thumbnail slot="start">
-          <img *ngIf="app.app.pet.image" [src]="app.app.pet.image" />
-          <img *ngIf="!app.app.pet.image" [src]="app.client_id | clientByID:'img'" />
-        </ion-thumbnail>
-        <ion-label>
-          <h3>{{app.client_id | clientByID}}; {{app.location.address}}</h3>
-          <h5 *ngIf="!app.app.pet.name">For {{app.app.pet}}</h5>
-          <h5 *ngIf="app.app.pet.name">For {{app.app.pet.name}}</h5>
-          <!--<h5 *ngIf="app.app.stylist">Stylist: {{app.app.stylist}}</h5>
-          <p>{{app.app.date | date: 'mediumDate'}}</p>
-          <h6 *ngIf="app.app.cancelled && false">
-            <ion-icon name="close-circle-outline"></ion-icon> Cancelled
-          </h6>
-          <h6 *ngIf="app.app.confirmed && false">
-            <ion-icon name="checkmark-circle-outline"></ion-icon> Confirmed
-          </h6>
-          <h6 *ngIf="!app.app.cancelled && !app.app.confirmed && app.app.notified && false">No Response from
-            Confirmation</h6>
-          <h6 *ngIf="!app.app.notified && false">Not Notified</h6>
-        </ion-label>
-        <ion-chip [ngStyle]="{'background': app.color}">
-          <ion-label color="dark">{{app.app.date | date:'shortTime'}}</ion-label>
-        </ion-chip>
-      </ion-item>
-    </ion-list>
-  </ion-content>
-</lib-ionic-pullup> -->
+<!-- REPLACED IONIC PULLUP WITH SHEET MODAL -->
+<ion-modal class="appointments" #modal trigger="open-modal" [initialBreakpoint]="0.115" [backdropBreakpoint]="1.0" [breakpoints]="[0.115, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]" [backdropDismiss]="false" [isOpen]="true">
+  <ng-template>
+    <ion-toolbar color="tertiary" (click)="toggleFooter()" #ionDragFooter>
+      <ion-title>
+        <ion-icon name="menu"></ion-icon>
+      </ion-title>
+    </ion-toolbar>
+    <ion-content>
+      <ion-list>
+        <ion-item-divider>
+          <ion-label>
+            {{currentFilter | filter}}
+          </ion-label>
+        </ion-item-divider>
+        <ion-item *ngFor="let app of appointmentsShownOnMap" (click)="openSheet(app)">
+          <ion-thumbnail slot="start">
+            <img *ngIf="app.app.pet.image" [src]="app.app.pet.image" />
+            <img *ngIf="!app.app.pet.image" [src]="app.client_id | clientByID:'img'" />
+          </ion-thumbnail>
+          <ion-label>
+            <h3>{{app.client_id | clientByID}}; {{app.location.address}}</h3>
+            <h5 *ngIf="!app.app.pet.name">For {{app.app.pet}}</h5>
+            <h5 *ngIf="app.app.pet.name">For {{app.app.pet.name}}</h5>
+            <!--<h5 *ngIf="app.app.stylist">Stylist: {{app.app.stylist}}</h5> -->
+            <p>{{app.app.date | date: 'mediumDate'}}</p>
+            <h6 *ngIf="app.app.cancelled && false">
+              <ion-icon name="close-circle-outline"></ion-icon> Cancelled
+            </h6>
+            <h6 *ngIf="app.app.confirmed && false">
+              <ion-icon name="checkmark-circle-outline"></ion-icon> Confirmed
+            </h6>
+            <h6 *ngIf="!app.app.cancelled && !app.app.confirmed && app.app.notified && false">No Response from
+              Confirmation</h6>
+            <h6 *ngIf="!app.app.notified && false">Not Notified</h6>
+          </ion-label>
+          <ion-chip [ngStyle]="{'background': app.color}">
+            <ion-label color="dark">{{app.app.date | date:'shortTime'}}</ion-label>
+          </ion-chip>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

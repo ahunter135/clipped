@@ -58,6 +58,10 @@ export class Tab4Page {
     //this.isPro = this.storage.proMode;
   }
 
+  ionViewWillLeave() {
+    this.modalCtrl.dismiss();
+  }
+
   ionViewDidEnter() {
   }
 
@@ -418,10 +422,10 @@ export class Tab4Page {
     // test data for clients
     clients = [ {
       location: {
-        address: "17 Julianna Dr.",
-        city: "Morgantown",
-        state: "KY",
-        zip: "42261"
+        address: "15947 Wetherburn Road",
+        city: "Chesterfield",
+        state: "MO",
+        zip: "63017"
       }, 
       client_id: "1234",
       app: {
@@ -545,6 +549,7 @@ export class Tab4Page {
     };
   }
 
+  // not sure what is used for
   isLocationFree(search) {
     for (var i = 0, l = this.markers.length; i < l; i++) {
       if (this.markers[i].get('latlng').lat == search.lat && this.markers[i].get('latlng').lng == search.lng) {
