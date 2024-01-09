@@ -5,7 +5,7 @@ import { StorageService } from 'src/app/services/storage.service';
 //import { Instagram } from '@ionic-native/instagram/ngx';
 import { FileTransfer, FileTransferObject } from '@awesome-cordova-plugins/file-transfer/ngx';
 import { File } from '@awesome-cordova-plugins/file/ngx';
-import { Base64 } from '@ionic-native/base64/ngx';
+// import { Base64 } from '@ionic-native/base64/ngx';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { TextTemplateComponent } from 'src/app/modals/text-template/text-template.component';
 import { AddAppointmentComponent } from 'src/app/modals/add-appointment/add-appointment.component';
@@ -24,7 +24,7 @@ export class PopoverComponent implements OnInit {
   showInsta = false;
   inDetails = false;
   constructor(public dbService: DbService, public storage: StorageService, public navParams: NavParams,
-    private fileTransfer: FileTransfer, private file: File, private base64: Base64, private iab: InAppBrowser,
+    private fileTransfer: FileTransfer, private file: File, private iab: InAppBrowser,
     private alertController: AlertController, private modalCtrl: ModalController) {
     this.client = this.navParams.data.client;
     this.dismissPopover = this.navParams.data.popover;
@@ -77,8 +77,24 @@ export class PopoverComponent implements OnInit {
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
 
     fileTransfer.download(this.visit.image, this.file.dataDirectory + "tempImage.png").then(async (entry) => {
-      let file = await this.base64.encodeFile(entry.toURL());
-      console.log(file);
+
+      let fileURL = entry.toURL();
+
+      // Untested
+      const response = await fetch(fileURL);
+      const blob = await response.blob();
+      const reader = new FileReader();
+
+      reader.onloadend = function() {
+        let base64data = reader.result;   
+        console.log(base64data);
+      }
+
+      reader.readAsDataURL(blob);
+
+      // base64 is deprecated
+      // let file = await this.base64.encodeFile(entry.toURL());
+      // console.log(file);
 
       //this.insta.share('data:image/png;uhduhf3hfif33', 'Shared from the Clipped App')
       //.then(() => console.log('Shared!'))

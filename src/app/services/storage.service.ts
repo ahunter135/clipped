@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 // import { Plugins } from '@capacitor/core';
-import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
+// import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
 import { isPlatform, ModalController, Platform } from '@ionic/angular';
 import { GlobalService } from './global.service';
 import { Preferences } from '@capacitor/preferences';
+import "cordova-plugin-purchase";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class StorageService {
   proMode = false;
   services = [];
   modalShown = false;
-  constructor(private iap: InAppPurchase, public globalService: GlobalService, private modalCtrl: ModalController, private platform: Platform) {
+  constructor(public globalService: GlobalService, private modalCtrl: ModalController, private platform: Platform) {
     //Preferences.clear();
   }
 
@@ -57,71 +58,71 @@ export class StorageService {
     return this.data;
   }
 
-  async upgradeToPro(product) {
-    this.iap.subscribe(product).then((data) => {
-      this.setItem({key: 'pro', value: true});
-      this.globalService.publishData({key: 'pro', value: true});
-      this.proMode = true;
-      this.modalCtrl.dismiss();
-      return data;
-    }).catch((err) => {
-      console.log(err);
-    });
-  }
+  // async upgradeToPro(product) {
+  //   this.iap.subscribe(product).then((data) => {
+  //     this.setItem({key: 'pro', value: true});
+  //     this.globalService.publishData({key: 'pro', value: true});
+  //     this.proMode = true;
+  //     this.modalCtrl.dismiss();
+  //     return data;
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   });
+  // }
 
-  async setupIAP() {
-    let productId = "com.clipped.promode";
-    let products = [];
-    if (isPlatform('android')) {
-      products = [productId, 'com.clipped.upgradesemi', 'com.clipped.upgradeannual'];
-    } else if (isPlatform('ios')) {
-      products = ["com.clipped.annually", "com.clipped.monthly", "com.clipped.semiannual"];
-    }
-    this.iap.getProducts(products).then(async (products) => {
-      this.products = products;
-        // TODO check if receipt is good enough
-        this.iap.restorePurchases().then((receipt) => {
-          console.log(receipt);
-          if (this.platform.is('ios')) {
-            if (receipt.length > 0) {
-              if (receipt[0].state != 3) {
-                this.setItem({key: "pro", value: false})
-                this.globalService.publishData({key: 'pro', value: false});
-                this.proMode = false;
-              } else {
-                this.setItem({key: 'pro', value: true});
-                this.proMode = true;
-                this.globalService.publishData({key: 'pro', value: true});
-              }
-            } else {
-              this.setItem({key: "pro", value: false})
-              this.globalService.publishData({key: 'pro', value: false});
-            }
-          } else {
-            if (receipt.length > 0) {
-              let purchaseState = JSON.parse(receipt[0].receipt).purchaseState;
-              if (purchaseState != 0) {
-                this.setItem({key: "pro", value: false})
-                this.globalService.publishData({key: 'pro', value: false});
-                this.proMode = false;
-              } else {
-                this.setItem({key: 'pro', value: true});
-                this.proMode = true;
-                this.globalService.publishData({key: 'pro', value: true});
-              }
-            } else {
-              this.setItem({key: "pro", value: false})
-              this.globalService.publishData({key: 'pro', value: false});
-            }
-          }
+  // async setupIAP() {
+  //   let productId = "com.clipped.promode";
+  //   let products = [];
+  //   if (isPlatform('android')) {
+  //     products = [productId, 'com.clipped.upgradesemi', 'com.clipped.upgradeannual'];
+  //   } else if (isPlatform('ios')) {
+  //     products = ["com.clipped.annually", "com.clipped.monthly", "com.clipped.semiannual"];
+  //   }
+  //   this.iap.getProducts(products).then(async (products) => {
+  //     this.products = products;
+  //       // TODO check if receipt is good enough
+  //       this.iap.restorePurchases().then((receipt) => {
+  //         console.log(receipt);
+  //         if (this.platform.is('ios')) {
+  //           if (receipt.length > 0) {
+  //             if (receipt[0].state != 3) {
+  //               this.setItem({key: "pro", value: false})
+  //               this.globalService.publishData({key: 'pro', value: false});
+  //               this.proMode = false;
+  //             } else {
+  //               this.setItem({key: 'pro', value: true});
+  //               this.proMode = true;
+  //               this.globalService.publishData({key: 'pro', value: true});
+  //             }
+  //           } else {
+  //             this.setItem({key: "pro", value: false})
+  //             this.globalService.publishData({key: 'pro', value: false});
+  //           }
+  //         } else {
+  //           if (receipt.length > 0) {
+  //             let purchaseState = JSON.parse(receipt[0].receipt).purchaseState;
+  //             if (purchaseState != 0) {
+  //               this.setItem({key: "pro", value: false})
+  //               this.globalService.publishData({key: 'pro', value: false});
+  //               this.proMode = false;
+  //             } else {
+  //               this.setItem({key: 'pro', value: true});
+  //               this.proMode = true;
+  //               this.globalService.publishData({key: 'pro', value: true});
+  //             }
+  //           } else {
+  //             this.setItem({key: "pro", value: false})
+  //             this.globalService.publishData({key: 'pro', value: false});
+  //           }
+  //         }
           
-        }).catch((err) => {
-          console.log(err);
-        });
-    }).catch((err) => {
-      console.log(err);
-    });
-  }
+  //       }).catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   });
+  // }
 
   
 }

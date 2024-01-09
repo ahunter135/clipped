@@ -15,7 +15,7 @@ export class UpgradeComponent implements OnInit {
   ngOnInit() {}
   
   async upgrade(product) {
-    this.storage.upgradeToPro(product);
+    // this.storage.upgradeToPro(product);
   }
 
   getPlatform() {

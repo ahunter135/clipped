@@ -65,7 +65,7 @@ export class Tab1Page {
       this.dbService.photoURL = loggedIn.photoURL ? loggedIn.photoURL : null;
       this.dbService.uid = loggedIn.uid;
       this.dbService.email = loggedIn.email;
-      await this.storage.setupIAP();
+      // await this.storage.setupIAP();
       await this.dbService.setupDb();
       await this.dbService.getClients();
       await this.dbService.getAccountType();

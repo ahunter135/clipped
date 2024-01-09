@@ -9,11 +9,11 @@ import { Keyboard } from '@awesome-cordova-plugins/keyboard/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
+// import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
 import { Camera } from '@awesome-cordova-plugins/camera/ngx';
 import { File } from '@awesome-cordova-plugins/file/ngx';
-import { Crop } from '@ionic-native/crop/ngx';
-import { Base64 } from '@ionic-native/base64/ngx';
+// import { Crop } from '@ionic-native/crop/ngx';
+// import { Base64 } from '@ionic-native/base64/ngx';
 import { UpgradeComponent } from './modals/upgrade/upgrade.component';
 import { FileTransfer } from '@awesome-cordova-plugins/file-transfer/ngx';
 import { SMS } from '@awesome-cordova-plugins/sms/ngx';
@@ -24,7 +24,7 @@ import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
 import { LaunchReview } from '@awesome-cordova-plugins/launch-review/ngx';
 import { AddStylistComponent } from './modals/add-stylist/add-stylist.component';
 import { GooglePlus } from '@awesome-cordova-plugins/google-plus/ngx';
-import { GoogleMaps } from '@ionic-native/google-maps/ngx';
+// import { GoogleMaps } from '@ionic-native/google-maps/ngx';
 import { SignInWithApple } from '@awesome-cordova-plugins/sign-in-with-apple/ngx';
 import { PetsComponent } from './modals/pets/pets.component';
 import { FormsModule } from '@angular/forms';
@@ -63,11 +63,11 @@ firebase.initializeApp(firebaseConfig);
         StatusBar,
         SplashScreen,
         LottieSplashScreen,
-        InAppPurchase,
+        // InAppPurchase,
         Camera,
         File,
-        Crop,
-        Base64,
+        // Crop,
+        // Base64,
         //Instagram,
         FileTransfer,
         LaunchReview,
@@ -76,7 +76,7 @@ firebase.initializeApp(firebaseConfig);
         OneSignal,
         Keyboard,
         GooglePlus,
-        GoogleMaps,
+        // GoogleMaps,
         AndroidPermissions,
         DatePipe,
         CurrencyPipe,

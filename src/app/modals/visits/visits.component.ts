@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
-import { Crop } from '@ionic-native/crop/ngx';
+// import { Crop } from '@ionic-native/crop/ngx';
 import { File } from '@awesome-cordova-plugins/file/ngx';
 import { ActionSheetController, ModalController, NavParams, PopoverController } from '@ionic/angular';
 import * as moment from 'moment';

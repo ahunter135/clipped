@@ -40,14 +40,14 @@ export class AppComponent {
         if (data.click_name == 'review') {
           this.launchReview.launch();
         }
-        if (data.click_name == 'upgradeMonthly') {
-          let product = isPlatform('ios') ? 'com.clipped.monthly' : 'com.clipped.promode'
-          this.storage.upgradeToPro(product);
-        }
-        if (data.click_name == 'upgradeAnnual') {
-          let product = isPlatform('ios') ? 'com.clipped.annually' : 'com.clipped.upgradeannual'
-          this.storage.upgradeToPro(product);
-        }
+        // if (data.click_name == 'upgradeMonthly') {
+        //   let product = isPlatform('ios') ? 'com.clipped.monthly' : 'com.clipped.promode'
+        //   this.storage.upgradeToPro(product);
+        // }
+        // if (data.click_name == 'upgradeAnnual') {
+        //   let product = isPlatform('ios') ? 'com.clipped.annually' : 'com.clipped.upgradeannual'
+        //   this.storage.upgradeToPro(product);
+        // }
       })
 
       this.oneSignal.handleNotificationReceived().subscribe(() => {
