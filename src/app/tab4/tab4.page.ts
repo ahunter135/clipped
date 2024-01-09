@@ -20,6 +20,7 @@ import {
   CalendarResult
 } from 'ion2-calendar';
 import { GoogleMap } from '@capacitor/google-maps';
+import { IonModal } from '@ionic/angular/common';
 
 @Component({
   selector: 'app-tab4',
@@ -33,6 +34,7 @@ export class Tab4Page {
   stylists = [];
   filterBy;
   @ViewChild('map') mapElement: ElementRef<HTMLElement>;
+  @ViewChild('modal') modal: IonModal;
   map: GoogleMap;
   view = 'list';
   appointmentsShownOnMap = [];
@@ -52,14 +54,16 @@ export class Tab4Page {
   }
 
   async ionViewWillEnter() {
+    this.modal.isOpen = true;
     await this.dbService.getAllAppointments();
     await this.filterAppointments(this.storage.appointments);
     this.stylists = <any>await this.dbService.getStylists();
     //this.isPro = this.storage.proMode;
   }
 
-  ionViewWillLeave() {
-    this.modalCtrl.dismiss();
+  ionViewWillLeave() { 
+    // this.modalCtrl.dismiss();
+    this.modal.isOpen = false;
   }
 
   ionViewDidEnter() {
@@ -155,8 +159,9 @@ export class Tab4Page {
 
   async updateApps() {
     this.appointmentsShownOnMap = [];
+    await this.map.removeMarkers(this.markers);
     this.markers = [];
-    this.map.destroy();
+    
     //await this.dbService.getAllAppointments();
     //await this.filterAppointments(this.storage.appointments);
 
@@ -232,7 +237,7 @@ export class Tab4Page {
     this.tempAppointments = this.appointments;
     if (!this.map)
       await this.addMap();
-   else {
+    else {
       await this.updateApps();
     }
     this.loader.dismiss();
@@ -477,6 +482,8 @@ export class Tab4Page {
         snippet: 'test'
         // snippet: client.location.address + (client.location.address2 ? (", " +  client.location.address2) : "") + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
       }) as any;
+
+      this.markers.push(markerId);
 
       this.appointmentsShownOnMap.push(client);
 
