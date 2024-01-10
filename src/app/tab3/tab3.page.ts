@@ -9,8 +9,8 @@ import * as introjs from 'intro.js';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component';
-import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
 import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-tab3',
@@ -30,13 +30,13 @@ export class Tab3Page {
 
   }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, private modalCtrl: ModalController, private alertController: AlertController,
-     private platform: Platform, private navCtrl: NavController, public appVersion: AppVersion, private onesignal: OneSignal) {
+     private platform: Platform, private navCtrl: NavController, private onesignal: OneSignal) {
 
   }
 
   async ionViewDidEnter() {
     this.darkMode = await this.storage.getItem("darkMode") ? await this.storage.getItem("darkMode") : false;
-    this.version = await this.appVersion.getVersionNumber();
+    this.version = (await App.getInfo()).version;
   }
 
   logout() {

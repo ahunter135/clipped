@@ -318,10 +318,12 @@ export class Tab4Page {
     let lat = 36.213089;
     let lng = -86.306480;
 
-    //test data
-    this.dbService.serviceArea = '18 Julianna Dr. 42261'
+    // console.log(this.dbService.serviceArea.toString())
 
-    await this.geocoder.geocode( { 'address': this.dbService.serviceArea}, function(results, status) {
+    // test service area
+    // this.dbService.serviceArea = '44555'
+
+    await this.geocoder.geocode( { 'address': this.dbService.serviceArea.toString()}, function(results, status) {
       if (status == 'OK') {
         lat = results[0].geometry.location.lat();
         lng = results[0].geometry.location.lng();
@@ -350,7 +352,6 @@ export class Tab4Page {
     });
 
     await this.addMarkers(clients);
-
 
 
     // let mapOptions: GoogleMapOptions = {};
@@ -446,21 +447,33 @@ export class Tab4Page {
 
       client.color = this.storage.clients.find(c => c.id === client.client_id)?.color || 'red';
 
-      client.testColor = { r: 255, g: 255, b: 0, a: 1}
-
-      // actual title should be this.clientByID.transform(client.client_id).toString()
       let markerId = await this.map.addMarker({
-        title: 'test',
+        title: this.clientByID.transform(client.client_id).toString(),
         tintColor: client.testColor,
         coordinate: {
           lat,
           lng
         },
-        snippet: 'test'
-        // snippet: client.location.address + (client.location.address2 ? (", " +  client.location.address2) : "") + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
+        snippet: client.location.address + (client.location.address2 ? (", " +  client.location.address2) : "") + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
       });
 
+      // if first client set camera to that client
+      if (this.appointmentsShownOnMap.length == 0) {
+        this.map.setCamera({
+          coordinate : {
+            lat,
+            lng
+          },
+          animate: true,
+          animationDuration: 1000,
+          zoom: 10
+        })
+      }
+
       this.markers.push(markerId);
+
+      // TODO: ADD POPOVER WITH SNIPPER AND TITLE FOR MARKER
+      // TODO: ADD SHOWN ON MAP LOGIC
 
       this.appointmentsShownOnMap.push(client);
 
