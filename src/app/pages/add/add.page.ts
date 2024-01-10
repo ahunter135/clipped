@@ -3,7 +3,6 @@ import { ActionSheetController, ModalController, NavController, PopoverControlle
 import * as moment from 'moment';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
 import csc from 'country-state-city'
 import { PetsComponent } from 'src/app/modals/pets/pets.component';
 import { PhonePipe } from 'src/app/pipes/phone.pipe';
@@ -36,7 +35,7 @@ export class AddPage implements OnInit {
   items = [];
   searching = false;
   constructor(private dbService: DbService, public storage: StorageService, 
-    private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, private camera: Camera, private cameraService: CameraService,
+    private navCtrl: NavController, public actionSheetCtrl: ActionSheetController, private cameraService: CameraService,
     private modalCtrl: ModalController, private phone: PhonePipe, private globalService: GlobalService, private toastCtrl: ToastController) { }
 
   async ngOnInit() {

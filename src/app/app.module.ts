@@ -9,8 +9,6 @@ import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 // import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
-import { Camera } from '@awesome-cordova-plugins/camera/ngx';
-import { File } from '@awesome-cordova-plugins/file/ngx';
 // import { Crop } from '@ionic-native/crop/ngx';
 // import { Base64 } from '@ionic-native/base64/ngx';
 import { UpgradeComponent } from './modals/upgrade/upgrade.component';
@@ -37,7 +35,6 @@ import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { PipesModule } from './pipes/pipes.module';
 import { ComponentsModule } from './components/components.module';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
-import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -61,8 +58,6 @@ firebase.initializeApp(firebaseConfig);
         SplashScreen,
         LottieSplashScreen,
         // InAppPurchase,
-        Camera,
-        File,
         // Crop,
         // Base64,
         //Instagram,
@@ -78,7 +73,6 @@ firebase.initializeApp(firebaseConfig);
         SignInWithApple,
         SocialSharing,
         Calendar,
-        AppVersion,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     ],
     bootstrap: [AppComponent]

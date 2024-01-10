@@ -4,7 +4,6 @@ import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
 //import { Instagram } from '@ionic-native/instagram/ngx';
 // import { FileTransfer, FileTransferObject } from '@awesome-cordova-plugins/file-transfer/ngx';
-import { File } from '@awesome-cordova-plugins/file/ngx';
 // import { Base64 } from '@ionic-native/base64/ngx';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { TextTemplateComponent } from 'src/app/modals/text-template/text-template.component';

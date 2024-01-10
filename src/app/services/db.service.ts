@@ -321,7 +321,7 @@ async saveStylists(stylists) {
     })
   }
 
-  async uploadImage(imageUri, uuid, flag) {
+  async uploadImage(imageDataUrl, uuid, flag) {
     return new Promise((resolve, reject) => {
       let storageRef = firebase.storage().ref();
       let imageRef;
@@ -330,7 +330,7 @@ async saveStylists(stylists) {
       } else {
         imageRef = storageRef.child(this.uid).child(uuid).child(moment().format());
       }
-      let uploadTask = imageRef.putString(imageUri, "data_url");
+      let uploadTask = imageRef.putString(imageDataUrl, "data_url");
 
       uploadTask.on(
         "state_changed",
