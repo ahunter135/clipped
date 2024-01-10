@@ -43,6 +43,7 @@ export class DbService {
           this.globalService.publishData({key: 'pro', value: this.bypassPro});
           this.reminders = details.data().reminders ? details.data().reminders : {on: false, frequency: "15"};
           this.name = details.data().name ? details.data().name : "";
+          this.serviceArea = details.data().serviceArea ? details.data().serviceArea : "";
           if (details.data()) resolve(details.data().type);
           else resolve(true);
         } catch (error) {
