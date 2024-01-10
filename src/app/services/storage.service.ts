@@ -21,6 +21,10 @@ export class StorageService {
   proMode = false;
   services = [];
   modalShown = false;
+  store: CdvPurchase.Store;
+  product: CdvPurchase.Product;
+  productType: CdvPurchase.ProductType;
+
   constructor(public globalService: GlobalService, private modalCtrl: ModalController, private platform: Platform) {
     //Preferences.clear();
   }
@@ -58,6 +62,10 @@ export class StorageService {
     return this.data;
   }
 
+  async upgradeToPro(product) {
+    
+  }
+
   // async upgradeToPro(product) {
   //   this.iap.subscribe(product).then((data) => {
   //     this.setItem({key: 'pro', value: true});
@@ -69,6 +77,64 @@ export class StorageService {
   //     console.log(err);
   //   });
   // }
+
+  async setupAIP() {
+    this.store = CdvPurchase.store;
+    await this.store.initialize();
+
+    // NOT SURE IF OR WHERE THIS GOES
+    // this.store.ready(() => {
+    //   this.doStuff();
+    // });
+
+    this.store.register([
+      {
+        id: "com.clipped.promode",
+        platform: CdvPurchase.Platform.GOOGLE_PLAY,
+        type: CdvPurchase.ProductType.PAID_SUBSCRIPTION
+      },
+      {
+        id: "com.clipped.upgradesemi",
+        platform: CdvPurchase.Platform.GOOGLE_PLAY,
+        type: CdvPurchase.ProductType.PAID_SUBSCRIPTION
+      },
+      {
+        id: "com.clipped.upgradeannual",
+        platform: CdvPurchase.Platform.GOOGLE_PLAY,
+        type: CdvPurchase.ProductType.PAID_SUBSCRIPTION
+      },
+      {
+        id: "com.clipped.annually",
+        platform: CdvPurchase.Platform.APPLE_APPSTORE,
+        type: CdvPurchase.ProductType.PAID_SUBSCRIPTION
+      },
+      {
+        id: "com.clipped.monthly",
+        platform: CdvPurchase.Platform.APPLE_APPSTORE,
+        type: CdvPurchase.ProductType.PAID_SUBSCRIPTION
+      },
+      {
+        id: "com.clipped.semiannual",
+        platform: CdvPurchase.Platform.APPLE_APPSTORE,
+        type: CdvPurchase.ProductType.PAID_SUBSCRIPTION
+      }
+    ]);
+
+    const purchases = this.store.verifiedPurchases;
+
+    if (purchases.length > 0) {
+      const latestPurchase = purchases[0];
+      if (!latestPurchase.isExpired) {
+        this.setItem({key: 'pro', value: true});
+        this.globalService.publishData({key: 'pro', value: true});
+        this.proMode = true;
+      } else {
+        this.setItem({key: 'pro', value: false});
+        this.globalService.publishData({key: 'pro', value: false});
+        this.proMode = false;
+      }
+    }
+  }
 
   // async setupIAP() {
   //   let productId = "com.clipped.promode";
