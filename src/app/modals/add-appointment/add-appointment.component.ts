@@ -1,7 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams, PickerController, Platform } from '@ionic/angular';
-import { CalendarComponentOptions } from 'ion2-calendar';
+import { CalendarComponentOptions } from 'ion7-calendar';
 import * as moment from 'moment-timezone';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';

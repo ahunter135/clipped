@@ -18,7 +18,7 @@ import {
   CalendarModalOptions,
   DayConfig,
   CalendarResult
-} from 'ion2-calendar';
+} from 'ion7-calendar';
 import { GoogleMap } from '@capacitor/google-maps';
 import { IonModal } from '@ionic/angular/common';
 

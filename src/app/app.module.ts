@@ -34,6 +34,8 @@ import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { PipesModule } from './pipes/pipes.module';
 import { ComponentsModule } from './components/components.module';
 import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
 
 var firebaseConfig = {
   apiKey: "AIzaSyCZ7Mr6qSgFcA7A0p5JVfjby-lXlHGZbKc",
@@ -46,12 +48,15 @@ var firebaseConfig = {
   measurementId: "G-4DM3T7LSVX"
 };
 firebase.initializeApp(firebaseConfig);
+export function playerFactory() {
+    return player;
+  }
 
 @NgModule({
     declarations: [AppComponent, UpgradeComponent, AddStylistComponent, PetsComponent, GuideComponent, AddressListComponent, EditAccountComponent, ColorPickerComponent],
     imports: [BrowserModule, IonicModule.forRoot({
             mode: 'ios'
-        }), AppRoutingModule, FormsModule, ColorSketchModule, PipesModule, ComponentsModule],
+        }), AppRoutingModule, FormsModule, PipesModule, ColorSketchModule, ComponentsModule,LottieModule.forRoot({ player: playerFactory })],
     providers: [
         StatusBar,
         LottieSplashScreen,

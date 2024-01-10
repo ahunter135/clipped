@@ -11,7 +11,7 @@ import { ClientByIDPipe } from '../pipes/client-by-id.pipe';
 import { ViewAppointmentComponent } from '../modals/view-appointment/view-appointment.component';
 import { SelectClientComponent } from '../modals/select-client/select-client.component';
 import { FilterPipe } from '../pipes/filter.pipe';
-import { CalendarModule } from 'ion2-calendar';
+import { CalendarModule } from 'ion7-calendar';
 import { ComponentsModule } from '../components/components.module';
 import { PipesModule } from '../pipes/pipes.module';
 

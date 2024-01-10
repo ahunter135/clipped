@@ -13,7 +13,7 @@ import { CropImageComponent } from 'src/app/modals/crop-image/crop-image.compone
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { TextTemplateComponent } from 'src/app/modals/text-template/text-template.component';
 import { AddAppointmentComponent } from 'src/app/modals/add-appointment/add-appointment.component';
-import { CalendarModule } from 'ion2-calendar';
+import { CalendarModule } from 'ion7-calendar';
 import { ExpandableComponent } from 'src/app/components/expandable/expandable.component';
 import { ClientByIDPipe } from 'src/app/pipes/client-by-id.pipe';
 import { ComponentsModule } from 'src/app/components/components.module';
