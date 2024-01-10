@@ -424,29 +424,6 @@ export class Tab4Page {
     this.appointmentsShownOnMap = [];
     this.ready = false;
     
-    // test data for clients
-    clients = [ {
-      location: {
-        address: "15947 Wetherburn Road",
-        city: "Chesterfield",
-        state: "MO",
-        zip: "63017"
-      }, 
-      client_id: "1234",
-      app: {
-        date: new Date(),
-        pet: {
-          name: "Test",
-          breed: "Test",
-          color: "Test",
-          weight: "Test",
-          notes: "Test"
-        }
-      },
-      color: { r: 255, g: 255, b: 0, a: 1}
-    },]
-
-    console.log(clients)
     for (let i = 0; i < clients.length; i++) {
       await this.addMarker(clients[i]);
     }
@@ -481,7 +458,7 @@ export class Tab4Page {
         },
         snippet: 'test'
         // snippet: client.location.address + (client.location.address2 ? (", " +  client.location.address2) : "") + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
-      }) as any;
+      });
 
       this.markers.push(markerId);
 
