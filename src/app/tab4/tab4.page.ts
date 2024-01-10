@@ -19,7 +19,7 @@ import {
   DayConfig,
   CalendarResult
 } from 'ion7-calendar';
-import { GoogleMap } from '@capacitor/google-maps';
+import { GoogleMap, Marker } from '@capacitor/google-maps';
 import { IonModal } from '@ionic/angular/common';
 
 @Component({
@@ -39,6 +39,7 @@ export class Tab4Page {
   view = 'list';
   appointmentsShownOnMap = [];
   markers = [];
+  markerIds = [];
   // footerState: IonPullUpFooterState;
   currentFilter = 0;
   ready = false;
@@ -159,8 +160,9 @@ export class Tab4Page {
 
   async updateApps() {
     this.appointmentsShownOnMap = [];
-    await this.map.removeMarkers(this.markers);
+    await this.map.removeMarkers(this.markerIds);
     this.markers = [];
+    this.markerIds = [];
     
     //await this.dbService.getAllAppointments();
     //await this.filterAppointments(this.storage.appointments);
@@ -318,19 +320,20 @@ export class Tab4Page {
     let lat = 36.213089;
     let lng = -86.306480;
 
-    // console.log(this.dbService.serviceArea.toString())
-
     // test service area
     // this.dbService.serviceArea = '44555'
-
-    await this.geocoder.geocode( { 'address': this.dbService.serviceArea.toString()}, function(results, status) {
-      if (status == 'OK') {
-        lat = results[0].geometry.location.lat();
-        lng = results[0].geometry.location.lng();
-      } else {
-        console.log('Geocode was not successful for the following reason: ' + status);
-      }
-    });
+    try {
+      await this.geocoder.geocode( { 'address': this.dbService.serviceArea.toString()}, function(results, status) {
+        if (status == 'OK') {
+          lat = results[0].geometry.location.lat();
+          lng = results[0].geometry.location.lng();
+        } else {
+          console.log('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
 
     const apiKey = 'AIzaSyAuEOgKmk4Xr1YYqwriKqdtDqd7QJTnd8k';
 
@@ -352,6 +355,18 @@ export class Tab4Page {
     });
 
     await this.addMarkers(clients);
+    await this.map.setOnMarkerClickListener((marker) => {
+      const client = this.markers[marker.markerId].client;
+      this.map.setCamera({
+        coordinate: {
+          lat: marker.latitude,
+          lng: marker.longitude
+        },
+        animate: true,
+        animationDuration: 1000,
+      })
+      this.openSheet(client);
+    });
 
 
     // let mapOptions: GoogleMapOptions = {};
@@ -447,7 +462,7 @@ export class Tab4Page {
 
       client.color = this.storage.clients.find(c => c.id === client.client_id)?.color || 'red';
 
-      let markerId = await this.map.addMarker({
+      const marker: Marker = {
         title: this.clientByID.transform(client.client_id).toString(),
         tintColor: client.testColor,
         coordinate: {
@@ -455,7 +470,9 @@ export class Tab4Page {
           lng
         },
         snippet: client.location.address + (client.location.address2 ? (", " +  client.location.address2) : "") + " - " + this.datePipe.transform(client.app.date, 'mediumDate') + " @ " + this.datePipe.transform(client.app.date, 'shortTime')
-      });
+      };
+
+      let markerId = await this.map.addMarker(marker);
 
       // if first client set camera to that client
       if (this.appointmentsShownOnMap.length == 0) {
@@ -470,9 +487,13 @@ export class Tab4Page {
         })
       }
 
-      this.markers.push(markerId);
+      this.markerIds.push(markerId);
+      marker['client'] = client;
+      marker['pet'] = client.app.pet ? JSON.stringify(client.app.pet) : null;
+      marker['latLng'] = {lat, lng}
+      this.markers.push(marker);
 
-      // TODO: ADD POPOVER WITH SNIPPER AND TITLE FOR MARKER
+      // TODO: ADD POPOVER WITH SNIPPET AND TITLE FOR MARKER
       // TODO: ADD SHOWN ON MAP LOGIC
 
       this.appointmentsShownOnMap.push(client);
