@@ -12,8 +12,8 @@ import { StorageService } from 'src/app/services/storage.service';
 import { v4 as uuidv4 } from 'uuid';
 import { CropImageComponent } from '../crop-image/crop-image.component';
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
-import { FileTransfer } from '@awesome-cordova-plugins/file-transfer/ngx';
 import * as watermark from 'watermarkjs';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 @Component({
   selector: 'app-visits',
@@ -41,7 +41,7 @@ export class VisitsComponent implements OnInit {
   constructor(public navParams: NavParams, private storage: StorageService,
     private dbService: DbService, private modalCtrl: ModalController,
     private cameraService: CameraService, private globalService: GlobalService, private popoverCtrl: PopoverController,
-    private socialShare: SocialSharing, private fileTransfer: FileTransfer, private file: File) { 
+    private socialShare: SocialSharing, private file: File) { 
     if (this.navParams.data.visit != null) {
       this.visit = this.navParams.data.visit;
     } else {
@@ -109,23 +109,53 @@ export class VisitsComponent implements OnInit {
       this.cameraService.startCameraProcess(this.client, false);
   }
 
-  async share() {
-    let file = <any>await this.downloadFile(this.visit.image);
-    if (!this.storage.proMode || !this.dbService.bypassPro) {
-      file = await this.file.readAsDataURL(this.file.dataDirectory, "temp.png");
-      let blobFile = await this.dataURItoBlob(file);
-      file = <any>await this.addImageWatermark(blobFile);
-    }
+  // async share() {
+  //   let file = <any>await this.downloadFile(this.visit.image);
+  //   if (!this.storage.proMode || !this.dbService.bypassPro) {
+  //     file = await this.file.readAsDataURL(this.file.dataDirectory, "temp.png");
+  //     let blobFile = await this.dataURItoBlob(file);
+  //     file = <any>await this.addImageWatermark(blobFile);
+  //   }
     
+  //   this.socialShare.share(null, null, file, null);
+  // }
+
+  // async downloadFile(image) {
+  //   return new Promise( async (resolve, reject) => {
+  //     const fileTransfer = this.fileTransfer.create();
+  //     let file = await fileTransfer.download(image, this.file.dataDirectory + 'temp.png');
+  //     resolve(file.toURL());
+  //   });
+  // }
+
+  async share() {
+    let file = await this.downloadFile(this.visit.image);
+    if (!this.storage.proMode || !this.dbService.bypassPro) {
+        const readFile = await Filesystem.readFile({
+            path: 'temp.png',
+            directory: Directory.Data
+        });
+        let blobFile = await this.dataURItoBlob(readFile.data);
+        file = await this.addImageWatermark(blobFile) as string;
+    }
+
     this.socialShare.share(null, null, file, null);
   }
 
   async downloadFile(image) {
-    return new Promise( async (resolve, reject) => {
-      const fileTransfer = this.fileTransfer.create();
-      let file = await fileTransfer.download(image, this.file.dataDirectory + 'temp.png');
-      resolve(file.toURL());
-    });
+      const response = await fetch(image);
+      const blob = await response.blob();
+      await Filesystem.writeFile({
+          path: 'temp.png',
+          data: blob,
+          directory: Directory.Data
+      });
+      const res = await Filesystem.getUri({
+          directory: Directory.Data,
+          path: 'temp.png'
+      });
+
+      return res.uri;
   }
 
   async addTextWatermark(file) {

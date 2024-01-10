@@ -3,7 +3,7 @@ import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
 //import { Instagram } from '@ionic-native/instagram/ngx';
-import { FileTransfer, FileTransferObject } from '@awesome-cordova-plugins/file-transfer/ngx';
+// import { FileTransfer, FileTransferObject } from '@awesome-cordova-plugins/file-transfer/ngx';
 import { File } from '@awesome-cordova-plugins/file/ngx';
 // import { Base64 } from '@ionic-native/base64/ngx';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
@@ -23,8 +23,7 @@ export class PopoverComponent implements OnInit {
   visit;
   showInsta = false;
   inDetails = false;
-  constructor(public dbService: DbService, public storage: StorageService, public navParams: NavParams,
-    private fileTransfer: FileTransfer, private file: File, private iab: InAppBrowser,
+  constructor(public dbService: DbService, public storage: StorageService, public navParams: NavParams, private file: File, private iab: InAppBrowser,
     private alertController: AlertController, private modalCtrl: ModalController) {
     this.client = this.navParams.data.client;
     this.dismissPopover = this.navParams.data.popover;
@@ -73,33 +72,35 @@ export class PopoverComponent implements OnInit {
       this.dismissPopover.dismiss();
   }
 
+
+  // I THINK THIS FUNCTION ISNT USED ANYMORE. IF IT IS TODO: UPDATE TO CAPACITOR PLUGIN
   share() {
-    const fileTransfer: FileTransferObject = this.fileTransfer.create();
+  //   const fileTransfer: FileTransferObject = this.fileTransfer.create();
 
-    fileTransfer.download(this.visit.image, this.file.dataDirectory + "tempImage.png").then(async (entry) => {
+  //   fileTransfer.download(this.visit.image, this.file.dataDirectory + "tempImage.png").then(async (entry) => {
 
-      let fileURL = entry.toURL();
+  //     let fileURL = entry.toURL();
 
-      // Untested
-      const response = await fetch(fileURL);
-      const blob = await response.blob();
-      const reader = new FileReader();
+  //     // Untested
+  //     const response = await fetch(fileURL);
+  //     const blob = await response.blob();
+  //     const reader = new FileReader();
 
-      reader.onloadend = function() {
-        let base64data = reader.result;   
-        console.log(base64data);
-      }
+  //     reader.onloadend = function() {
+  //       let base64data = reader.result;   
+  //       console.log(base64data);
+  //     }
 
-      reader.readAsDataURL(blob);
+  //     reader.readAsDataURL(blob);
 
-      // base64 is deprecated
-      // let file = await this.base64.encodeFile(entry.toURL());
-      // console.log(file);
+  //     // base64 is deprecated
+  //     // let file = await this.base64.encodeFile(entry.toURL());
+  //     // console.log(file);
 
-      //this.insta.share('data:image/png;uhduhf3hfif33', 'Shared from the Clipped App')
-      //.then(() => console.log('Shared!'))
-      //.catch((error: any) => console.error(error));
-    });
+  //     //this.insta.share('data:image/png;uhduhf3hfif33', 'Shared from the Clipped App')
+  //     //.then(() => console.log('Shared!'))
+  //     //.catch((error: any) => console.error(error));
+  //   });
     
   }
 

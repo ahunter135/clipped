@@ -14,7 +14,6 @@ import { File } from '@awesome-cordova-plugins/file/ngx';
 // import { Crop } from '@ionic-native/crop/ngx';
 // import { Base64 } from '@ionic-native/base64/ngx';
 import { UpgradeComponent } from './modals/upgrade/upgrade.component';
-import { FileTransfer } from '@awesome-cordova-plugins/file-transfer/ngx';
 import { SMS } from '@awesome-cordova-plugins/sms/ngx';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
@@ -67,7 +66,6 @@ firebase.initializeApp(firebaseConfig);
         // Crop,
         // Base64,
         //Instagram,
-        FileTransfer,
         LaunchReview,
         SMS,
         InAppBrowser,
