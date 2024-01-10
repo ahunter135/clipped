@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
 import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -55,7 +54,6 @@ firebase.initializeApp(firebaseConfig);
         }), AppRoutingModule, FormsModule, ColorSketchModule, PipesModule, ComponentsModule],
     providers: [
         StatusBar,
-        SplashScreen,
         LottieSplashScreen,
         // InAppPurchase,
         // Crop,

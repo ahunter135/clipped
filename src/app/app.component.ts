@@ -28,6 +28,7 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(async () => {
      
+      // not sure what this does exactly. Could replace with capacitors status bar maybe
       this.statusBar.styleDefault();
       
       this.oneSignal.promptForPushNotificationsWithUserResponse();
