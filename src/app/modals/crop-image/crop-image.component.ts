@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
-import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-crop-image',
@@ -32,9 +31,9 @@ export class CropImageComponent implements OnInit {
 
   cancel() { this.modalCtrl.dismiss(); }
 
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedImage = event.base64;
-  }
+  // imageCropped(event: ImageCroppedEvent) {
+  //   this.croppedImage = event.base64;
+  // }
 
   finish() {
     this.modalCtrl.dismiss(this.croppedImage);

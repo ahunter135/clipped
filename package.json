@@ -38,6 +38,7 @@
     "@awesome-cordova-plugins/status-bar": "6.6.0",
     "@capacitor-community/contacts": "^5.0.4",
     "@capacitor/action-sheet": "5.0.6",
+    "@capacitor/android": "5.6.0",
     "@capacitor/app": "^5.0.0",
     "@capacitor/camera": "5.0.8",
     "@capacitor/core": "^5.6.0",
@@ -52,16 +53,15 @@
     "@ionic/angular": "^7.6.3",
     "@types/intro.js": "^3.0.0",
     "compare-func": "^2.0.0",
-    "cordova-ios": "7.0.1",
     "cordova-launch-review": "^4.0.1",
     "cordova-plugin-actionsheet": "2.3.3",
     "cordova-plugin-aes256-encryption": "^2.0.1",
     "cordova-plugin-calendar": "^5.1.5",
-    "cordova-plugin-device": "2.1.0",
-    "cordova-plugin-dialogs": "2.0.2",
+    "cordova-plugin-device": "^2.1.0",
+    "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-purchase": "^13.10.0",
     "cordova-plugin-sign-in-with-apple": "^0.1.2",
-    "cordova-plugin-x-socialsharing": "^6.0.3",
+    "cordova-plugin-x-socialsharing": "^6.0.4",
     "country-state-city": "^2.0.0",
     "es6-promise-plugin": "^4.2.2",
     "firebase": "^8.2.4",
@@ -72,7 +72,6 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "ngx-color": "^9.0.0",
-    "ngx-image-cropper": "^3.3.3",
     "ngx-lottie": "^10.0.0",
     "random-hex-color": "^1.0.1",
     "rxjs": "^7.5.0",
@@ -94,20 +93,17 @@
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
     "com-badrit-base64": "^0.2.0",
-    "cordova-android": "12.0.1",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-android-permissions": "^1.1.2",
     "cordova-plugin-androidx-adapter": "^1.1.3",
     "cordova-plugin-googlemaps-sdk": "git+https://github.com/mapsplugin/cordova-plugin-googlemaps-sdk.git",
     "cordova-plugin-googleplus": "^8.5.2",
     "cordova-plugin-inappbrowser": "6.0.0",
-    "cordova-plugin-inapppurchase": "^1.2.0",
     "cordova-plugin-ionic-webview": "5.0.1",
     "cordova-plugin-statusbar": "4.0.0",
     "cordova-sms-plugin": "^1.0.0",
     "cordova-support-android-plugin": "^1.0.2",
     "cordova-support-google-services": "^1.4.1",
-    "info.protonet.imageresizer": "^0.1.1",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.4.2",
@@ -115,71 +111,12 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
-    "onesignal-cordova-plugin": "^2.11.3",
+    "onesignal-cordova-plugin": "^5.0.4",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~4.9.5",
     "uk.co.workingedge.phonegap.plugin.launchnavigator": "^5.0.5"
   },
-  "description": "An Ionic project",
-  "cordova": {
-    "plugins": {
-      "cordova-plugin-aes256-encryption": {},
-      "cordova-plugin-whitelist": {},
-      "cordova-plugin-statusbar": {},
-      "cordova-plugin-device": {},
-      "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {
-        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
-      },
-      "cordova-plugin-ionic-keyboard": {},
-      "cordova-plugin-inapppurchase": {},
-      "cordova-plugin-camera": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      },
-      "cordova-plugin-file": {},
-      "info.protonet.imageresizer": {},
-      "cordova-plugin-crop": {},
-      "com-badrit-base64": {},
-      "cordova-plugin-file-transfer": {},
-      "cordova-sms-plugin": {},
-      "cordova-plugin-android-permissions": {},
-      "cordova-plugin-inappbrowser": {},
-      "onesignal-cordova-plugin": {},
-      "cordova-plugin-androidx": {},
-      "cordova-plugin-androidx-adapter": {},
-      "cordova-launch-review": {
-        "ANDROID_PLAY_SERVICES_CORE_VERSION": "1.8.0"
-      },
-      "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "com.austinhunter.clipped",
-        "WEB_APPLICATION_CLIENT_ID": "607609406851-5bqhbo8gtciujiqlgl7rmgrin1uf04l9.apps.googleusercontent.com"
-      },
-      "cordova-plugin-sign-in-with-apple": {},
-      "uk.co.workingedge.phonegap.plugin.launchnavigator": {
-        "GOOGLE_API_KEY_FOR_ANDROID": "AIzaSyAuEOgKmk4Xr1YYqwriKqdtDqd7QJTnd8k",
-        "OKHTTP_VERSION": "3.12.0"
-      },
-      "cordova-plugin-googlemaps": {
-        "LOCATION_WHEN_IN_USE_DESCRIPTION": "This app wants to get your location while this app runs only.",
-        "LOCATION_ALWAYS_USAGE_DESCRIPTION": "This app wants to get your location always, even this app runs in background."
-      },
-      "cordova-plugin-x-socialsharing": {
-        "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
-        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
-      },
-      "cordova-plugin-calendar": {
-        "CALENDAR_USAGE_DESCRIPTION": "This app requires calendar access to function properly.",
-        "CONTACTS_USAGE_DESCRIPTION": "This app requires contacts access to function properly."
-      },
-      "cordova-plugin-contacts": {},
-      "cordova-plugin-app-version": {}
-    },
-    "platforms": [
-      "ios",
-      "android",
-      "browser"
-    ]
-  }
+  "description": "An Ionic project"
 }

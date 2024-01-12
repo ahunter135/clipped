@@ -10,7 +10,6 @@ import { DetailsPage } from './details.page';
 import { PopoverComponent } from './popover/popover.component';
 import { VisitsComponent } from 'src/app/modals/visits/visits.component';
 import { CropImageComponent } from 'src/app/modals/crop-image/crop-image.component';
-import { ImageCropperModule } from 'ngx-image-cropper';
 import { TextTemplateComponent } from 'src/app/modals/text-template/text-template.component';
 import { AddAppointmentComponent } from 'src/app/modals/add-appointment/add-appointment.component';
 import { CalendarModule } from 'ion7-calendar';
@@ -26,7 +25,6 @@ import { ViewAppointmentsComponent } from 'src/app/modals/view-appointments/view
         FormsModule,
         IonicModule,
         DetailsPageRoutingModule,
-        ImageCropperModule,
         CalendarModule,
         ComponentsModule,
         PipesModule
