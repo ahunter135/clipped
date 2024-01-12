@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 // import { Plugins } from '@capacitor/core';
-// import { InAppPurchase } from '@ionic-native/in-app-purchase/ngx';
 import { isPlatform, ModalController, Platform } from '@ionic/angular';
 import { GlobalService } from './global.service';
 import { Preferences } from '@capacitor/preferences';
@@ -27,6 +26,19 @@ export class StorageService {
 
   constructor(public globalService: GlobalService, private modalCtrl: ModalController, private platform: Platform) {
     //Preferences.clear();
+    this.platform.ready().then(() => {
+      this.store = CdvPurchase.store;
+      this.registerProducts();
+      this.setupListener();
+      // Get the real product information
+      this.store.initialize();
+      this.store.ready(() => {
+        if (this.store) {
+          this.products = this.store.products;
+          console.log(this.products);
+        }
+      });
+    });
   }
 
   async setItem(obj) {
@@ -62,7 +74,13 @@ export class StorageService {
     return this.data;
   }
 
-  async upgradeToPro(product) {
+  async upgradeToPro(product :CdvPurchase.Product) {
+    this.store.order(product.getOffer()).then((p) => {
+      this.modalCtrl.dismiss();
+    }).catch((err) => {
+      console.log(err);
+      this.modalCtrl.dismiss();
+    });
     
   }
 
@@ -78,15 +96,31 @@ export class StorageService {
   //   });
   // }
 
-  async setupAIP() {
-    this.store = CdvPurchase.store;
-    await this.store.initialize();
+  setupListener() {
+    if (this.store) {
+      this.store
+        .when()
+        .approved(async (p: any) => {
+          // This has all the products that have been purchased.
+          // Verify they match up with what we have in the DB.
+          if (p.state == 'approved') {
+            this.setItem({key: 'pro', value: true});
+            this.globalService.publishData({key: 'pro', value: true});
+            this.proMode = true;
+          } else {
+            this.setItem({key: 'pro', value: false});
+            this.globalService.publishData({key: 'pro', value: false});
+            this.proMode = false;
+          }
 
-    // NOT SURE IF OR WHERE THIS GOES
-    // this.store.ready(() => {
-    //   this.doStuff();
-    // });
+          return p.verify();
+        })
+        .verified((p: any) => p.finish())
+        .finished(() => {});
+    }
+  }
 
+  registerProducts() {
     this.store.register([
       {
         id: "com.clipped.promode",
@@ -119,76 +153,7 @@ export class StorageService {
         type: CdvPurchase.ProductType.PAID_SUBSCRIPTION
       }
     ]);
-
-    const purchases = this.store.verifiedPurchases;
-
-    if (purchases.length > 0) {
-      const latestPurchase = purchases[0];
-      if (!latestPurchase.isExpired) {
-        this.setItem({key: 'pro', value: true});
-        this.globalService.publishData({key: 'pro', value: true});
-        this.proMode = true;
-      } else {
-        this.setItem({key: 'pro', value: false});
-        this.globalService.publishData({key: 'pro', value: false});
-        this.proMode = false;
-      }
-    }
   }
-
-  // async setupIAP() {
-  //   let productId = "com.clipped.promode";
-  //   let products = [];
-  //   if (isPlatform('android')) {
-  //     products = [productId, 'com.clipped.upgradesemi', 'com.clipped.upgradeannual'];
-  //   } else if (isPlatform('ios')) {
-  //     products = ["com.clipped.annually", "com.clipped.monthly", "com.clipped.semiannual"];
-  //   }
-  //   this.iap.getProducts(products).then(async (products) => {
-  //     this.products = products;
-  //       // TODO check if receipt is good enough
-  //       this.iap.restorePurchases().then((receipt) => {
-  //         console.log(receipt);
-  //         if (this.platform.is('ios')) {
-  //           if (receipt.length > 0) {
-  //             if (receipt[0].state != 3) {
-  //               this.setItem({key: "pro", value: false})
-  //               this.globalService.publishData({key: 'pro', value: false});
-  //               this.proMode = false;
-  //             } else {
-  //               this.setItem({key: 'pro', value: true});
-  //               this.proMode = true;
-  //               this.globalService.publishData({key: 'pro', value: true});
-  //             }
-  //           } else {
-  //             this.setItem({key: "pro", value: false})
-  //             this.globalService.publishData({key: 'pro', value: false});
-  //           }
-  //         } else {
-  //           if (receipt.length > 0) {
-  //             let purchaseState = JSON.parse(receipt[0].receipt).purchaseState;
-  //             if (purchaseState != 0) {
-  //               this.setItem({key: "pro", value: false})
-  //               this.globalService.publishData({key: 'pro', value: false});
-  //               this.proMode = false;
-  //             } else {
-  //               this.setItem({key: 'pro', value: true});
-  //               this.proMode = true;
-  //               this.globalService.publishData({key: 'pro', value: true});
-  //             }
-  //           } else {
-  //             this.setItem({key: "pro", value: false})
-  //             this.globalService.publishData({key: 'pro', value: false});
-  //           }
-  //         }
-          
-  //       }).catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }).catch((err) => {
-  //     console.log(err);
-  //   });
-  // }
 
   
 }
