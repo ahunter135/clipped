@@ -31,7 +31,11 @@ export class StorageService {
       this.registerProducts();
       this.setupListener();
       // Get the real product information
-      this.store.initialize();
+      this.store.initialize([
+        this.platform.is('ios')
+          ? CdvPurchase.Platform.APPLE_APPSTORE
+          : CdvPurchase.Platform.GOOGLE_PLAY,
+      ]);
       this.store.ready(() => {
         if (this.store) {
           this.products = this.store.products;

@@ -7,7 +7,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import * as moment from 'moment';
 import { VisitsComponent } from 'src/app/modals/visits/visits.component';
 import { CameraService } from 'src/app/services/camera.service';
-import csc from 'country-state-city'
+import { Country, State } from 'country-state-city';
 import { PetsComponent } from 'src/app/modals/pets/pets.component';
 import * as randomcolor from 'random-hex-color'
 import { PhonePipe } from 'src/app/pipes/phone.pipe';
@@ -36,7 +36,7 @@ export class DetailsPage implements OnInit {
   subscription;
   accountType;
   loadingValue = 0;
-  countries = csc.getAllCountries();
+  countries = Country.getAllCountries();
   states;
   searching = false;
   visits = [];
@@ -103,7 +103,7 @@ export class DetailsPage implements OnInit {
   }
 
   getStates() {
-    this.states = csc.getStatesOfCountry(this.client.location.country);
+    this.states = State.getStatesOfCountry(this.client.location.country);
   }
 
   async viewPets() {

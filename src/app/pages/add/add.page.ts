@@ -3,7 +3,7 @@ import { ActionSheetController, ModalController, NavController, PopoverControlle
 import * as moment from 'moment';
 import { DbService } from 'src/app/services/db.service';
 import { StorageService } from 'src/app/services/storage.service';
-import csc from 'country-state-city'
+import { Country, State, City }  from 'country-state-city';
 import { PetsComponent } from 'src/app/modals/pets/pets.component';
 import { PhonePipe } from 'src/app/pipes/phone.pipe';
 import { ColorPickerComponent } from 'src/app/modals/color-picker/color-picker.component';
@@ -29,7 +29,7 @@ export class AddPage implements OnInit {
   actionSheet;
   loading = false;
   accountType;
-  countries = csc.getAllCountries();
+  countries = Country.getAllCountries();
   states;
   tempAddress = "";
   items = [];
@@ -113,7 +113,7 @@ export class AddPage implements OnInit {
   }
 
   getStates() {
-    this.states = csc.getStatesOfCountry(this.client.country);
+    this.states = State.getStatesOfCountry(this.client.country);
   }
 
   async formatPhone() {
