@@ -8,7 +8,7 @@ import { UpgradeComponent } from '../modals/upgrade/upgrade.component';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component';
-import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
+import OneSignal from 'onesignal-cordova-plugin';
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -29,7 +29,7 @@ export class Tab1Page {
     
   }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, public globalService: GlobalService,
-    public modalCtrl: ModalController, private platform: Platform, private navCtrl: NavController, private onesignal: OneSignal) {}
+    public modalCtrl: ModalController, private platform: Platform, private navCtrl: NavController) {}
 
   ngOnInit() {
     this.platform.backButton.subscribeWithPriority(998, () => {
@@ -76,7 +76,7 @@ export class Tab1Page {
   }
 
   async upgrade() {
-    this.onesignal.addTrigger("timeToUpgrade", true);
+    OneSignal.InAppMessages.addTrigger("timeToUpgrade", "true");
   }
 
   async editStylists() {

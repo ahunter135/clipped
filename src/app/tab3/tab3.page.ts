@@ -9,7 +9,7 @@ import * as introjs from 'intro.js';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { AddStylistComponent } from '../modals/add-stylist/add-stylist.component';
-import { OneSignal } from '@awesome-cordova-plugins/onesignal/ngx';
+import OneSignal from 'onesignal-cordova-plugin';
 import { App } from '@capacitor/app';
 
 @Component({
@@ -30,7 +30,7 @@ export class Tab3Page {
 
   }
   constructor(public storage: StorageService, private router: Router, public dbService: DbService, private modalCtrl: ModalController, private alertController: AlertController,
-     private platform: Platform, private navCtrl: NavController, private onesignal: OneSignal) {
+     private platform: Platform, private navCtrl: NavController) {
 
   }
 
@@ -58,7 +58,7 @@ export class Tab3Page {
   }
 
   async upgrade() {
-    this.onesignal.addTrigger("timeToUpgrade", true);
+    OneSignal.InAppMessages.addTrigger("timeToUpgrade", "timeToUpgrade");
   }
 
   async addToLimit() {

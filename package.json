@@ -30,7 +30,7 @@
     "@awesome-cordova-plugins/launch-navigator": "6.6.0",
     "@awesome-cordova-plugins/launch-review": "6.6.0",
     "@awesome-cordova-plugins/lottie-splash-screen": "^6.6.0",
-    "@awesome-cordova-plugins/onesignal": "6.6.0",
+    "@awesome-cordova-plugins/onesignal": "^6.6.0",
     "@awesome-cordova-plugins/sign-in-with-apple": "6.6.0",
     "@awesome-cordova-plugins/sms": "6.6.0",
     "@awesome-cordova-plugins/social-sharing": "6.6.0",

@@ -39,7 +39,7 @@ export class StorageService {
       this.store.ready(() => {
         if (this.store) {
           this.products = this.store.products;
-          console.log(this.products);
+          console.log("products" + this.products);
         }
       });
     });
@@ -78,12 +78,23 @@ export class StorageService {
     return this.data;
   }
 
-  async upgradeToPro(product :CdvPurchase.Product) {
-    this.store.order(product.getOffer()).then((p) => {
-      this.modalCtrl.dismiss();
-    }).catch((err) => {
-      console.log(err);
-      this.modalCtrl.dismiss();
+  async upgradeToPro(productId: string) {
+    console.log(productId);
+    let product: CdvPurchase.Product;
+    this.products.forEach((prod: CdvPurchase.Product) => {
+      if (prod.id == productId) {
+        product = prod;
+        if (this.store) {
+          if (product) {
+            this.store.order(product.getOffer()).then((p) => {
+              this.modalCtrl.dismiss();
+            }).catch((err) => {
+              console.log(err);
+              this.modalCtrl.dismiss();
+            });
+          }
+        }
+      }
     });
     
   }
