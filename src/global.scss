@@ -67,4 +67,7 @@ ion-modal.appointments {
   margin-bottom: 50px;
 }
 
-
+//need this for map to show up on android
+body {
+  background: transparent;
+}

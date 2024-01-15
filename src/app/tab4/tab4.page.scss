@@ -12,3 +12,8 @@
 .danger-class {
     --color: #cf3c4f;
 }
+
+//need this for map to show up on android
+ion-content {
+    --background: transparent;
+  }

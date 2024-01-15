@@ -51,38 +51,38 @@
       </ion-title>
     </ion-toolbar>
     <ion-content>
-      <ion-list>
-        <ion-item-divider>
-          <ion-label>
-            {{currentFilter | filter}}
-          </ion-label>
-        </ion-item-divider>
-        <ion-item *ngFor="let app of appointmentsShownOnMap" (click)="openSheet(app)">
-          <ion-thumbnail slot="start">
-            <img *ngIf="app.app.pet.image" [src]="app.app.pet.image" />
-            <img *ngIf="!app.app.pet.image" [src]="app.client_id | clientByID:'img'" />
-          </ion-thumbnail>
-          <ion-label>
-            <h3>{{app.client_id | clientByID}}; {{app.location.address}}</h3>
-            <h5 *ngIf="!app.app.pet.name">For {{app.app.pet}}</h5>
-            <h5 *ngIf="app.app.pet.name">For {{app.app.pet.name}}</h5>
-            <!--<h5 *ngIf="app.app.stylist">Stylist: {{app.app.stylist}}</h5> -->
-            <p>{{app.app.date | date: 'mediumDate'}}</p>
-            <h6 *ngIf="app.app.cancelled && false">
-              <ion-icon name="close-circle-outline"></ion-icon> Cancelled
-            </h6>
-            <h6 *ngIf="app.app.confirmed && false">
-              <ion-icon name="checkmark-circle-outline"></ion-icon> Confirmed
-            </h6>
-            <h6 *ngIf="!app.app.cancelled && !app.app.confirmed && app.app.notified && false">No Response from
-              Confirmation</h6>
-            <h6 *ngIf="!app.app.notified && false">Not Notified</h6>
-          </ion-label>
-          <ion-chip [ngStyle]="{'background': app.color}">
-            <ion-label color="dark">{{app.app.date | date:'shortTime'}}</ion-label>
-          </ion-chip>
-        </ion-item>
-      </ion-list>
+        <ion-list (touchmove)="stopDrag($event)">
+          <ion-item-divider>
+            <ion-label>
+              {{currentFilter | filter}}
+            </ion-label>
+          </ion-item-divider>
+          <ion-item *ngFor="let app of appointmentsShownOnMap" (click)="openSheet(app)">
+            <ion-thumbnail slot="start">
+              <img *ngIf="app.app.pet.image" [src]="app.app.pet.image" />
+              <img *ngIf="!app.app.pet.image" [src]="app.client_id | clientByID:'img'" />
+            </ion-thumbnail>
+            <ion-label>
+              <h3>{{app.client_id | clientByID}}; {{app.location.address}}</h3>
+              <h5 *ngIf="!app.app.pet.name">For {{app.app.pet}}</h5>
+              <h5 *ngIf="app.app.pet.name">For {{app.app.pet.name}}</h5>
+              <!--<h5 *ngIf="app.app.stylist">Stylist: {{app.app.stylist}}</h5> -->
+              <p>{{app.app.date | date: 'mediumDate'}}</p>
+              <h6 *ngIf="app.app.cancelled && false">
+                <ion-icon name="close-circle-outline"></ion-icon> Cancelled
+              </h6>
+              <h6 *ngIf="app.app.confirmed && false">
+                <ion-icon name="checkmark-circle-outline"></ion-icon> Confirmed
+              </h6>
+              <h6 *ngIf="!app.app.cancelled && !app.app.confirmed && app.app.notified && false">No Response from
+                Confirmation</h6>
+              <h6 *ngIf="!app.app.notified && false">Not Notified</h6>
+            </ion-label>
+            <ion-chip [ngStyle]="{'background': app.color}">
+              <ion-label color="dark">{{app.app.date | date:'shortTime'}}</ion-label>
+            </ion-chip>
+          </ion-item>
+        </ion-list>
     </ion-content>
   </ng-template>
 </ion-modal>

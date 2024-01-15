@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ActionSheetController, AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, IonContent, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { DbService } from '../services/db.service';
 import { StorageService } from '../services/storage.service';
 import * as moment from 'moment';
@@ -51,6 +51,9 @@ export class Tab4Page {
     private router: Router, private loadingController: LoadingController, private iab: InAppBrowser, private calendar: Calendar, private toastCtrl: ToastController) {
   }
 
+  stopDrag(event: any) {
+    event.stopPropagation();
+}
   async ngOnInit() {
   }
 
@@ -160,7 +163,9 @@ export class Tab4Page {
 
   async updateApps() {
     this.appointmentsShownOnMap = [];
-    await this.map.removeMarkers(this.markerIds);
+    if (this.markerIds.length > 0) {
+      await this.map.removeMarkers(this.markerIds);
+    }
     this.markers = [];
     this.markerIds = [];
     
