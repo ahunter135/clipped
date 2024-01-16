@@ -451,6 +451,15 @@ export class Tab4Page {
     this.ready = true;
   }
 
+  hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  }
+
   async addMarker(client){
     let lat, lng;
     if (client.location && client.location.address) {
@@ -465,11 +474,11 @@ export class Tab4Page {
         }
       });
 
-      client.color = this.storage.clients.find(c => c.id === client.client_id)?.color || 'red';
+      client.color = this.hexToRgb((this.storage.clients.find(c => c.id === client.client_id)?.color)) || {r: 255, g: 0, b: 0};
 
       const marker: Marker = {
         title: this.clientByID.transform(client.client_id).toString(),
-        tintColor: client.testColor,
+        tintColor: client.color,
         coordinate: {
           lat,
           lng
